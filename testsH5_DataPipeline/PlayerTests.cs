@@ -4,12 +4,11 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace testsH5_DataPipeline
 {
     [TestClass]
-    public class UnitTest1
+    public class PlayerTests
     {
-        [TestMethod]
-        public void TestMethod1()
-        {
-
-        }
+        //[TestMethod]
+        //public void TestMethod1()
+        //{
+        //}
     }
 }
