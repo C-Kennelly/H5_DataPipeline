@@ -17,9 +17,29 @@ namespace H5_DataPipeline
             dateLastMatchScan = DateTime.MinValue;
         }
 
+        public void RecordMatchScan()
+        {
+            dateLastMatchScan = DateTime.UtcNow;
+        }
+
         public void RecordMatchScan(DateTime dateOfLastMatchScan)
         {
             dateLastMatchScan = dateOfLastMatchScan;
         }
+
+        public bool MatchesReadyToBeSearched(int dayThresholdToSearchMatches)
+        {
+            DateTime threshold = DateTime.UtcNow.AddDays(-1 * dayThresholdToSearchMatches);
+
+            if (dateLastMatchScan < threshold)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
     }
 }
