@@ -70,7 +70,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="PlayerTests.cs" />
+    <Compile Include="t_PlayersExtensionsTests.cs" />
     <Compile Include="PlayersForMatchCrawlerTests.cs" />
   </ItemGroup>
   <ItemGroup>

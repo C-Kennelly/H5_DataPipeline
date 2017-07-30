@@ -104,7 +104,7 @@
     <Compile Include="Models\t_teamsources.cs">
       <DependentUpon>H5DataPipelineModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Player.cs" />
+    <Compile Include="Models\t_playersExtensions.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

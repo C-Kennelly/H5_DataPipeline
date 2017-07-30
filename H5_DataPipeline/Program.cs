@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using H5_DataPipeline.Models;
 
 namespace H5_DataPipeline
 {
@@ -10,7 +11,17 @@ namespace H5_DataPipeline
     {
         static void Main(string[] args)
         {
+            //String[] players = new String[] { "Sn1p3r C", "Randy 355", "ADarkerDoman" };
 
+
+            Console.WriteLine("Hello, Infinity!");
+
+
+
+  
+
+            Console.WriteLine("Done!");
+            Console.ReadLine();
         }
 
         /////////Notes/////////////
