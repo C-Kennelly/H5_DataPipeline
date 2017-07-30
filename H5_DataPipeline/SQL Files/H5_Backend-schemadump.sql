@@ -21,6 +21,11 @@ USE `dev_spartanclashbackend`;
 DROP TABLE IF EXISTS `t_h5matches`;
 CREATE TABLE IF NOT EXISTS `t_h5matches` (
   `matchID` varchar(64) NOT NULL,
+  `dateDetailsScan` datetime DEFAULT NULL,
+  `datePlayersScan` datetime DEFAULT NULL,
+  `dateResultsScan` datetime DEFAULT NULL,
+  `dateCompaniesInvolvedUpdated` datetime DEFAULT NULL,
+  `dateCustomTeamsUpdated` datetime DEFAULT NULL,
   PRIMARY KEY (`matchID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -100,6 +105,8 @@ DROP TABLE IF EXISTS `t_players`;
 CREATE TABLE IF NOT EXISTS `t_players` (
   `gamertag` varchar(32) NOT NULL,
   `dateLastMatchScan` datetime DEFAULT NULL,
+  `dateCompanyRosterUpdated` datetime DEFAULT NULL,
+  `dateCustomTeamsUpdated` datetime DEFAULT NULL,
   PRIMARY KEY (`gamertag`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
