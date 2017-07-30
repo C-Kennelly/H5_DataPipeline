@@ -107,6 +107,7 @@ CREATE TABLE IF NOT EXISTS `t_players` (
   `dateLastMatchScan` datetime DEFAULT NULL,
   `dateCompanyRosterUpdated` datetime DEFAULT NULL,
   `dateCustomTeamsUpdated` datetime DEFAULT NULL,
+  `scanThresholdInDays` int(11) NOT NULL DEFAULT 7,
   PRIMARY KEY (`gamertag`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 

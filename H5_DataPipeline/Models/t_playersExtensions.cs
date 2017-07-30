@@ -9,50 +9,43 @@ namespace H5_DataPipeline.Models
 {
     public partial class t_players
     {
-        //private string gamertag;
-        //private DateTime dateLastMatchScan;
 
         public t_players(string playerName)
         {
             gamertag = playerName;
-            SetDateLastScanToMinVale();
         }
 
-        private void SetDateLastScanToMinVale()
+        public t_players(string playerName, int customScanThreshold)
         {
-            RecordMatchScan(DateTime.MinValue);
+            gamertag = playerName;
+            scanThresholdInDays = customScanThreshold;
         }
 
-        private t_players FindCurrentRecord()
+        public bool MatchesReadyToBeSearched()
         {
-            using (var db = new dev_spartanclashbackendEntities()) 
-            {
-                return db.t_players.Find(gamertag);
-            }
+            return CheckDateAgainstThreshold(dateLastMatchScan);
         }
-
-        public void RecordMatchScan()
+        public bool CompanyRosterReadyToBeSearched()
         {
-            dateLastMatchScan = DateTime.UtcNow;
+            return CheckDateAgainstThreshold(dateCompanyRosterUpdated);
         }
-
-        public void RecordMatchScan(DateTime dateOfLastMatchScan)
+        public bool CustomTeamRosterReadyToBeSearched()
         {
-            dateLastMatchScan = dateOfLastMatchScan;
+            return CheckDateAgainstThreshold(dateCustomTeamsUpdated);
         }
-
-        public bool MatchesReadyToBeSearched(int dayThresholdToSearchMatches)
+            
+        private bool CheckDateAgainstThreshold(DateTime? dateToCheck)
         {
-            DateTime threshold = DateTime.UtcNow.AddDays(-1 * dayThresholdToSearchMatches);
+            DateTime thresholdDateTime = DateTime.UtcNow.AddDays(-1 * scanThresholdInDays);
 
-            if (dateLastMatchScan < threshold)
+            if (dateToCheck == null || dateToCheck < thresholdDateTime)
             {
                 return true;
             }
             else
             {
                 return false;
-            }
+            }            
         }
 
         public void UpdateDatabase()
@@ -72,6 +65,46 @@ namespace H5_DataPipeline.Models
                 db.SaveChanges();
 
             }
+        }
+
+        private t_players FindCurrentRecord()
+        {
+            using (var db = new dev_spartanclashbackendEntities())
+            {
+                return db.t_players.Find(gamertag);
+            }
+        }
+
+
+
+        public void RecordMatchScan()
+        {
+            dateLastMatchScan = DateTime.UtcNow;
+        }
+
+        public void RecordMatchScan(DateTime dateOfLastMatchScan)
+        {
+            dateLastMatchScan = dateOfLastMatchScan;
+        }
+
+        public void RecordCompanyScan()
+        {
+            dateCompanyRosterUpdated = DateTime.UtcNow;
+        }
+
+        public void RecordCompanyScan(DateTime dateOfLastMatchScan)
+        {
+            dateCompanyRosterUpdated = dateOfLastMatchScan;
+        }
+
+        public void RecordCustomTeamScan()
+        {
+            dateCustomTeamsUpdated = DateTime.UtcNow;
+        }
+
+        public void RecordCustomTeamScan(DateTime dateOfLastMatchScan)
+        {
+            dateCustomTeamsUpdated = dateOfLastMatchScan;
         }
 
     }

@@ -14,11 +14,11 @@ namespace testsH5_DataPipeline
         public void MatchesReadyToBeSearchedReturnsFalseWhenWithinThreshold()
         {
             const int numberOfDaysBeforeScanningMatchesAgain = 7;
+            
+            t_players player = new t_players("UNITTESTPLAYER", numberOfDaysBeforeScanningMatchesAgain);
+            player.RecordMatchScan(); 
 
-            t_players player = new t_players("Sn1p3r C");
-            player.RecordMatchScan();
-
-            Assert.IsFalse(player.MatchesReadyToBeSearched(numberOfDaysBeforeScanningMatchesAgain));
+            Assert.IsFalse(player.MatchesReadyToBeSearched());
         }
 
         [TestMethod]
@@ -26,10 +26,54 @@ namespace testsH5_DataPipeline
         {
             const int numberOfDaysBeforeScanningMatchesAgain = 7;
 
-            t_players player = new t_players("Sn1p3r C");
-            player.RecordMatchScan(DateTime.UtcNow.AddDays(-2 * numberOfDaysBeforeScanningMatchesAgain));
+            t_players player = new t_players("UNITTESTPLAYER", numberOfDaysBeforeScanningMatchesAgain);
+            player.RecordMatchScan(DateTime.UtcNow.AddDays(-2 * player.scanThresholdInDays));
 
-            Assert.IsTrue(player.MatchesReadyToBeSearched(numberOfDaysBeforeScanningMatchesAgain));
+            Assert.IsTrue(player.MatchesReadyToBeSearched());
+        }
+
+        [TestMethod]
+        public void CompanyRosterReadyToBeSearchedReturnsFalseWhenWithinThreshold()
+        {
+            const int numberOfDaysBeforeScanningMatchesAgain = 7;
+
+            t_players player = new t_players("UNITTESTPLAYER", numberOfDaysBeforeScanningMatchesAgain);
+            player.RecordCompanyScan();
+
+            Assert.IsFalse(player.CompanyRosterReadyToBeSearched());
+        }
+
+        [TestMethod]
+        public void CompanyRosterReadyToBeSearchedReturnsTrueWhenOutsideOfThreshold()
+        {
+            const int numberOfDaysBeforeScanningMatchesAgain = 7;
+
+            t_players player = new t_players("UNITTESTPLAYER", numberOfDaysBeforeScanningMatchesAgain);
+            player.RecordCompanyScan(DateTime.UtcNow.AddDays(-2 * player.scanThresholdInDays));
+
+            Assert.IsTrue(player.CompanyRosterReadyToBeSearched());
+        }
+
+        [TestMethod]
+        public void CustomTeamRosterReadyToBeSearchedReturnsFalseWhenWithinThreshold()
+        {
+            const int numberOfDaysBeforeScanningMatchesAgain = 7;
+
+            t_players player = new t_players("UNITTESTPLAYER", numberOfDaysBeforeScanningMatchesAgain);
+            player.RecordCustomTeamScan();
+
+            Assert.IsFalse(player.CustomTeamRosterReadyToBeSearched());
+        }
+
+        [TestMethod]
+        public void CustomTeamRosterReadyToBeSearchedReturnsTrueWhenOutsideOfThreshold()
+        {
+            const int numberOfDaysBeforeScanningMatchesAgain = 7;
+
+            t_players player = new t_players("UNITTESTPLAYER", numberOfDaysBeforeScanningMatchesAgain);
+            player.RecordCustomTeamScan(DateTime.UtcNow.AddDays(-2 * player.scanThresholdInDays));
+
+            Assert.IsTrue(player.CustomTeamRosterReadyToBeSearched());
         }
     }
 }

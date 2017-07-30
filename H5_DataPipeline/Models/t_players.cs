@@ -23,6 +23,9 @@ namespace H5_DataPipeline.Models
     
         public string gamertag { get; set; }
         public Nullable<System.DateTime> dateLastMatchScan { get; set; }
+        public Nullable<System.DateTime> dateCompanyRosterUpdated { get; set; }
+        public Nullable<System.DateTime> dateCustomTeamsUpdated { get; set; }
+        public int scanThresholdInDays { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<t_players_to_teams> t_players_to_teams { get; set; }

@@ -10,7 +10,6 @@
         <EntityTypeShape EntityType="dev_spartanclashbackendModel.t_h5matches_playersformatch" Width="1.5" PointX="14.375" PointY="1.625" IsExpanded="true" />
         <EntityTypeShape EntityType="dev_spartanclashbackendModel.t_h5matches_teamsinvolved_halowaypointcompanies" Width="1.5" PointX="7.75" PointY="5.25" IsExpanded="true" />
         <EntityTypeShape EntityType="dev_spartanclashbackendModel.t_h5matches_teamsinvolved_spartanclashfireteams" Width="1.5" PointX="8.875" PointY="5.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="dev_spartanclashbackendModel.t_players" Width="1.5" PointX="4.25" PointY="1.625" IsExpanded="true" />
         <EntityTypeShape EntityType="dev_spartanclashbackendModel.t_players_to_teams" Width="1.5" PointX="4.25" PointY="4.625" IsExpanded="true" />
         <EntityTypeShape EntityType="dev_spartanclashbackendModel.t_teams" Width="1.5" PointX="4.25" PointY="7.75" IsExpanded="true" />
         <EntityTypeShape EntityType="dev_spartanclashbackendModel.t_teamsources" Width="1.5" PointX="6.75" PointY="10.125" IsExpanded="true" />
@@ -20,10 +19,11 @@
         <AssociationConnector Association="dev_spartanclashbackendModel.t_h5matches_teamsinvolved_spartanclashfireteams_ibfk_1" ManuallyRouted="false" />
         <AssociationConnector Association="dev_spartanclashbackendModel.fk_teamSourceWaypoint" ManuallyRouted="false" />
         <AssociationConnector Association="dev_spartanclashbackendModel.t_h5matches_teamsinvolved_spartanclashfireteams_ibfk_2" ManuallyRouted="false" />
-        <AssociationConnector Association="dev_spartanclashbackendModel.fk_gamertag_playerstoteams" ManuallyRouted="false" />
         <AssociationConnector Association="dev_spartanclashbackendModel.fk_teamNameteamSource_playerstoteams" ManuallyRouted="false" />
         <AssociationConnector Association="dev_spartanclashbackendModel.fk_teamsource_teams" ManuallyRouted="false" />
-        <AssociationConnector Association="dev_spartanclashbackendModel.t_players_to_h5matches" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="dev_spartanclashbackendModel.t_players" Width="1.5" PointX="3.375" PointY="1.75" />
+        <AssociationConnector Association="dev_spartanclashbackendModel.fk_gamertag_playerstoteams" />
+        <AssociationConnector Association="dev_spartanclashbackendModel.t_players_to_h5matches" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
