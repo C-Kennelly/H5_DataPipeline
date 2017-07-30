@@ -1,0 +1,759 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="dev_spartanclashbackendModel.Store" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.5" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="t_h5matches">
+          <Key>
+            <PropertyRef Name="matchID" />
+          </Key>
+          <Property Name="matchID" Type="varchar" MaxLength="64" Nullable="false" />
+        </EntityType>
+        <EntityType Name="t_h5matches_matchdetails">
+          <Key>
+            <PropertyRef Name="matchId" />
+          </Key>
+          <Property Name="matchId" Type="varchar" MaxLength="64" Nullable="false" />
+          <Property Name="GameMode" Type="int" />
+          <Property Name="HopperId" Type="varchar" MaxLength="64" />
+          <Property Name="MapId" Type="varchar" MaxLength="64" />
+          <Property Name="MapVariant_ResourceType" Type="int" />
+          <Property Name="MapVariant_ResourceId" Type="varchar" MaxLength="64" />
+          <Property Name="MapVariant_OwnerType" Type="int" />
+          <Property Name="MapVariant_Owner" Type="varchar" MaxLength="64" />
+          <Property Name="GameBaseVariantID" Type="varchar" MaxLength="64" />
+          <Property Name="GameVariant_ResourceID" Type="varchar" MaxLength="64" />
+          <Property Name="GameVariant_ResourceType" Type="int" />
+          <Property Name="GameVariant_OwnerType" Type="int" />
+          <Property Name="GameVariant_Owner" Type="varchar" MaxLength="64" />
+          <Property Name="MatchCompleteDate" Type="datetime" Precision="0" />
+          <Property Name="MatchDuration" Type="varchar" MaxLength="64" />
+          <Property Name="IsTeamGame" Type="binary" MaxLength="50" />
+          <Property Name="SeasonID" Type="varchar" MaxLength="64" />
+        </EntityType>
+        <EntityType Name="t_h5matches_playersformatch">
+          <Key>
+            <PropertyRef Name="matchID" />
+          </Key>
+          <Property Name="matchID" Type="varchar" MaxLength="64" Nullable="false" />
+          <Property Name="team1_Players" Type="varchar" MaxLength="1024" />
+          <Property Name="team2_Players" Type="varchar" MaxLength="1024" />
+        </EntityType>
+        <EntityType Name="t_h5matches_teamsinvolved_halowaypointcompanies">
+          <Key>
+            <PropertyRef Name="matchID" />
+          </Key>
+          <Property Name="matchID" Type="varchar" MaxLength="64" Nullable="false" />
+          <Property Name="teamSource" Type="varchar" MaxLength="128" />
+          <Property Name="team1_Primary" Type="varchar" MaxLength="128" />
+          <Property Name="team2_Primary" Type="varchar" MaxLength="128" />
+          <Property Name="team1_Secondary" Type="varchar" MaxLength="128" />
+          <Property Name="team2_Secondary" Type="varchar" MaxLength="128" />
+        </EntityType>
+        <EntityType Name="t_h5matches_teamsinvolved_spartanclashfireteams">
+          <Key>
+            <PropertyRef Name="matchID" />
+          </Key>
+          <Property Name="matchID" Type="varchar" MaxLength="64" Nullable="false" />
+          <Property Name="teamSource" Type="varchar" MaxLength="128" />
+          <Property Name="team1_Primary" Type="varchar" MaxLength="128" />
+          <Property Name="team2_Primary" Type="varchar" MaxLength="128" />
+          <Property Name="team1_Secondary" Type="varchar" MaxLength="128" />
+          <Property Name="team2_Secondary" Type="varchar" MaxLength="128" />
+        </EntityType>
+        <EntityType Name="t_players">
+          <Key>
+            <PropertyRef Name="gamertag" />
+          </Key>
+          <Property Name="gamertag" Type="varchar" MaxLength="32" Nullable="false" />
+          <Property Name="dateLastActiveMatch" Type="datetime" Precision="0" />
+        </EntityType>
+        <EntityType Name="t_players_to_h5matches">
+          <Key>
+            <PropertyRef Name="gamertag" />
+            <PropertyRef Name="matchID" />
+          </Key>
+          <Property Name="gamertag" Type="varchar" MaxLength="32" Nullable="false" />
+          <Property Name="matchID" Type="varchar" MaxLength="64" Nullable="false" />
+        </EntityType>
+        <EntityType Name="t_players_to_teams">
+          <Key>
+            <PropertyRef Name="gamertag" />
+            <PropertyRef Name="teamName" />
+            <PropertyRef Name="teamSource" />
+          </Key>
+          <Property Name="gamertag" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="teamName" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="teamSource" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="lastUpdated" Type="timestamp" Precision="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="t_teams">
+          <Key>
+            <PropertyRef Name="teamName" />
+            <PropertyRef Name="teamSource" />
+          </Key>
+          <Property Name="teamName" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="teamSource" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="lastUpdated" Type="timestamp" Precision="0" Nullable="false" />
+          <Property Name="parentTeamName" Type="varchar" MaxLength="128" />
+          <Property Name="parentTeamSource" Type="varchar" MaxLength="128" />
+        </EntityType>
+        <EntityType Name="t_teamsources">
+          <Key>
+            <PropertyRef Name="teamSource" />
+          </Key>
+          <Property Name="teamSource" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="sourceURL" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="teamCommonName" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="beganTrackingOnDate" Type="timestamp" Precision="0" Nullable="false" />
+        </EntityType>
+        <Association Name="fk_gamertag_players_to_matches">
+          <End Role="t_players" Type="Self.t_players" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="t_players_to_h5matches" Type="Self.t_players_to_h5matches" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="t_players">
+              <PropertyRef Name="gamertag" />
+            </Principal>
+            <Dependent Role="t_players_to_h5matches">
+              <PropertyRef Name="gamertag" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_gamertag_playerstoteams">
+          <End Role="t_players" Type="Self.t_players" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="t_players_to_teams" Type="Self.t_players_to_teams" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="t_players">
+              <PropertyRef Name="gamertag" />
+            </Principal>
+            <Dependent Role="t_players_to_teams">
+              <PropertyRef Name="gamertag" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_matchID_h5matches_carnagereport">
+          <End Role="t_h5matches" Type="Self.t_h5matches" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="t_h5matches_matchdetails" Type="Self.t_h5matches_matchdetails" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="t_h5matches">
+              <PropertyRef Name="matchID" />
+            </Principal>
+            <Dependent Role="t_h5matches_matchdetails">
+              <PropertyRef Name="matchId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_matchID_h5matches_playersformatch">
+          <End Role="t_h5matches" Type="Self.t_h5matches" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="t_h5matches_playersformatch" Type="Self.t_h5matches_playersformatch" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="t_h5matches">
+              <PropertyRef Name="matchID" />
+            </Principal>
+            <Dependent Role="t_h5matches_playersformatch">
+              <PropertyRef Name="matchID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_matchID_h5matches_teamsinvolved">
+          <End Role="t_h5matches" Type="Self.t_h5matches" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="t_h5matches_teamsinvolved_halowaypointcompanies" Type="Self.t_h5matches_teamsinvolved_halowaypointcompanies" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="t_h5matches">
+              <PropertyRef Name="matchID" />
+            </Principal>
+            <Dependent Role="t_h5matches_teamsinvolved_halowaypointcompanies">
+              <PropertyRef Name="matchID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_matchID_players_to_matches">
+          <End Role="t_h5matches" Type="Self.t_h5matches" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="t_players_to_h5matches" Type="Self.t_players_to_h5matches" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="t_h5matches">
+              <PropertyRef Name="matchID" />
+            </Principal>
+            <Dependent Role="t_players_to_h5matches">
+              <PropertyRef Name="matchID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_teamNameteamSource_playerstoteams">
+          <End Role="t_teams" Type="Self.t_teams" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="t_players_to_teams" Type="Self.t_players_to_teams" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="t_teams">
+              <PropertyRef Name="teamName" />
+              <PropertyRef Name="teamSource" />
+            </Principal>
+            <Dependent Role="t_players_to_teams">
+              <PropertyRef Name="teamName" />
+              <PropertyRef Name="teamSource" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_teamsource_teams">
+          <End Role="t_teamsources" Type="Self.t_teamsources" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="t_teams" Type="Self.t_teams" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="t_teamsources">
+              <PropertyRef Name="teamSource" />
+            </Principal>
+            <Dependent Role="t_teams">
+              <PropertyRef Name="teamSource" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_teamSourceWaypoint">
+          <End Role="t_teamsources" Type="Self.t_teamsources" Multiplicity="0..1" />
+          <End Role="t_h5matches_teamsinvolved_halowaypointcompanies" Type="Self.t_h5matches_teamsinvolved_halowaypointcompanies" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="t_teamsources">
+              <PropertyRef Name="teamSource" />
+            </Principal>
+            <Dependent Role="t_h5matches_teamsinvolved_halowaypointcompanies">
+              <PropertyRef Name="teamSource" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="t_h5matches_teamsinvolved_spartanclashfireteams_ibfk_1">
+          <End Role="t_h5matches" Type="Self.t_h5matches" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="t_h5matches_teamsinvolved_spartanclashfireteams" Type="Self.t_h5matches_teamsinvolved_spartanclashfireteams" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="t_h5matches">
+              <PropertyRef Name="matchID" />
+            </Principal>
+            <Dependent Role="t_h5matches_teamsinvolved_spartanclashfireteams">
+              <PropertyRef Name="matchID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="t_h5matches_teamsinvolved_spartanclashfireteams_ibfk_2">
+          <End Role="t_teamsources" Type="Self.t_teamsources" Multiplicity="0..1" />
+          <End Role="t_h5matches_teamsinvolved_spartanclashfireteams" Type="Self.t_h5matches_teamsinvolved_spartanclashfireteams" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="t_teamsources">
+              <PropertyRef Name="teamSource" />
+            </Principal>
+            <Dependent Role="t_h5matches_teamsinvolved_spartanclashfireteams">
+              <PropertyRef Name="teamSource" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="dev_spartanclashbackendModelStoreContainer">
+          <EntitySet Name="t_h5matches" EntityType="Self.t_h5matches" Schema="dev_spartanclashbackend" store:Type="Tables" />
+          <EntitySet Name="t_h5matches_matchdetails" EntityType="Self.t_h5matches_matchdetails" Schema="dev_spartanclashbackend" store:Type="Tables" />
+          <EntitySet Name="t_h5matches_playersformatch" EntityType="Self.t_h5matches_playersformatch" Schema="dev_spartanclashbackend" store:Type="Tables" />
+          <EntitySet Name="t_h5matches_teamsinvolved_halowaypointcompanies" EntityType="Self.t_h5matches_teamsinvolved_halowaypointcompanies" Schema="dev_spartanclashbackend" store:Type="Tables" />
+          <EntitySet Name="t_h5matches_teamsinvolved_spartanclashfireteams" EntityType="Self.t_h5matches_teamsinvolved_spartanclashfireteams" Schema="dev_spartanclashbackend" store:Type="Tables" />
+          <EntitySet Name="t_players" EntityType="Self.t_players" Schema="dev_spartanclashbackend" store:Type="Tables" />
+          <EntitySet Name="t_players_to_h5matches" EntityType="Self.t_players_to_h5matches" Schema="dev_spartanclashbackend" store:Type="Tables" />
+          <EntitySet Name="t_players_to_teams" EntityType="Self.t_players_to_teams" Schema="dev_spartanclashbackend" store:Type="Tables" />
+          <EntitySet Name="t_teams" EntityType="Self.t_teams" Schema="dev_spartanclashbackend" store:Type="Tables" />
+          <EntitySet Name="t_teamsources" EntityType="Self.t_teamsources" Schema="dev_spartanclashbackend" store:Type="Tables" />
+          <AssociationSet Name="fk_gamertag_players_to_matches" Association="Self.fk_gamertag_players_to_matches">
+            <End Role="t_players" EntitySet="t_players" />
+            <End Role="t_players_to_h5matches" EntitySet="t_players_to_h5matches" />
+          </AssociationSet>
+          <AssociationSet Name="fk_gamertag_playerstoteams" Association="Self.fk_gamertag_playerstoteams">
+            <End Role="t_players" EntitySet="t_players" />
+            <End Role="t_players_to_teams" EntitySet="t_players_to_teams" />
+          </AssociationSet>
+          <AssociationSet Name="fk_matchID_h5matches_carnagereport" Association="Self.fk_matchID_h5matches_carnagereport">
+            <End Role="t_h5matches" EntitySet="t_h5matches" />
+            <End Role="t_h5matches_matchdetails" EntitySet="t_h5matches_matchdetails" />
+          </AssociationSet>
+          <AssociationSet Name="fk_matchID_h5matches_playersformatch" Association="Self.fk_matchID_h5matches_playersformatch">
+            <End Role="t_h5matches" EntitySet="t_h5matches" />
+            <End Role="t_h5matches_playersformatch" EntitySet="t_h5matches_playersformatch" />
+          </AssociationSet>
+          <AssociationSet Name="fk_matchID_h5matches_teamsinvolved" Association="Self.fk_matchID_h5matches_teamsinvolved">
+            <End Role="t_h5matches" EntitySet="t_h5matches" />
+            <End Role="t_h5matches_teamsinvolved_halowaypointcompanies" EntitySet="t_h5matches_teamsinvolved_halowaypointcompanies" />
+          </AssociationSet>
+          <AssociationSet Name="fk_matchID_players_to_matches" Association="Self.fk_matchID_players_to_matches">
+            <End Role="t_h5matches" EntitySet="t_h5matches" />
+            <End Role="t_players_to_h5matches" EntitySet="t_players_to_h5matches" />
+          </AssociationSet>
+          <AssociationSet Name="fk_teamNameteamSource_playerstoteams" Association="Self.fk_teamNameteamSource_playerstoteams">
+            <End Role="t_teams" EntitySet="t_teams" />
+            <End Role="t_players_to_teams" EntitySet="t_players_to_teams" />
+          </AssociationSet>
+          <AssociationSet Name="fk_teamsource_teams" Association="Self.fk_teamsource_teams">
+            <End Role="t_teamsources" EntitySet="t_teamsources" />
+            <End Role="t_teams" EntitySet="t_teams" />
+          </AssociationSet>
+          <AssociationSet Name="fk_teamSourceWaypoint" Association="Self.fk_teamSourceWaypoint">
+            <End Role="t_teamsources" EntitySet="t_teamsources" />
+            <End Role="t_h5matches_teamsinvolved_halowaypointcompanies" EntitySet="t_h5matches_teamsinvolved_halowaypointcompanies" />
+          </AssociationSet>
+          <AssociationSet Name="t_h5matches_teamsinvolved_spartanclashfireteams_ibfk_1" Association="Self.t_h5matches_teamsinvolved_spartanclashfireteams_ibfk_1">
+            <End Role="t_h5matches" EntitySet="t_h5matches" />
+            <End Role="t_h5matches_teamsinvolved_spartanclashfireteams" EntitySet="t_h5matches_teamsinvolved_spartanclashfireteams" />
+          </AssociationSet>
+          <AssociationSet Name="t_h5matches_teamsinvolved_spartanclashfireteams_ibfk_2" Association="Self.t_h5matches_teamsinvolved_spartanclashfireteams_ibfk_2">
+            <End Role="t_teamsources" EntitySet="t_teamsources" />
+            <End Role="t_h5matches_teamsinvolved_spartanclashfireteams" EntitySet="t_h5matches_teamsinvolved_spartanclashfireteams" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="dev_spartanclashbackendModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="t_h5matches">
+          <Key>
+            <PropertyRef Name="matchID" />
+          </Key>
+          <Property Name="matchID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="t_h5matches_matchdetails" Relationship="Self.fk_matchID_h5matches_carnagereport" FromRole="t_h5matches" ToRole="t_h5matches_matchdetails" />
+          <NavigationProperty Name="t_h5matches_playersformatch" Relationship="Self.fk_matchID_h5matches_playersformatch" FromRole="t_h5matches" ToRole="t_h5matches_playersformatch" />
+          <NavigationProperty Name="t_h5matches_teamsinvolved_halowaypointcompanies" Relationship="Self.fk_matchID_h5matches_teamsinvolved" FromRole="t_h5matches" ToRole="t_h5matches_teamsinvolved_halowaypointcompanies" />
+          <NavigationProperty Name="t_h5matches_teamsinvolved_spartanclashfireteams" Relationship="Self.t_h5matches_teamsinvolved_spartanclashfireteams_ibfk_1" FromRole="t_h5matches" ToRole="t_h5matches_teamsinvolved_spartanclashfireteams" />
+          <NavigationProperty Name="t_players" Relationship="Self.t_players_to_h5matches" FromRole="t_h5matches" ToRole="t_players" />
+        </EntityType>
+        <EntityType Name="t_h5matches_matchdetails">
+          <Key>
+            <PropertyRef Name="matchId" />
+          </Key>
+          <Property Name="matchId" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="GameMode" Type="Int32" />
+          <Property Name="HopperId" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
+          <Property Name="MapId" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
+          <Property Name="MapVariant_ResourceType" Type="Int32" />
+          <Property Name="MapVariant_ResourceId" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
+          <Property Name="MapVariant_OwnerType" Type="Int32" />
+          <Property Name="MapVariant_Owner" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
+          <Property Name="GameBaseVariantID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
+          <Property Name="GameVariant_ResourceID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
+          <Property Name="GameVariant_ResourceType" Type="Int32" />
+          <Property Name="GameVariant_OwnerType" Type="Int32" />
+          <Property Name="GameVariant_Owner" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
+          <Property Name="MatchCompleteDate" Type="DateTime" />
+          <Property Name="MatchDuration" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
+          <Property Name="IsTeamGame" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="SeasonID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="t_h5matches" Relationship="Self.fk_matchID_h5matches_carnagereport" FromRole="t_h5matches_matchdetails" ToRole="t_h5matches" />
+        </EntityType>
+        <EntityType Name="t_h5matches_playersformatch">
+          <Key>
+            <PropertyRef Name="matchID" />
+          </Key>
+          <Property Name="matchID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="team1_Players" Type="String" MaxLength="1024" FixedLength="false" Unicode="false" />
+          <Property Name="team2_Players" Type="String" MaxLength="1024" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="t_h5matches" Relationship="Self.fk_matchID_h5matches_playersformatch" FromRole="t_h5matches_playersformatch" ToRole="t_h5matches" />
+        </EntityType>
+        <EntityType Name="t_h5matches_teamsinvolved_halowaypointcompanies">
+          <Key>
+            <PropertyRef Name="matchID" />
+          </Key>
+          <Property Name="matchID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="teamSource" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="team1_Primary" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="team2_Primary" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="team1_Secondary" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="team2_Secondary" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="t_h5matches" Relationship="Self.fk_matchID_h5matches_teamsinvolved" FromRole="t_h5matches_teamsinvolved_halowaypointcompanies" ToRole="t_h5matches" />
+          <NavigationProperty Name="t_teamsources" Relationship="Self.fk_teamSourceWaypoint" FromRole="t_h5matches_teamsinvolved_halowaypointcompanies" ToRole="t_teamsources" />
+        </EntityType>
+        <EntityType Name="t_h5matches_teamsinvolved_spartanclashfireteams">
+          <Key>
+            <PropertyRef Name="matchID" />
+          </Key>
+          <Property Name="matchID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="teamSource" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="team1_Primary" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="team2_Primary" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="team1_Secondary" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="team2_Secondary" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="t_h5matches" Relationship="Self.t_h5matches_teamsinvolved_spartanclashfireteams_ibfk_1" FromRole="t_h5matches_teamsinvolved_spartanclashfireteams" ToRole="t_h5matches" />
+          <NavigationProperty Name="t_teamsources" Relationship="Self.t_h5matches_teamsinvolved_spartanclashfireteams_ibfk_2" FromRole="t_h5matches_teamsinvolved_spartanclashfireteams" ToRole="t_teamsources" />
+        </EntityType>
+        <EntityType Name="t_players">
+          <Key>
+            <PropertyRef Name="gamertag" />
+          </Key>
+          <Property Name="gamertag" Type="String" MaxLength="32" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="dateLastActiveMatch" Type="DateTime" />
+          <NavigationProperty Name="t_players_to_teams" Relationship="Self.fk_gamertag_playerstoteams" FromRole="t_players" ToRole="t_players_to_teams" />
+          <NavigationProperty Name="t_h5matches" Relationship="Self.t_players_to_h5matches" FromRole="t_players" ToRole="t_h5matches" />
+        </EntityType>
+        <EntityType Name="t_players_to_teams">
+          <Key>
+            <PropertyRef Name="gamertag" />
+            <PropertyRef Name="teamName" />
+            <PropertyRef Name="teamSource" />
+          </Key>
+          <Property Name="gamertag" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="teamName" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="teamSource" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="lastUpdated" Type="DateTime" Nullable="false" />
+          <NavigationProperty Name="t_players" Relationship="Self.fk_gamertag_playerstoteams" FromRole="t_players_to_teams" ToRole="t_players" />
+          <NavigationProperty Name="t_teams" Relationship="Self.fk_teamNameteamSource_playerstoteams" FromRole="t_players_to_teams" ToRole="t_teams" />
+        </EntityType>
+        <EntityType Name="t_teams">
+          <Key>
+            <PropertyRef Name="teamName" />
+            <PropertyRef Name="teamSource" />
+          </Key>
+          <Property Name="teamName" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="teamSource" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="lastUpdated" Type="DateTime" Nullable="false" />
+          <Property Name="parentTeamName" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="parentTeamSource" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="t_players_to_teams" Relationship="Self.fk_teamNameteamSource_playerstoteams" FromRole="t_teams" ToRole="t_players_to_teams" />
+          <NavigationProperty Name="t_teamsources" Relationship="Self.fk_teamsource_teams" FromRole="t_teams" ToRole="t_teamsources" />
+        </EntityType>
+        <EntityType Name="t_teamsources">
+          <Key>
+            <PropertyRef Name="teamSource" />
+          </Key>
+          <Property Name="teamSource" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="sourceURL" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="teamCommonName" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="beganTrackingOnDate" Type="DateTime" Nullable="false" />
+          <NavigationProperty Name="t_h5matches_teamsinvolved_halowaypointcompanies" Relationship="Self.fk_teamSourceWaypoint" FromRole="t_teamsources" ToRole="t_h5matches_teamsinvolved_halowaypointcompanies" />
+          <NavigationProperty Name="t_h5matches_teamsinvolved_spartanclashfireteams" Relationship="Self.t_h5matches_teamsinvolved_spartanclashfireteams_ibfk_2" FromRole="t_teamsources" ToRole="t_h5matches_teamsinvolved_spartanclashfireteams" />
+          <NavigationProperty Name="t_teams" Relationship="Self.fk_teamsource_teams" FromRole="t_teamsources" ToRole="t_teams" />
+        </EntityType>
+        <Association Name="fk_matchID_h5matches_carnagereport">
+          <End Role="t_h5matches" Type="Self.t_h5matches" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="t_h5matches_matchdetails" Type="Self.t_h5matches_matchdetails" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="t_h5matches">
+              <PropertyRef Name="matchID" />
+            </Principal>
+            <Dependent Role="t_h5matches_matchdetails">
+              <PropertyRef Name="matchId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_matchID_h5matches_playersformatch">
+          <End Role="t_h5matches" Type="Self.t_h5matches" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="t_h5matches_playersformatch" Type="Self.t_h5matches_playersformatch" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="t_h5matches">
+              <PropertyRef Name="matchID" />
+            </Principal>
+            <Dependent Role="t_h5matches_playersformatch">
+              <PropertyRef Name="matchID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_matchID_h5matches_teamsinvolved">
+          <End Role="t_h5matches" Type="Self.t_h5matches" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="t_h5matches_teamsinvolved_halowaypointcompanies" Type="Self.t_h5matches_teamsinvolved_halowaypointcompanies" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="t_h5matches">
+              <PropertyRef Name="matchID" />
+            </Principal>
+            <Dependent Role="t_h5matches_teamsinvolved_halowaypointcompanies">
+              <PropertyRef Name="matchID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="t_h5matches_teamsinvolved_spartanclashfireteams_ibfk_1">
+          <End Role="t_h5matches" Type="Self.t_h5matches" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="t_h5matches_teamsinvolved_spartanclashfireteams" Type="Self.t_h5matches_teamsinvolved_spartanclashfireteams" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="t_h5matches">
+              <PropertyRef Name="matchID" />
+            </Principal>
+            <Dependent Role="t_h5matches_teamsinvolved_spartanclashfireteams">
+              <PropertyRef Name="matchID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_teamSourceWaypoint">
+          <End Role="t_teamsources" Type="Self.t_teamsources" Multiplicity="0..1" />
+          <End Role="t_h5matches_teamsinvolved_halowaypointcompanies" Type="Self.t_h5matches_teamsinvolved_halowaypointcompanies" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="t_teamsources">
+              <PropertyRef Name="teamSource" />
+            </Principal>
+            <Dependent Role="t_h5matches_teamsinvolved_halowaypointcompanies">
+              <PropertyRef Name="teamSource" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="t_h5matches_teamsinvolved_spartanclashfireteams_ibfk_2">
+          <End Role="t_teamsources" Type="Self.t_teamsources" Multiplicity="0..1" />
+          <End Role="t_h5matches_teamsinvolved_spartanclashfireteams" Type="Self.t_h5matches_teamsinvolved_spartanclashfireteams" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="t_teamsources">
+              <PropertyRef Name="teamSource" />
+            </Principal>
+            <Dependent Role="t_h5matches_teamsinvolved_spartanclashfireteams">
+              <PropertyRef Name="teamSource" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_gamertag_playerstoteams">
+          <End Role="t_players" Type="Self.t_players" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="t_players_to_teams" Type="Self.t_players_to_teams" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="t_players">
+              <PropertyRef Name="gamertag" />
+            </Principal>
+            <Dependent Role="t_players_to_teams">
+              <PropertyRef Name="gamertag" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_teamNameteamSource_playerstoteams">
+          <End Role="t_teams" Type="Self.t_teams" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="t_players_to_teams" Type="Self.t_players_to_teams" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="t_teams">
+              <PropertyRef Name="teamName" />
+              <PropertyRef Name="teamSource" />
+            </Principal>
+            <Dependent Role="t_players_to_teams">
+              <PropertyRef Name="teamName" />
+              <PropertyRef Name="teamSource" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_teamsource_teams">
+          <End Role="t_teamsources" Type="Self.t_teamsources" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="t_teams" Type="Self.t_teams" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="t_teamsources">
+              <PropertyRef Name="teamSource" />
+            </Principal>
+            <Dependent Role="t_teams">
+              <PropertyRef Name="teamSource" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="t_players_to_h5matches">
+          <End Role="t_players" Type="Self.t_players" Multiplicity="*" />
+          <End Role="t_h5matches" Type="Self.t_h5matches" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="dev_spartanclashbackendEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="t_h5matches" EntityType="Self.t_h5matches" />
+          <EntitySet Name="t_h5matches_matchdetails" EntityType="Self.t_h5matches_matchdetails" />
+          <EntitySet Name="t_h5matches_playersformatch" EntityType="Self.t_h5matches_playersformatch" />
+          <EntitySet Name="t_h5matches_teamsinvolved_halowaypointcompanies" EntityType="Self.t_h5matches_teamsinvolved_halowaypointcompanies" />
+          <EntitySet Name="t_h5matches_teamsinvolved_spartanclashfireteams" EntityType="Self.t_h5matches_teamsinvolved_spartanclashfireteams" />
+          <EntitySet Name="t_players" EntityType="Self.t_players" />
+          <EntitySet Name="t_players_to_teams" EntityType="Self.t_players_to_teams" />
+          <EntitySet Name="t_teams" EntityType="Self.t_teams" />
+          <EntitySet Name="t_teamsources" EntityType="Self.t_teamsources" />
+          <AssociationSet Name="fk_matchID_h5matches_carnagereport" Association="Self.fk_matchID_h5matches_carnagereport">
+            <End Role="t_h5matches" EntitySet="t_h5matches" />
+            <End Role="t_h5matches_matchdetails" EntitySet="t_h5matches_matchdetails" />
+          </AssociationSet>
+          <AssociationSet Name="fk_matchID_h5matches_playersformatch" Association="Self.fk_matchID_h5matches_playersformatch">
+            <End Role="t_h5matches" EntitySet="t_h5matches" />
+            <End Role="t_h5matches_playersformatch" EntitySet="t_h5matches_playersformatch" />
+          </AssociationSet>
+          <AssociationSet Name="fk_matchID_h5matches_teamsinvolved" Association="Self.fk_matchID_h5matches_teamsinvolved">
+            <End Role="t_h5matches" EntitySet="t_h5matches" />
+            <End Role="t_h5matches_teamsinvolved_halowaypointcompanies" EntitySet="t_h5matches_teamsinvolved_halowaypointcompanies" />
+          </AssociationSet>
+          <AssociationSet Name="t_h5matches_teamsinvolved_spartanclashfireteams_ibfk_1" Association="Self.t_h5matches_teamsinvolved_spartanclashfireteams_ibfk_1">
+            <End Role="t_h5matches" EntitySet="t_h5matches" />
+            <End Role="t_h5matches_teamsinvolved_spartanclashfireteams" EntitySet="t_h5matches_teamsinvolved_spartanclashfireteams" />
+          </AssociationSet>
+          <AssociationSet Name="fk_teamSourceWaypoint" Association="Self.fk_teamSourceWaypoint">
+            <End Role="t_teamsources" EntitySet="t_teamsources" />
+            <End Role="t_h5matches_teamsinvolved_halowaypointcompanies" EntitySet="t_h5matches_teamsinvolved_halowaypointcompanies" />
+          </AssociationSet>
+          <AssociationSet Name="t_h5matches_teamsinvolved_spartanclashfireteams_ibfk_2" Association="Self.t_h5matches_teamsinvolved_spartanclashfireteams_ibfk_2">
+            <End Role="t_teamsources" EntitySet="t_teamsources" />
+            <End Role="t_h5matches_teamsinvolved_spartanclashfireteams" EntitySet="t_h5matches_teamsinvolved_spartanclashfireteams" />
+          </AssociationSet>
+          <AssociationSet Name="fk_gamertag_playerstoteams" Association="Self.fk_gamertag_playerstoteams">
+            <End Role="t_players" EntitySet="t_players" />
+            <End Role="t_players_to_teams" EntitySet="t_players_to_teams" />
+          </AssociationSet>
+          <AssociationSet Name="fk_teamNameteamSource_playerstoteams" Association="Self.fk_teamNameteamSource_playerstoteams">
+            <End Role="t_teams" EntitySet="t_teams" />
+            <End Role="t_players_to_teams" EntitySet="t_players_to_teams" />
+          </AssociationSet>
+          <AssociationSet Name="fk_teamsource_teams" Association="Self.fk_teamsource_teams">
+            <End Role="t_teamsources" EntitySet="t_teamsources" />
+            <End Role="t_teams" EntitySet="t_teams" />
+          </AssociationSet>
+          <AssociationSet Name="t_players_to_h5matches" Association="Self.t_players_to_h5matches">
+            <End Role="t_players" EntitySet="t_players" />
+            <End Role="t_h5matches" EntitySet="t_h5matches" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="dev_spartanclashbackendModelStoreContainer" CdmEntityContainer="dev_spartanclashbackendEntities">
+          <EntitySetMapping Name="t_h5matches">
+            <EntityTypeMapping TypeName="dev_spartanclashbackendModel.t_h5matches">
+              <MappingFragment StoreEntitySet="t_h5matches">
+                <ScalarProperty Name="matchID" ColumnName="matchID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="t_h5matches_matchdetails">
+            <EntityTypeMapping TypeName="dev_spartanclashbackendModel.t_h5matches_matchdetails">
+              <MappingFragment StoreEntitySet="t_h5matches_matchdetails">
+                <ScalarProperty Name="matchId" ColumnName="matchId" />
+                <ScalarProperty Name="GameMode" ColumnName="GameMode" />
+                <ScalarProperty Name="HopperId" ColumnName="HopperId" />
+                <ScalarProperty Name="MapId" ColumnName="MapId" />
+                <ScalarProperty Name="MapVariant_ResourceType" ColumnName="MapVariant_ResourceType" />
+                <ScalarProperty Name="MapVariant_ResourceId" ColumnName="MapVariant_ResourceId" />
+                <ScalarProperty Name="MapVariant_OwnerType" ColumnName="MapVariant_OwnerType" />
+                <ScalarProperty Name="MapVariant_Owner" ColumnName="MapVariant_Owner" />
+                <ScalarProperty Name="GameBaseVariantID" ColumnName="GameBaseVariantID" />
+                <ScalarProperty Name="GameVariant_ResourceID" ColumnName="GameVariant_ResourceID" />
+                <ScalarProperty Name="GameVariant_ResourceType" ColumnName="GameVariant_ResourceType" />
+                <ScalarProperty Name="GameVariant_OwnerType" ColumnName="GameVariant_OwnerType" />
+                <ScalarProperty Name="GameVariant_Owner" ColumnName="GameVariant_Owner" />
+                <ScalarProperty Name="MatchCompleteDate" ColumnName="MatchCompleteDate" />
+                <ScalarProperty Name="MatchDuration" ColumnName="MatchDuration" />
+                <ScalarProperty Name="IsTeamGame" ColumnName="IsTeamGame" />
+                <ScalarProperty Name="SeasonID" ColumnName="SeasonID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="t_h5matches_playersformatch">
+            <EntityTypeMapping TypeName="dev_spartanclashbackendModel.t_h5matches_playersformatch">
+              <MappingFragment StoreEntitySet="t_h5matches_playersformatch">
+                <ScalarProperty Name="matchID" ColumnName="matchID" />
+                <ScalarProperty Name="team1_Players" ColumnName="team1_Players" />
+                <ScalarProperty Name="team2_Players" ColumnName="team2_Players" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="t_h5matches_teamsinvolved_halowaypointcompanies">
+            <EntityTypeMapping TypeName="dev_spartanclashbackendModel.t_h5matches_teamsinvolved_halowaypointcompanies">
+              <MappingFragment StoreEntitySet="t_h5matches_teamsinvolved_halowaypointcompanies">
+                <ScalarProperty Name="matchID" ColumnName="matchID" />
+                <ScalarProperty Name="teamSource" ColumnName="teamSource" />
+                <ScalarProperty Name="team1_Primary" ColumnName="team1_Primary" />
+                <ScalarProperty Name="team2_Primary" ColumnName="team2_Primary" />
+                <ScalarProperty Name="team1_Secondary" ColumnName="team1_Secondary" />
+                <ScalarProperty Name="team2_Secondary" ColumnName="team2_Secondary" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="t_h5matches_teamsinvolved_spartanclashfireteams">
+            <EntityTypeMapping TypeName="dev_spartanclashbackendModel.t_h5matches_teamsinvolved_spartanclashfireteams">
+              <MappingFragment StoreEntitySet="t_h5matches_teamsinvolved_spartanclashfireteams">
+                <ScalarProperty Name="matchID" ColumnName="matchID" />
+                <ScalarProperty Name="teamSource" ColumnName="teamSource" />
+                <ScalarProperty Name="team1_Primary" ColumnName="team1_Primary" />
+                <ScalarProperty Name="team2_Primary" ColumnName="team2_Primary" />
+                <ScalarProperty Name="team1_Secondary" ColumnName="team1_Secondary" />
+                <ScalarProperty Name="team2_Secondary" ColumnName="team2_Secondary" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="t_players">
+            <EntityTypeMapping TypeName="dev_spartanclashbackendModel.t_players">
+              <MappingFragment StoreEntitySet="t_players">
+                <ScalarProperty Name="gamertag" ColumnName="gamertag" />
+                <ScalarProperty Name="dateLastActiveMatch" ColumnName="dateLastActiveMatch" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="t_players_to_teams">
+            <EntityTypeMapping TypeName="dev_spartanclashbackendModel.t_players_to_teams">
+              <MappingFragment StoreEntitySet="t_players_to_teams">
+                <ScalarProperty Name="gamertag" ColumnName="gamertag" />
+                <ScalarProperty Name="teamName" ColumnName="teamName" />
+                <ScalarProperty Name="teamSource" ColumnName="teamSource" />
+                <ScalarProperty Name="lastUpdated" ColumnName="lastUpdated" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="t_teams">
+            <EntityTypeMapping TypeName="dev_spartanclashbackendModel.t_teams">
+              <MappingFragment StoreEntitySet="t_teams">
+                <ScalarProperty Name="teamName" ColumnName="teamName" />
+                <ScalarProperty Name="teamSource" ColumnName="teamSource" />
+                <ScalarProperty Name="lastUpdated" ColumnName="lastUpdated" />
+                <ScalarProperty Name="parentTeamName" ColumnName="parentTeamName" />
+                <ScalarProperty Name="parentTeamSource" ColumnName="parentTeamSource" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="t_teamsources">
+            <EntityTypeMapping TypeName="dev_spartanclashbackendModel.t_teamsources">
+              <MappingFragment StoreEntitySet="t_teamsources">
+                <ScalarProperty Name="teamSource" ColumnName="teamSource" />
+                <ScalarProperty Name="sourceURL" ColumnName="sourceURL" />
+                <ScalarProperty Name="teamCommonName" ColumnName="teamCommonName" />
+                <ScalarProperty Name="beganTrackingOnDate" ColumnName="beganTrackingOnDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="t_players_to_h5matches" TypeName="dev_spartanclashbackendModel.t_players_to_h5matches" StoreEntitySet="t_players_to_h5matches">
+            <EndProperty Name="t_players">
+              <ScalarProperty Name="gamertag" ColumnName="gamertag" />
+            </EndProperty>
+            <EndProperty Name="t_h5matches">
+              <ScalarProperty Name="matchID" ColumnName="matchID" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

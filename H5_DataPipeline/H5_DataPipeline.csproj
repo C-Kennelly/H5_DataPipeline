@@ -52,6 +52,8 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -60,16 +62,78 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\H5DataPipelineModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>H5DataPipelineModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\H5DataPipelineModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>H5DataPipelineModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\H5DataPipelineModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>H5DataPipelineModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\t_h5matches.cs">
+      <DependentUpon>H5DataPipelineModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\t_h5matches_matchdetails.cs">
+      <DependentUpon>H5DataPipelineModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\t_h5matches_playersformatch.cs">
+      <DependentUpon>H5DataPipelineModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\t_h5matches_teamsinvolved_halowaypointcompanies.cs">
+      <DependentUpon>H5DataPipelineModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\t_h5matches_teamsinvolved_spartanclashfireteams.cs">
+      <DependentUpon>H5DataPipelineModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\t_players.cs">
+      <DependentUpon>H5DataPipelineModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\t_players_to_teams.cs">
+      <DependentUpon>H5DataPipelineModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\t_teams.cs">
+      <DependentUpon>H5DataPipelineModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\t_teamsources.cs">
+      <DependentUpon>H5DataPipelineModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <EntityDeploy Include="Models\H5DataPipelineModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>H5DataPipelineModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="Models\H5DataPipelineModel.edmx.diagram">
+      <DependentUpon>H5DataPipelineModel.edmx</DependentUpon>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Models\" />
+    <Content Include="Models\H5DataPipelineModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>H5DataPipelineModel.edmx</DependentUpon>
+      <LastGenOutput>H5DataPipelineModel.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\H5DataPipelineModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>H5DataPipelineModel.edmx</DependentUpon>
+      <LastGenOutput>H5DataPipelineModel.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
