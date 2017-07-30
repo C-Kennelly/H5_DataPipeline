@@ -27,6 +27,7 @@ namespace H5_DataPipeline
             dateLastMatchScan = dateOfLastMatchScan;
         }
 
+        //TODO: this threshhold should be stored in config, probably not passed in.
         public bool MatchesReadyToBeSearched(int dayThresholdToSearchMatches)
         {
             DateTime threshold = DateTime.UtcNow.AddDays(-1 * dayThresholdToSearchMatches);
