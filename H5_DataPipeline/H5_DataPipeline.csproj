@@ -119,7 +119,9 @@
     </None>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="SQL Files\" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="Models\H5DataPipelineModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
