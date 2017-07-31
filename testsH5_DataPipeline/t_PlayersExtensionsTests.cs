@@ -10,11 +10,11 @@ namespace testsH5_DataPipeline
         //Continually scan all matches (each session should be based on last scan date... haven't scanned in 1, 3, 7 days, etc)   
         //(How to determine this order for max efficiency?  Tiers of importance determine frequency of scans?)
 
+        const int numberOfDaysBeforeScanningMatchesAgain = 7;
+
         [TestMethod]
         public void MatchesReadyToBeSearchedReturnsFalseWhenWithinThreshold()
-        {
-            const int numberOfDaysBeforeScanningMatchesAgain = 7;
-            
+        {     
             t_players player = new t_players("UNITTESTPLAYER", numberOfDaysBeforeScanningMatchesAgain);
             player.RecordMatchScan(); 
 
@@ -24,8 +24,6 @@ namespace testsH5_DataPipeline
         [TestMethod]
         public void MatchesReadyToBeSearchedReturnsTrueWhenOutsideOfThreshold()
         {
-            const int numberOfDaysBeforeScanningMatchesAgain = 7;
-
             t_players player = new t_players("UNITTESTPLAYER", numberOfDaysBeforeScanningMatchesAgain);
             player.RecordMatchScan(DateTime.UtcNow.AddDays(-2 * player.scanThresholdInDays));
 
@@ -35,8 +33,6 @@ namespace testsH5_DataPipeline
         [TestMethod]
         public void CompanyRosterReadyToBeSearchedReturnsFalseWhenWithinThreshold()
         {
-            const int numberOfDaysBeforeScanningMatchesAgain = 7;
-
             t_players player = new t_players("UNITTESTPLAYER", numberOfDaysBeforeScanningMatchesAgain);
             player.RecordCompanyScan();
 
@@ -46,8 +42,6 @@ namespace testsH5_DataPipeline
         [TestMethod]
         public void CompanyRosterReadyToBeSearchedReturnsTrueWhenOutsideOfThreshold()
         {
-            const int numberOfDaysBeforeScanningMatchesAgain = 7;
-
             t_players player = new t_players("UNITTESTPLAYER", numberOfDaysBeforeScanningMatchesAgain);
             player.RecordCompanyScan(DateTime.UtcNow.AddDays(-2 * player.scanThresholdInDays));
 
@@ -57,8 +51,6 @@ namespace testsH5_DataPipeline
         [TestMethod]
         public void CustomTeamRosterReadyToBeSearchedReturnsFalseWhenWithinThreshold()
         {
-            const int numberOfDaysBeforeScanningMatchesAgain = 7;
-
             t_players player = new t_players("UNITTESTPLAYER", numberOfDaysBeforeScanningMatchesAgain);
             player.RecordCustomTeamScan();
 
@@ -68,8 +60,6 @@ namespace testsH5_DataPipeline
         [TestMethod]
         public void CustomTeamRosterReadyToBeSearchedReturnsTrueWhenOutsideOfThreshold()
         {
-            const int numberOfDaysBeforeScanningMatchesAgain = 7;
-
             t_players player = new t_players("UNITTESTPLAYER", numberOfDaysBeforeScanningMatchesAgain);
             player.RecordCustomTeamScan(DateTime.UtcNow.AddDays(-2 * player.scanThresholdInDays));
 
