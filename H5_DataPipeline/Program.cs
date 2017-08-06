@@ -13,17 +13,51 @@ namespace H5_DataPipeline
     {
         static void Main(string[] args)
         {
-            //String[] players = new String[] { "Sn1p3r C", "Randy 355", "ADarkerDoman" };
-
-
             Console.WriteLine("Hello, Infinity!");
 
+           
+            const int playerCountGoal = 1000;
 
 
-  
+            StartTheLoop(playersForToday);
 
             Console.WriteLine("Done!");
             Console.ReadLine();
+        }
+
+        public static void Setup()
+        {
+            RefreshTeamRostersOlderThanXDays();
+            List<t_players> playersForToday = GetListOfPlayers(playerCountGoal);
+        }
+
+        public static void StartTheLoop(List<t_players> playersToScan)
+        {
+            foreach (t_players player in playersToScan)
+            {
+                //Save t_h5matches_matchdetails that we get back
+                if(player.MatchesReadyToBeSearched())
+                {
+                    List<t_h5matches> matchHistory = ScanMatchesAfterDate(player.dateLastMatchScan);
+                
+
+                    foreach (t_h5matches match in matchHistory)
+                    {
+                        //Save t_carange report based on match_details id.
+                        List<t_h5matches_playersformatch> playersInMatch = ScanCarnageReport(match)
+
+
+                        AddNewPlayersAndCompanyInformationToDatabase(playersInMatch);
+                        ThenTagTeamBattlesWithinLastXDays(players);
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("{0} was already scanned in the last 7 days", player);
+                }
+
+            }
+
         }
 
         /////////Notes/////////////
