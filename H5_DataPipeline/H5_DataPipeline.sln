@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "H5_DataPipeline", "H5_DataP
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "testsH5_DataPipeline", "..\testsH5_DataPipeline\testsH5_DataPipeline.csproj", "{559C7077-600C-4505-A807-AD7797C83807}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HaloSharp", "..\..\HaloSharp\Source\HaloSharp\HaloSharp.csproj", "{5A205D36-6AF7-4416-9763-81250EF02924}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{559C7077-600C-4505-A807-AD7797C83807}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{559C7077-600C-4505-A807-AD7797C83807}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{559C7077-600C-4505-A807-AD7797C83807}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5A205D36-6AF7-4416-9763-81250EF02924}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A205D36-6AF7-4416-9763-81250EF02924}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A205D36-6AF7-4416-9763-81250EF02924}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A205D36-6AF7-4416-9763-81250EF02924}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -21,37 +21,53 @@ namespace testsH5_DataPipeline
 
             const int numberOfDaysBeforeScanningMatchesAgain = 7;
 
-            List<t_players> unitTestPlayers = new List<t_players>(1);
+            List<t_players> inputPlayers = new List<t_players>(1);
+            List<t_players> outputPlayers = new List<t_players>(1);
+            List<t_players> expectedReturnedPlayers = new List<t_players>(1);
+
             t_players newPlayer = new t_players("Unit Test Player", numberOfDaysBeforeScanningMatchesAgain);
-            unitTestPlayers.Add(newPlayer);
+            inputPlayers.Add(newPlayer);
+            expectedReturnedPlayers.Add(newPlayer);
 
+  //          PlayerAlarm playerAlarm = new PlayerAlarm(inputPlayers);
 
-            PlayerAlarm playerAlarm = new PlayerAlarm(messageQueue, unitTestPlayers);
+//            outputPlayers = playerAlarm.GenerateList();
 
-
-
-            //Assert Alarm happens
-            Assert.Fail();
-
+            Assert.IsTrue(ReturnTrueIfListsAreEqual(outputPlayers, expectedReturnedPlayers));
+            
+            
         }
 
-//        private void MakeTestQueue()
-//        {
-//            var factory = new ConnectionFactory()
-//            {
-//                HostName = "localhost"
-//            };
-//
-//            using (var connection = factory.CreateConnection())
-//            using (var channel = connection.CreateModel())
-//            {
-//                channel.QueueDeclare(queue: "unitTestQueue",
-//                                     durable: false,
-//                                     exclusive: false,
-//                                     autoDelete: false,
-//                                     arguments: null);
-//            }
-//
-//        }
+        private bool ReturnTrueIfListsAreEqual<T>(List<T> List1, List<T> List2)
+        {
+            if(List1 == null && List2 == null)
+            {
+                return true;
+            }
+
+            if (List1 == null || List2 == null)
+            {
+                return false;
+            }
+
+            foreach (T item in List1)
+            {
+                if(List2.Contains(item))
+                {
+                    List2.Remove(item);
+                }
+                else
+                {
+                    return false;
+                }
+            }
+
+            if(List2.Count != 0)
+            {
+                return false;
+            }
+
+            return true;
+        }
     }
 }

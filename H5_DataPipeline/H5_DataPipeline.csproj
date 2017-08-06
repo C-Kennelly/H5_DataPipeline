@@ -144,5 +144,11 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\HaloSharp\Source\HaloSharp\HaloSharp.csproj">
+      <Project>{5a205d36-6af7-4416-9763-81250ef02924}</Project>
+      <Name>HaloSharp</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
