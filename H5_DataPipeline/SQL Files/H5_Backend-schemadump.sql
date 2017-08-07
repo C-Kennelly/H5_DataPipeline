@@ -26,6 +26,7 @@ CREATE TABLE IF NOT EXISTS `t_h5matches` (
   `dateResultsScan` datetime DEFAULT NULL,
   `dateCompaniesInvolvedUpdated` datetime DEFAULT NULL,
   `dateCustomTeamsUpdated` datetime DEFAULT NULL,
+  `queryStatus` int(4) NOT NULL DEFAULT 0,
   PRIMARY KEY (`matchID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -51,7 +52,7 @@ CREATE TABLE IF NOT EXISTS `t_h5matches_matchdetails` (
   `IsTeamGame` binary(50) DEFAULT NULL,
   `SeasonID` varchar(64) DEFAULT NULL,
   PRIMARY KEY (`matchId`),
-  CONSTRAINT `fk_matchID_h5matches_carnagereport` FOREIGN KEY (`matchId`) REFERENCES `t_h5matches` (`matchID`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `fk_matchID_h5matches_matchdetails` FOREIGN KEY (`matchId`) REFERENCES `t_h5matches` (`matchID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- Data exporting was unselected.
@@ -65,6 +66,32 @@ CREATE TABLE IF NOT EXISTS `t_h5matches_playersformatch` (
   CONSTRAINT `fk_matchID_h5matches_playersformatch` FOREIGN KEY (`matchID`) REFERENCES `t_h5matches` (`matchID`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `CONSTRAINT_1` CHECK (`team1_Players` is null or json_valid(`team1_Players`)),
   CONSTRAINT `CONSTRAINT_2` CHECK (`team2_Players` is null or json_valid(`team2_Players`))
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- Data exporting was unselected.
+-- Dumping structure for table dev_spartanclashbackend.t_h5matches_ranksandscores
+DROP TABLE IF EXISTS `t_h5matches_ranksandscores`;
+CREATE TABLE IF NOT EXISTS `t_h5matches_ranksandscores` (
+  `matchId` varchar(64) NOT NULL,
+  `IsTeamGame` binary(50) NOT NULL,
+  `team1_Rank` int(11) NOT NULL DEFAULT -1,
+  `team1_Score` int(11) DEFAULT NULL,
+  `team2_Rank` int(11) NOT NULL DEFAULT -1,
+  `team2_Score` int(11) DEFAULT NULL,
+  `team3_Rank` int(11) DEFAULT -1,
+  `team4_Rank` int(11) DEFAULT -1,
+  `team5_Rank` int(11) DEFAULT -1,
+  `team6_Rank` int(11) DEFAULT -1,
+  `team7_Rank` int(11) DEFAULT -1,
+  `team8_Rank` int(11) DEFAULT -1,
+  `team3_Score` int(11) DEFAULT NULL,
+  `team4_Score` int(11) DEFAULT NULL,
+  `team5_Score` int(11) DEFAULT NULL,
+  `team6_Score` int(11) DEFAULT NULL,
+  `team7_Score` int(11) DEFAULT NULL,
+  `team8_Score` int(11) DEFAULT NULL,
+  PRIMARY KEY (`matchId`),
+  CONSTRAINT `fk_matchID_h5matches_ranksandscores` FOREIGN KEY (`matchId`) REFERENCES `t_h5matches` (`matchID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- Data exporting was unselected.
@@ -108,6 +135,7 @@ CREATE TABLE IF NOT EXISTS `t_players` (
   `dateCompanyRosterUpdated` datetime DEFAULT NULL,
   `dateCustomTeamsUpdated` datetime DEFAULT NULL,
   `scanThresholdInDays` int(11) NOT NULL DEFAULT 7,
+  `queryStatus` int(8) NOT NULL DEFAULT 0,
   PRIMARY KEY (`gamertag`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
