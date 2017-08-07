@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using H5_DataPipeline.Models;
-
+using H5_DataPipeline.Secrets;
 
 
 namespace H5_DataPipeline
@@ -15,6 +15,7 @@ namespace H5_DataPipeline
         {
             Console.WriteLine("Hello, Infinity!");
 
+            private string apiKey = SecretAPIKey.Get();
            
             const int playerCountGoal = 1000;
 
