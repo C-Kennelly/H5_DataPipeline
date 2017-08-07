@@ -92,6 +92,9 @@
     <Compile Include="Models\t_h5matches_playersformatch.cs">
       <DependentUpon>H5DataPipelineModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\t_h5matches_ranksandscores.cs">
+      <DependentUpon>H5DataPipelineModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\t_h5matches_teamsinvolved_halowaypointcompanies.cs">
       <DependentUpon>H5DataPipelineModel.tt</DependentUpon>
     </Compile>

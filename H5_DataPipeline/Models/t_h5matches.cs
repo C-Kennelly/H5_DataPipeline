@@ -26,9 +26,11 @@ namespace H5_DataPipeline.Models
         public Nullable<System.DateTime> dateResultsScan { get; set; }
         public Nullable<System.DateTime> dateCompaniesInvolvedUpdated { get; set; }
         public Nullable<System.DateTime> dateCustomTeamsUpdated { get; set; }
+        public int queryStatus { get; set; }
     
         public virtual t_h5matches_matchdetails t_h5matches_matchdetails { get; set; }
         public virtual t_h5matches_playersformatch t_h5matches_playersformatch { get; set; }
+        public virtual t_h5matches_ranksandscores t_h5matches_ranksandscores { get; set; }
         public virtual t_h5matches_teamsinvolved_halowaypointcompanies t_h5matches_teamsinvolved_halowaypointcompanies { get; set; }
         public virtual t_h5matches_teamsinvolved_spartanclashfireteams t_h5matches_teamsinvolved_spartanclashfireteams { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

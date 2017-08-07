@@ -19,7 +19,7 @@ namespace H5_DataPipeline.Models
         public string teamSource { get; set; }
         public System.DateTime lastUpdated { get; set; }
     
-        public virtual t_teams t_teams { get; set; }
         public virtual t_players t_players { get; set; }
+        public virtual t_teams t_teams { get; set; }
     }
 }
