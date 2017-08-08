@@ -68,7 +68,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Global.cs" />
     <Compile Include="Models\H5DataPipelineModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

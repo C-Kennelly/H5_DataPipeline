@@ -5,7 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using H5_DataPipeline.Models;
 using H5_DataPipeline.Secrets;
-
+using HaloSharp.Model;
+using HaloSharp.Model.Halo5.Profile;
+using HaloSharp.Query.Halo5.Profile;
+using HaloSharp.Extension;
 
 namespace H5_DataPipeline
 {
@@ -16,7 +19,6 @@ namespace H5_DataPipeline
         {
 
             Console.WriteLine("Hello, Infinity!");
-            
 
 
             //StartTheLoop(playersForToday);
