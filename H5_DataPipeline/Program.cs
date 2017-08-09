@@ -20,6 +20,7 @@ namespace H5_DataPipeline
 
             Console.WriteLine("Hello, Infinity!");
 
+            Setup();
 
             //StartTheLoop(playersForToday);
 
@@ -27,11 +28,18 @@ namespace H5_DataPipeline
             Console.ReadLine();
         }
 
-        //public static void Setup()
-        //{
-        //    RefreshTeamRostersOlderThanXDays();
-        //    List<t_players> playersForToday = GetListOfPlayers(playerCountGoal);
-        //}
+        public static void Setup()
+        {
+            RefreshTeamRosterOlderThanXDays(1);
+            //List<t_players> playersForToday = GetListOfPlayers(playerCountGoal);
+        }
+
+        public static void RefreshTeamRosterOlderThanXDays(int days)
+        {
+            TeamRosterRefresher rosterRefresher = new TeamRosterRefresher(days);
+
+            rosterRefresher.RefreshTeamRosters();
+        }
         //
         //public static void StartTheLoop(List<t_players> playersToScan)
         //{
