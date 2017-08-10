@@ -25,16 +25,20 @@ namespace H5_DataPipeline
         private const string noCompanyFoundValue = "NOCOMPANYFOUND";
         private const string spartanCompanySourceString = "Halo Waypoint";
 
+        private HaloClient client;
+
         public TeamRosterRefresher(int thresholdToUpdateInDays)
         {
             thresholdDateTime = DateTime.UtcNow.AddDays(-1 * thresholdToUpdateInDays);
 
+            HaloClientFactory haloClientFactory = new HaloClientFactory();
+            client = haloClientFactory.MakeClient(Secrets.SecretAPIKey.GetProd(), 200);
         }
 
         public void RefreshTeamRosters()
         {
             RefreshAllPlayersCompanyRosters();
-            //RefreshAllPlayersCustomTeamRosters();
+            //RefreshAllPlayersCustomTeamRosters(); <-TODO: When ready to imlement, should split out two child classes inheriting from a TeamRosterRefresher, once class per source.
         }
 
         private void RefreshAllPlayersCompanyRosters()
@@ -58,8 +62,6 @@ namespace H5_DataPipeline
 
         private async Task ScanPlayers()
         {
-            HaloClientFactory haloClientFactory = new HaloClientFactory();
-
             int count = 1;
             int total = playersToScan.Count;
 
@@ -69,7 +71,7 @@ namespace H5_DataPipeline
 
                 OpenPlayerRecord(player);
 
-                Task<Company> t = GetPlayerCompany(player.gamertag, haloClientFactory.GetProdClient());
+                Task<Company> t = GetPlayerCompany(player.gamertag);
                 Company company = await t;
                 t.Wait();
   
@@ -89,8 +91,7 @@ namespace H5_DataPipeline
             }
         }
 
-
-        private async Task<Company> GetPlayerCompany(string gamertag, HaloClient client)
+        private async Task<Company> GetPlayerCompany(string gamertag)
         {
             using (var session = client.StartSession())
             {
@@ -170,9 +171,7 @@ namespace H5_DataPipeline
                     t_players player = db.t_players.Find(roster.gamertag);
                     if (roster.teamName != noCompanyFoundValue)
                     {
-
                         t_players_to_teams oldRecord = player.t_players_to_teams.FirstOrDefault(x => x.teamSource == spartanCompanySourceString);
-
                         if(oldRecord != null)
                         {
                             db.t_players_to_teams.Remove(oldRecord);
@@ -188,7 +187,6 @@ namespace H5_DataPipeline
                 db.SaveChanges();
             }
         }
-
 
         private void ClosePlayerRecord(t_players playerRecord)
         {
