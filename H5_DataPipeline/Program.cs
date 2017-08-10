@@ -22,8 +22,6 @@ namespace H5_DataPipeline
 
             Setup();
 
-            //StartTheLoop(playersForToday);
-
             Console.WriteLine("Done!");
             Console.ReadLine();
         }
