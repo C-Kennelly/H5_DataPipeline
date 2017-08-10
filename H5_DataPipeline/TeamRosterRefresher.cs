@@ -1,6 +1,7 @@
 ﻿using H5_DataPipeline.Models;
 using HaloSharp;
 using HaloSharp.Extension;
+using HaloSharp.Exception;
 using HaloSharp.Model.Halo5.Profile;
 using HaloSharp.Query.Halo5.Profile;
 using System;
@@ -8,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Data.Entity;
+
 
 namespace H5_DataPipeline
 {
@@ -64,22 +66,35 @@ namespace H5_DataPipeline
         {
             int count = 1;
             int total = playersToScan.Count;
+            Company company;
 
-            foreach (t_players player in playersToScan)
+
+            using (var session = client.StartSession())
             {
-                Console.WriteLine("Opening {0} of {1}", count, total);
+                foreach (t_players player in playersToScan)
+                {
+                    Console.WriteLine("Opening {0} of {1}", count, total);
+                    OpenPlayerRecord(player);
+                    count++;
 
-                OpenPlayerRecord(player);
+                    try
+                    {
+                        var query = new GetPlayerAppearance(player.gamertag);
+                        PlayerAppearance playerAppearance = await session.Query(query);
+                        company = playerAppearance.company;
 
-                Task<Company> t = GetPlayerCompany(player.gamertag);
-                Company company = await t;
-                t.Wait();
-  
-                HandleCompanyResults(player, company);
-
-                count++;
+                        HandleCompanyResults(player, company);
+                    }
+                    catch (HaloApiException haloApiException)
+                    {
+                        HandleAPIExceptions(player, haloApiException);
+                    }
+                }
             }
+
         }
+
+
 
         private void OpenPlayerRecord(t_players playerRecord)
         {
@@ -88,18 +103,6 @@ namespace H5_DataPipeline
                 playerRecord.queryStatus = -1;
                 db.Entry(playerRecord).State = EntityState.Modified;
                 db.SaveChanges();
-            }
-        }
-
-        private async Task<Company> GetPlayerCompany(string gamertag)
-        {
-            using (var session = client.StartSession())
-            {
-                var query = new GetPlayerAppearance(gamertag);
-
-                PlayerAppearance playerAppearance = await session.Query(query);
-
-                return playerAppearance.company;
             }
         }
 
@@ -125,6 +128,17 @@ namespace H5_DataPipeline
             {
                 AddCompanyRosterUpdate(player.gamertag, noCompanyFoundValue);
             }
+        }
+
+        private void HandleAPIExceptions(t_players player, HaloApiException haloApiException)
+        {
+
+            Console.WriteLine("Player '{0}' raised apiException with status code: {1}", player.gamertag, haloApiException.HaloApiError.StatusCode);
+            Console.WriteLine("     ->" + haloApiException.HaloApiError.Message);
+
+            throw new NotImplementedException();
+            //Handle exceptions w/ player - 404's should be removed from table.
+
         }
 
         private bool DiscoveredNewCompany(t_teams company)
