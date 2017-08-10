@@ -29,7 +29,6 @@ namespace H5_DataPipeline
         {
             thresholdDateTime = DateTime.UtcNow.AddDays(-1 * thresholdToUpdateInDays);
 
-            
         }
 
         public void RefreshTeamRosters()
@@ -40,35 +39,19 @@ namespace H5_DataPipeline
 
         private void RefreshAllPlayersCompanyRosters()
         {
-            PullCurrentTeams();
-            PullCurrentRoster();
-            SetPlayersToScan();
+            SpartanCompanyRosterSetup();
 
             ScanPlayers().Wait();
 
             UpdateDatabase();
         }
 
-        private void PullCurrentTeams()
+        private void SpartanCompanyRosterSetup()
         {
             using (var db = new dev_spartanclashbackendEntities())
             {
                 currentTeamList = db.t_teams.Where(x => x.teamSource == spartanCompanySourceString).ToList();
-            }
-        }
-
-        private void PullCurrentRoster()
-        {
-            using (var db = new dev_spartanclashbackendEntities())
-            {
                 currentRosters = db.t_players_to_teams.Where(x => x.teamSource == spartanCompanySourceString).ToList();
-            }
-        }
-
-        private void SetPlayersToScan()
-        {
-            using (var db = new dev_spartanclashbackendEntities())
-            {
                 playersToScan = db.t_players.Where(player => player.dateCompanyRosterUpdated < thresholdDateTime || player.dateCompanyRosterUpdated == null).ToList();
             }
         }
@@ -77,8 +60,13 @@ namespace H5_DataPipeline
         {
             HaloClientFactory haloClientFactory = new HaloClientFactory();
 
+            int count = 1;
+            int total = playersToScan.Count;
+
             foreach (t_players player in playersToScan)
             {
+                Console.WriteLine("Opening {0} of {1}", count, total);
+
                 OpenPlayerRecord(player);
 
                 Task<Company> t = GetPlayerCompany(player.gamertag, haloClientFactory.GetProdClient());
@@ -86,6 +74,8 @@ namespace H5_DataPipeline
                 t.Wait();
   
                 HandleCompanyResults(player, company);
+
+                count++;
             }
         }
 
@@ -144,13 +134,13 @@ namespace H5_DataPipeline
         private void AddCompanyRosterUpdate(string tag, string companyName)
         {
             rosterToUpdate.Add(new t_players_to_teams
-                            {
-                                gamertag = tag,
-                                teamName = companyName,
-                                teamSource = spartanCompanySourceString,
-                                lastUpdated = DateTime.UtcNow
-                            }
-                    );
+                                {
+                                    gamertag = tag,
+                                    teamName = companyName,
+                                    teamSource = spartanCompanySourceString,
+                                    lastUpdated = DateTime.UtcNow
+                                }
+                            );
         }
 
         private void UpdateDatabase()
