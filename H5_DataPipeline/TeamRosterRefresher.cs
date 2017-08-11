@@ -26,12 +26,14 @@ namespace H5_DataPipeline
         private DateTime thresholdDateTime;
         private const string noCompanyFoundValue = "NOCOMPANYFOUND";
         private const string spartanCompanySourceString = "Halo Waypoint";
+        private int batchSize;
 
         private HaloClient client;
 
-        public TeamRosterRefresher(int thresholdToUpdateInDays)
+        public TeamRosterRefresher(int thresholdToUpdateInDays, int companiesToScanAtOneTime)
         {
             thresholdDateTime = DateTime.UtcNow.AddDays(-1 * thresholdToUpdateInDays);
+            batchSize = companiesToScanAtOneTime;
 
             HaloClientFactory haloClientFactory = new HaloClientFactory();
             client = haloClientFactory.MakeClient(Secrets.SecretAPIKey.GetProd(), 200);
@@ -45,21 +47,32 @@ namespace H5_DataPipeline
 
         private void RefreshAllPlayersCompanyRosters()
         {
-            SpartanCompanyRosterSetup();
+            int playersLeftToScan = 1;
 
-            ScanPlayers().Wait();
+            while(playersLeftToScan >= 0)
+            {
+                playersLeftToScan = SpartanCompanyRosterSetup();
 
-            UpdateDatabase();
+                ScanPlayers().Wait();
+
+                UpdateDatabase();
+            }
         }
 
-        private void SpartanCompanyRosterSetup()
+        private int SpartanCompanyRosterSetup()
         {
+            int playersLeftToScan = 0;
             using (var db = new dev_spartanclashbackendEntities())
             {
+
                 currentTeamList = db.t_teams.Where(x => x.teamSource == spartanCompanySourceString).ToList();
                 currentRosters = db.t_players_to_teams.Where(x => x.teamSource == spartanCompanySourceString).ToList();
-                playersToScan = db.t_players.Where(player => player.dateCompanyRosterUpdated < thresholdDateTime || player.dateCompanyRosterUpdated == null).ToList();
+                playersToScan = db.t_players.Where(player => player.dateCompanyRosterUpdated < thresholdDateTime || player.dateCompanyRosterUpdated == null).Take(batchSize).ToList();
+
+                playersLeftToScan = db.t_players.Where(player => player.dateCompanyRosterUpdated < thresholdDateTime || player.dateCompanyRosterUpdated == null).Count();
             }
+
+            return playersLeftToScan;
         }
 
         private async Task ScanPlayers()
@@ -136,14 +149,29 @@ namespace H5_DataPipeline
             Console.WriteLine("Player '{0}' raised apiException with status code: {1}", player.gamertag, haloApiException.HaloApiError.StatusCode);
             Console.WriteLine("     ->" + haloApiException.HaloApiError.Message);
 
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
             //Handle exceptions w/ player - 404's should be removed from table.
 
         }
 
         private bool DiscoveredNewCompany(t_teams company)
         {
-            return (!teamsToAdd.Contains(company) && currentTeamList.Find(x => x.teamName == company.teamName && x.teamSource == spartanCompanySourceString) == null);
+            bool result = false;
+
+            if(teamsToAdd.Find(x => x.teamName == company.teamName && x.teamSource == spartanCompanySourceString) == null)
+            {
+                result = true;
+            }
+
+            using(var db = new dev_spartanclashbackendEntities())
+            {
+                if (db.t_teams.Find(new object[] { company.teamName, spartanCompanySourceString }) == null)
+                {
+                    result = true;
+                }
+            }
+
+            return result;
         }
 
         private void AddCompanyRosterUpdate(string tag, string companyName)
@@ -170,6 +198,7 @@ namespace H5_DataPipeline
             {
                 foreach (t_teams team in teamsToAdd)
                 {
+                    currentTeamList.Add(team);
                     db.t_teams.Add(team);
                 }
                 db.SaveChanges();

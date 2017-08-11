@@ -34,7 +34,7 @@ namespace H5_DataPipeline
 
         public static void RefreshTeamRosterOlderThanXDays(int days)
         {
-            TeamRosterRefresher rosterRefresher = new TeamRosterRefresher(days);
+            TeamRosterRefresher rosterRefresher = new TeamRosterRefresher(days, 100);
 
             rosterRefresher.RefreshTeamRosters();
         }
