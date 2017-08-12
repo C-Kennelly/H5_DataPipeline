@@ -157,30 +157,29 @@ CREATE TABLE IF NOT EXISTS `t_players_to_h5matches` (
 DROP TABLE IF EXISTS `t_players_to_teams`;
 CREATE TABLE IF NOT EXISTS `t_players_to_teams` (
   `gamertag` varchar(128) NOT NULL,
-  `teamName` varchar(128) NOT NULL,
-  `teamSource` varchar(128) NOT NULL,
+  `teamId` varchar(128) NOT NULL,
   `lastUpdated` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  PRIMARY KEY (`gamertag`,`teamName`,`teamSource`),
-  UNIQUE KEY `gamertag_teamSource` (`gamertag`,`teamSource`),
-  KEY `fk_teamSource_teamrosters` (`teamSource`),
+  PRIMARY KEY (`gamertag`,`teamId`),
   KEY `gamertag` (`gamertag`),
-  KEY `fk_teamNameteamSource_playerstoteams` (`teamName`,`teamSource`),
-  CONSTRAINT `fk_gamertag_playerstoteams` FOREIGN KEY (`gamertag`) REFERENCES `t_players` (`gamertag`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `fk_teamNameteamSource_playerstoteams` FOREIGN KEY (`teamName`, `teamSource`) REFERENCES `t_teams` (`teamName`, `teamSource`) ON DELETE CASCADE ON UPDATE CASCADE
+  KEY `teamId` (`teamId`),
+  CONSTRAINT `fk_tplayerstoteams_t_players` FOREIGN KEY (`gamertag`) REFERENCES `t_players` (`gamertag`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_tplayerstoteams_t_teams` FOREIGN KEY (`teamId`) REFERENCES `t_teams` (`teamId`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- Data exporting was unselected.
 -- Dumping structure for table dev_spartanclashbackend.t_teams
 DROP TABLE IF EXISTS `t_teams`;
 CREATE TABLE IF NOT EXISTS `t_teams` (
+  `teamId` varchar(128) NOT NULL,
   `teamName` varchar(128) NOT NULL,
   `teamSource` varchar(128) NOT NULL,
   `lastUpdated` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `parentTeamId` varchar(128) DEFAULT NULL,
   `parentTeamName` varchar(128) DEFAULT NULL,
   `parentTeamSource` varchar(128) DEFAULT NULL,
-  PRIMARY KEY (`teamName`,`teamSource`),
+  PRIMARY KEY (`teamId`),
   KEY `fk_teamsource_teams` (`teamSource`),
-  KEY `teamName_teamSource` (`teamName`,`teamSource`),
+  KEY `fk_teamName_teamSource` (`teamName`,`teamSource`),
   CONSTRAINT `fk_teamsource_teams` FOREIGN KEY (`teamSource`) REFERENCES `t_teamsources` (`teamSource`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 

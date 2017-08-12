@@ -20,9 +20,11 @@ namespace H5_DataPipeline.Models
             this.t_players_to_teams = new HashSet<t_players_to_teams>();
         }
     
+        public string teamId { get; set; }
         public string teamName { get; set; }
         public string teamSource { get; set; }
         public System.DateTime lastUpdated { get; set; }
+        public string parentTeamId { get; set; }
         public string parentTeamName { get; set; }
         public string parentTeamSource { get; set; }
     

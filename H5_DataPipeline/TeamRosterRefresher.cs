@@ -24,8 +24,10 @@ namespace H5_DataPipeline
         private List<t_players_to_teams> rosterToUpdate = new List<t_players_to_teams>();
 
         private DateTime thresholdDateTime;
-        private const string noCompanyFoundValue = "NOCOMPANYFOUND";
+        private const string noCompanyFoundID = "0";
         private const string spartanCompanySourceString = "Halo Waypoint";
+        private const int queryOpenStatus = -1;
+        private const int queryClosedStatus = 0;
         private int batchSize;
 
         private HaloClient client;
@@ -64,10 +66,9 @@ namespace H5_DataPipeline
             int playersLeftToScan = 0;
             using (var db = new dev_spartanclashbackendEntities())
             {
-
-                currentTeamList = db.t_teams.Where(x => x.teamSource == spartanCompanySourceString).ToList();
-                currentRosters = db.t_players_to_teams.Where(x => x.teamSource == spartanCompanySourceString).ToList();
-                playersToScan = db.t_players.Where(player => player.dateCompanyRosterUpdated < thresholdDateTime || player.dateCompanyRosterUpdated == null).Take(batchSize).ToList();
+                currentTeamList = db.t_teams.Where(team => team.teamSource == spartanCompanySourceString).ToList();
+                currentRosters = db.t_players_to_teams.Where(roster => roster.t_teams.teamSource == spartanCompanySourceString).ToList();
+                playersToScan = db.t_players.Where(player => player.dateCompanyRosterUpdated < thresholdDateTime || player.queryStatus == queryOpenStatus || player.dateCompanyRosterUpdated == null).Take(batchSize).ToList();
 
                 playersLeftToScan = db.t_players.Where(player => player.dateCompanyRosterUpdated < thresholdDateTime || player.dateCompanyRosterUpdated == null).Count();
             }
@@ -113,7 +114,7 @@ namespace H5_DataPipeline
         {
             using (var db = new dev_spartanclashbackendEntities())
             {
-                playerRecord.queryStatus = -1;
+                playerRecord.queryStatus = queryOpenStatus;
                 db.Entry(playerRecord).State = EntityState.Modified;
                 db.SaveChanges();
             }
@@ -125,6 +126,7 @@ namespace H5_DataPipeline
             {
                 t_teams team = new t_teams
                 {
+                    teamId = company.Id.ToString(),
                     teamName = company.Name,
                     teamSource = spartanCompanySourceString,
                     lastUpdated = DateTime.UtcNow
@@ -135,11 +137,11 @@ namespace H5_DataPipeline
                     teamsToAdd.Add(team);
                 }
 
-                AddCompanyRosterUpdate(player.gamertag, company.Name);
+                AddCompanyRosterUpdate(player.gamertag, company.Id.ToString());
             }
             else
             {
-                AddCompanyRosterUpdate(player.gamertag, noCompanyFoundValue);
+                AddCompanyRosterUpdate(player.gamertag, noCompanyFoundID);
             }
         }
 
@@ -147,10 +149,17 @@ namespace H5_DataPipeline
         {
 
             Console.WriteLine("Player '{0}' raised apiException with status code: {1}", player.gamertag, haloApiException.HaloApiError.StatusCode);
-            Console.WriteLine("     ->" + haloApiException.HaloApiError.Message);
+            Console.WriteLine("     -> Removing player from database.");
 
-            //throw new NotImplementedException();
-            //Handle exceptions w/ player - 404's should be removed from table.
+            if(haloApiException.HaloApiError.StatusCode == 404)
+            {
+                using (var db = new dev_spartanclashbackendEntities())
+                {
+                    t_players playerRecord = db.t_players.Find(player.gamertag);
+                    db.t_players.Remove(playerRecord);
+                    db.SaveChanges();
+                }
+            }
 
         }
 
@@ -158,29 +167,30 @@ namespace H5_DataPipeline
         {
             bool result = false;
 
-            if(teamsToAdd.Find(x => x.teamName == company.teamName && x.teamSource == spartanCompanySourceString) == null)
+            using (var db = new dev_spartanclashbackendEntities())
             {
-                result = true;
-            }
-
-            using(var db = new dev_spartanclashbackendEntities())
-            {
-                if (db.t_teams.Find(new object[] { company.teamName, spartanCompanySourceString }) == null)
+                if (db.t_teams.Find(company.teamId) == null)
                 {
                     result = true;
+                }
+                else
+                {
+                    if (teamsToAdd.Find(x => x.teamName == company.teamName && x.teamSource == spartanCompanySourceString) == null)
+                    {
+                        result = true;
+                    }
                 }
             }
 
             return result;
         }
 
-        private void AddCompanyRosterUpdate(string tag, string companyName)
+        private void AddCompanyRosterUpdate(string tag, string companyId)
         {
             rosterToUpdate.Add(new t_players_to_teams
                                 {
                                     gamertag = tag,
-                                    teamName = companyName,
-                                    teamSource = spartanCompanySourceString,
+                                    teamId = companyId,
                                     lastUpdated = DateTime.UtcNow
                                 }
                             );
@@ -198,8 +208,12 @@ namespace H5_DataPipeline
             {
                 foreach (t_teams team in teamsToAdd)
                 {
-                    currentTeamList.Add(team);
-                    db.t_teams.Add(team);
+                    t_teams currentRecord = db.t_teams.Find(team.teamId);
+                    if(currentRecord == null)
+                    {
+                        currentTeamList.Add(team);
+                        db.t_teams.Add(team);
+                    }
                 }
                 db.SaveChanges();
             }
@@ -211,10 +225,10 @@ namespace H5_DataPipeline
 
                 foreach (t_players_to_teams roster in rosterToUpdate)
                 {
-                    t_players player = db.t_players.Find(roster.gamertag);
-                    if (roster.teamName != noCompanyFoundValue)
+                    t_players player = db.t_players.FirstOrDefault(x => x.gamertag == roster.gamertag);
+                    if (roster.teamId != noCompanyFoundID)
                     {
-                        t_players_to_teams oldRecord = player.t_players_to_teams.FirstOrDefault(x => x.teamSource == spartanCompanySourceString);
+                        t_players_to_teams oldRecord = db.t_players_to_teams.FirstOrDefault(x => x.gamertag == player.gamertag && x.teamId == roster.teamId);
                         if(oldRecord != null)
                         {
                             db.t_players_to_teams.Remove(oldRecord);
@@ -233,7 +247,7 @@ namespace H5_DataPipeline
 
         private void ClosePlayerRecord(t_players playerRecord)
         {
-                playerRecord.queryStatus = 0;
+                playerRecord.queryStatus = queryClosedStatus;
                 playerRecord.dateCompanyRosterUpdated = DateTime.UtcNow;
         }
 

@@ -33,7 +33,7 @@ namespace H5_DataPipeline.Models
         public virtual DbSet<t_h5matches_teamsinvolved_spartanclashfireteams> t_h5matches_teamsinvolved_spartanclashfireteams { get; set; }
         public virtual DbSet<t_players> t_players { get; set; }
         public virtual DbSet<t_players_to_teams> t_players_to_teams { get; set; }
-        public virtual DbSet<t_teams> t_teams { get; set; }
         public virtual DbSet<t_teamsources> t_teamsources { get; set; }
+        public virtual DbSet<t_teams> t_teams { get; set; }
     }
 }

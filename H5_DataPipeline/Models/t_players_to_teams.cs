@@ -15,8 +15,7 @@ namespace H5_DataPipeline.Models
     public partial class t_players_to_teams
     {
         public string gamertag { get; set; }
-        public string teamName { get; set; }
-        public string teamSource { get; set; }
+        public string teamId { get; set; }
         public System.DateTime lastUpdated { get; set; }
     
         public virtual t_players t_players { get; set; }
