@@ -139,10 +139,12 @@
     <Compile Include="Models\t_teams.cs">
       <DependentUpon>H5DataPipelineModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\t_teamsExtensions.cs" />
     <Compile Include="Models\t_teamsources.cs">
       <DependentUpon>H5DataPipelineModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\t_playersExtensions.cs" />
+    <Compile Include="Models\t_teamsourcesExtensions.cs" />
     <Compile Include="PlayerAlarm.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

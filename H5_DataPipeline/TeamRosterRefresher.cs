@@ -25,7 +25,7 @@ namespace H5_DataPipeline
 
         private DateTime thresholdDateTime;
         private const string noCompanyFoundID = "0";
-        private const string spartanCompanySourceString = "Halo Waypoint";
+        private string spartanCompanySourceString = t_teamsources.GetWaypointSourceName();
         private const int queryOpenStatus = -1;
         private const int queryClosedStatus = 0;
         private int batchSize;
@@ -51,6 +51,8 @@ namespace H5_DataPipeline
         {
             int playersLeftToScan = 1;
 
+            Setup();
+
             while(playersLeftToScan >= 0)
             {
                 playersLeftToScan = SpartanCompanyRosterSetup();
@@ -58,6 +60,39 @@ namespace H5_DataPipeline
                 ScanPlayers().Wait();
 
                 UpdateDatabase();
+            }
+        }
+
+        private void Setup()
+        {
+            AddDefaultTeamSourceRecord();
+            AddDefaultTeamsRecords();
+        }
+
+        private void AddDefaultTeamSourceRecord()
+        {
+            using (var db = new dev_spartanclashbackendEntities())
+            {
+                t_teamsources defaultSpartanCompanySource = db.t_teamsources.Find(t_teamsources.GetWaypointSourceName());
+                if (defaultSpartanCompanySource == null)
+                {
+                    db.t_teamsources.Add(t_teamsources.GetNewDefaultWaypointRecord());
+                }
+                db.SaveChanges();
+            }
+        }
+
+        private void AddDefaultTeamsRecords()
+        {
+            using (var db = new dev_spartanclashbackendEntities())
+            {
+                t_teams defaultSpartanCompanyNoCompanyFoundTeam = db.t_teams.Find(t_teams.GetNoWaypointCompanyFoundID());
+                if (defaultSpartanCompanyNoCompanyFoundTeam == null)
+                {
+                    db.t_teams.Add(t_teams.GetNewDefaultNoCompanyFoundRecord());
+                }
+
+                db.SaveChanges();
             }
         }
 
@@ -208,14 +243,15 @@ namespace H5_DataPipeline
             {
                 foreach (t_teams team in teamsToAdd)
                 {
-                    t_teams currentRecord = db.t_teams.Find(team.teamId);
+                    t_teams currentRecord = db.t_teams.FirstOrDefault(x => x.teamId == team.teamId);
                     if(currentRecord == null)
                     {
                         currentTeamList.Add(team);
                         db.t_teams.Add(team);
                     }
+                    db.SaveChanges();
                 }
-                db.SaveChanges();
+                
             }
         }
         private void SaveRosterChangesToDatabase()
