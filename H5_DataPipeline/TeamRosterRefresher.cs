@@ -30,15 +30,10 @@ namespace H5_DataPipeline
         private const int queryClosedStatus = 0;
         private int batchSize;
 
-        private HaloClient client;
-
         public TeamRosterRefresher(int thresholdToUpdateInDays, int companiesToScanAtOneTime)
         {
             thresholdDateTime = DateTime.UtcNow.AddDays(-1 * thresholdToUpdateInDays);
             batchSize = companiesToScanAtOneTime;
-
-            HaloClientFactory haloClientFactory = new HaloClientFactory();
-            client = haloClientFactory.MakeClient(Secrets.SecretAPIKey.GetProd(), 200);
         }
 
         public void RefreshTeamRosters()
@@ -57,6 +52,7 @@ namespace H5_DataPipeline
             {
                 playersLeftToScan = SpartanCompanyRosterSetup();
 
+                Console.WriteLine("Started batch at {0}",DateTime.UtcNow.ToString());
                 ScanPlayers().Wait();
 
                 UpdateDatabase();
@@ -108,23 +104,30 @@ namespace H5_DataPipeline
                 playersLeftToScan = db.t_players.Where(player => player.dateCompanyRosterUpdated < thresholdDateTime || player.dateCompanyRosterUpdated == null).Count();
             }
 
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine("{0} players remaining to be scanned.", playersLeftToScan);
+            
             return playersLeftToScan;
         }
 
         private async Task ScanPlayers()
         {
-            int count = 1;
+            int count = 0;
             int total = playersToScan.Count;
             Company company;
 
+            HaloClientFactory haloClientFactory = new HaloClientFactory();
+            var client = haloClientFactory.GetProdClient();
 
             using (var session = client.StartSession())
             {
                 foreach (t_players player in playersToScan)
                 {
-                    Console.WriteLine("Opening {0} of {1}", count, total);
                     OpenPlayerRecord(player);
                     count++;
+
+                    Console.Write("\rScanning players {0} of {1}", count, total);
 
                     try
                     {
@@ -183,8 +186,8 @@ namespace H5_DataPipeline
         private void HandleAPIExceptions(t_players player, HaloApiException haloApiException)
         {
 
-            Console.WriteLine("Player '{0}' raised apiException with status code: {1}", player.gamertag, haloApiException.HaloApiError.StatusCode);
-            Console.WriteLine("     -> Removing player from database.");
+            //Console.WriteLine("Player '{0}' raised apiException with status code: {1}", player.gamertag, haloApiException.HaloApiError.StatusCode);
+            //Console.WriteLine("     -> Removing player from database.");
 
             if(haloApiException.HaloApiError.StatusCode == 404)
             {
@@ -233,8 +236,24 @@ namespace H5_DataPipeline
 
         private void UpdateDatabase()
         {
-            SaveNewTeamsToDatabase();
-            SaveRosterChangesToDatabase();
+            try
+            {
+                SaveNewTeamsToDatabase();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("New Team caught exception {0} with message: {0}", e.HResult, e.Message);
+            }
+
+            try
+            {
+                SaveRosterChangesToDatabase();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("RosterUpdate caught exception {0} with message: {0}", e.HResult, e.Message);
+            }
+
         }
 
         private void SaveNewTeamsToDatabase()
@@ -243,6 +262,8 @@ namespace H5_DataPipeline
             {
                 foreach (t_teams team in teamsToAdd)
                 {
+                    Console.Write("\rSaving new team: {0}                              ", team.teamName);
+
                     t_teams currentRecord = db.t_teams.FirstOrDefault(x => x.teamId == team.teamId);
                     if(currentRecord == null)
                     {
@@ -262,18 +283,23 @@ namespace H5_DataPipeline
 
                 foreach (t_players_to_teams roster in rosterToUpdate)
                 {
+                    Console.Write("\rUpdating roster info for: {0}                              ", roster.gamertag);
                     t_players player = db.t_players.FirstOrDefault(x => x.gamertag == roster.gamertag);
                     if (roster.teamId != noCompanyFoundID)
                     {
                         t_players_to_teams oldRecord = db.t_players_to_teams.FirstOrDefault(x => x.gamertag == player.gamertag && x.t_teams.teamSource == waypointSourceName);
                         if(oldRecord != null)
                         {
-                            db.t_players_to_teams.Remove(oldRecord);
+                            oldRecord.teamId = roster.teamId;
+                            oldRecord.lastUpdated = DateTime.UtcNow;
+//                            db.t_players_to_teams.Remove(oldRecord);
+                        }
+                        else
+                        {
+                            player.t_players_to_teams.Add(roster);
                         }
 
-                        player.t_players_to_teams.Add(roster);
-
-
+                        db.SaveChanges();
                     }
                 
                     ClosePlayerRecord(player);
