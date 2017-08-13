@@ -258,19 +258,21 @@ namespace H5_DataPipeline
         {
             using (var db = new dev_spartanclashbackendEntities())
             {
+                string waypointSourceName = t_teamsources.GetWaypointSourceName();
 
                 foreach (t_players_to_teams roster in rosterToUpdate)
                 {
                     t_players player = db.t_players.FirstOrDefault(x => x.gamertag == roster.gamertag);
                     if (roster.teamId != noCompanyFoundID)
                     {
-                        t_players_to_teams oldRecord = db.t_players_to_teams.FirstOrDefault(x => x.gamertag == player.gamertag && x.teamId == roster.teamId);
+                        t_players_to_teams oldRecord = db.t_players_to_teams.FirstOrDefault(x => x.gamertag == player.gamertag && x.t_teams.teamSource == waypointSourceName);
                         if(oldRecord != null)
                         {
                             db.t_players_to_teams.Remove(oldRecord);
                         }
 
                         player.t_players_to_teams.Add(roster);
+
 
                     }
                 
