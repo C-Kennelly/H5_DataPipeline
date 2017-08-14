@@ -271,9 +271,10 @@ namespace H5_DataPipeline
                         db.t_teams.Add(team);
                     }
                     db.SaveChanges();
-                }
-                
+                }   
             }
+
+            teamsToAdd = new List<t_teams>();
         }
         private void SaveRosterChangesToDatabase()
         {
@@ -299,7 +300,6 @@ namespace H5_DataPipeline
                             player.t_players_to_teams.Add(roster);
                         }
 
-                        db.SaveChanges();
                     }
                 
                     ClosePlayerRecord(player);
@@ -307,6 +307,8 @@ namespace H5_DataPipeline
 
                 db.SaveChanges();
             }
+
+            rosterToUpdate = new List<t_players_to_teams>();
         }
 
         private void ClosePlayerRecord(t_players playerRecord)
