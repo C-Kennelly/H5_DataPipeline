@@ -36,7 +36,21 @@ namespace H5_DataPipeline
         {
             TeamRosterRefresher rosterRefresher = new TeamRosterRefresher(days, 1000);
 
-            rosterRefresher.RefreshTeamRosters();
+            rosterRefresher.RefreshAllTeamRosters();
+            //rosterRefresher.RefreshAllTeamRosters();
+        }
+
+        private static List<t_players> MakeTestPlayerList()
+        {
+            List<t_players> testPlayerList = new List<t_players>();
+
+            testPlayerList.Add(new t_players("Sn1p3r C"));
+            testPlayerList.Add(new t_players("Black Picture"));
+            testPlayerList.Add(new t_players("Randy 355"));
+            testPlayerList.Add(new t_players("ADarkerTrev"));
+            testPlayerList.Add(new t_players("Ray Benefield"));
+
+            return testPlayerList;
         }
         //
         //public static void StartTheLoop(List<t_players> playersToScan)

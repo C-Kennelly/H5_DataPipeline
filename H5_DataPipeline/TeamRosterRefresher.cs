@@ -30,36 +30,79 @@ namespace H5_DataPipeline
         private const int queryClosedStatus = 0;
         private int batchSize;
 
-        public TeamRosterRefresher(int thresholdToUpdateInDays, int companiesToScanAtOneTime)
+        public TeamRosterRefresher(int thresholdToUpdateInDays, int maxCompaniesToScanAtOneTime)
         {
             thresholdDateTime = DateTime.UtcNow.AddDays(-1 * thresholdToUpdateInDays);
-            batchSize = companiesToScanAtOneTime;
+            batchSize = maxCompaniesToScanAtOneTime;
         }
 
-        public void RefreshTeamRosters()
+        public void RefreshAllTeamRosters()
         {
             RefreshAllPlayersCompanyRosters();
             //RefreshAllPlayersCustomTeamRosters(); <-TODO: When ready to imlement, should split out two child classes inheriting from a TeamRosterRefresher, once class per source.
         }
 
-        private void RefreshAllPlayersCompanyRosters()
+        public void RefreshTeamRostersForListOfPlayers(List<t_players> listOfPlayers)
         {
-            int playersLeftToScan = 1;
+            RefreshSpecificPlayersCompanyRosters(listOfPlayers);
+ //           RefreshSpecificPlayersCompanyRosters(listOfPlayers);
+        }
 
-            Setup();
+        private void RefreshSpecificPlayersCompanyRosters(List<t_players> specificPlayersToScan)
+        {
+            WaypointSourceSetup();
 
-            while(playersLeftToScan >= 0)
+            SpartanCompanyCurrentRosterSetup();
+
+            SetPlayersToScanFromSpecificList(specificPlayersToScan);
+
+            Console.WriteLine("Started batch at {0}", DateTime.UtcNow.ToString());
+            ScanPlayers().Wait();
+
+            UpdateDatabase();
+        }
+
+        private void SetPlayersToScanFromSpecificList(List<t_players> specificPlayersToScan)
+        {
+
+            playersToScan = new List<t_players>(specificPlayersToScan.Count);
+
+            using (var db = new dev_spartanclashbackendEntities())
             {
-                playersLeftToScan = SpartanCompanyRosterSetup();
+                foreach (t_players player in specificPlayersToScan)
+                {
+                    t_players currentRecord = db.t_players.Find(player.gamertag);
 
-                Console.WriteLine("Started batch at {0}",DateTime.UtcNow.ToString());
-                ScanPlayers().Wait();
+                    if(currentRecord == null)
+                    {
+                        player.UpdateDatabase();
+                        currentRecord = player;
+                    }
 
-                UpdateDatabase();
+                    if(currentRecord.dateCompanyRosterUpdated < thresholdDateTime 
+                        || currentRecord.dateCompanyRosterUpdated == null
+                        || currentRecord.queryStatus == queryOpenStatus )
+                    {
+                        playersToScan.Add(player);
+                    }
+                }
+
+                Console.WriteLine();
+                Console.WriteLine();
+                Console.WriteLine("{0} players remaining to be scanned.", playersToScan.Count);
             }
         }
 
-        private void Setup()
+        private void SpartanCompanyCurrentRosterSetup()
+        {
+            using (var db = new dev_spartanclashbackendEntities())
+            {
+                currentTeamList = db.t_teams.Where(team => team.teamSource == spartanCompanySourceString).ToList();
+                currentRosters = db.t_players_to_teams.Where(roster => roster.t_teams.teamSource == spartanCompanySourceString).ToList();
+            }
+        }
+
+        private void WaypointSourceSetup()
         {
             AddDefaultTeamSourceRecord();
             AddDefaultTeamsRecords();
@@ -92,22 +135,45 @@ namespace H5_DataPipeline
             }
         }
 
-        private int SpartanCompanyRosterSetup()
+        private void RefreshAllPlayersCompanyRosters()
+        {
+            int playersLeftToScan = 1;
+
+            WaypointSourceSetup();
+
+            while(playersLeftToScan >= 0)
+            {
+                SpartanCompanyCurrentRosterSetup();
+                playersLeftToScan = SetPlayersToScanBasedOnBatchSize();
+
+                Console.WriteLine("Started batch at {0}",DateTime.UtcNow.ToString());
+                ScanPlayers().Wait();
+
+                UpdateDatabase();
+            }
+        }
+
+        private int SetPlayersToScanBasedOnBatchSize()
         {
             int playersLeftToScan = 0;
+
             using (var db = new dev_spartanclashbackendEntities())
             {
-                currentTeamList = db.t_teams.Where(team => team.teamSource == spartanCompanySourceString).ToList();
-                currentRosters = db.t_players_to_teams.Where(roster => roster.t_teams.teamSource == spartanCompanySourceString).ToList();
-                playersToScan = db.t_players.Where(player => player.dateCompanyRosterUpdated < thresholdDateTime || player.queryStatus == queryOpenStatus || player.dateCompanyRosterUpdated == null).Take(batchSize).ToList();
+                playersToScan =     db.t_players.Where(player => player.dateCompanyRosterUpdated < thresholdDateTime 
+                    || player.dateCompanyRosterUpdated == null
+                    || player.queryStatus == queryOpenStatus)
+                    .Take(batchSize).ToList();
 
-                playersLeftToScan = db.t_players.Where(player => player.dateCompanyRosterUpdated < thresholdDateTime || player.dateCompanyRosterUpdated == null).Count();
+                playersLeftToScan = db.t_players.Where(player => player.dateCompanyRosterUpdated < thresholdDateTime 
+                    || player.dateCompanyRosterUpdated == null
+                    || player.queryStatus == queryOpenStatus)
+                    .Count();
             }
 
             Console.WriteLine();
             Console.WriteLine();
             Console.WriteLine("{0} players remaining to be scanned.", playersLeftToScan);
-            
+
             return playersLeftToScan;
         }
 
@@ -145,8 +211,6 @@ namespace H5_DataPipeline
             }
 
         }
-
-
 
         private void OpenPlayerRecord(t_players playerRecord)
         {
@@ -276,6 +340,7 @@ namespace H5_DataPipeline
 
             teamsToAdd = new List<t_teams>();
         }
+
         private void SaveRosterChangesToDatabase()
         {
             using (var db = new dev_spartanclashbackendEntities())
@@ -316,7 +381,6 @@ namespace H5_DataPipeline
                 playerRecord.queryStatus = queryClosedStatus;
                 playerRecord.dateCompanyRosterUpdated = DateTime.UtcNow;
         }
-
 
     }
 }

@@ -13,6 +13,7 @@ namespace H5_DataPipeline.Models
         public t_players(string playerName)
         {
             gamertag = playerName;
+            scanThresholdInDays = 7;
         }
 
         public t_players(string playerName, int customScanThreshold)
