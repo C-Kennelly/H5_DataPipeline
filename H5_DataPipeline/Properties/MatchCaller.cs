@@ -19,7 +19,7 @@ namespace H5_DataPipeline.Properties
     {
         private const int matchesPerCall = 25;
 
-        public async Task<List<PlayerMatch>> GetAllMatches(string tag, List<Enumeration.Halo5.GameMode> modes, DateTime earliestMatchDate, HaloClient client)
+        public async Task<List<PlayerMatch>> GetAllMatchesForPlayerAfterDate(string tag, DateTime earliestMatchDate, List<Enumeration.Halo5.GameMode> modes,  HaloClient client)
         {
             bool matchesRemaining = true;
             List<PlayerMatch> allMatches = new List<PlayerMatch>();
@@ -30,11 +30,9 @@ namespace H5_DataPipeline.Properties
                 {
                     try
                     {
-                        MatchSet<PlayerMatch> matchSet = await session.Query(new GetMatchHistory(tag)
-                                                    .Take(matchesPerCall)
-                                                    .Skip(allMatches.Count)
-                                                    .InGameModes(modes)
-                        );
+                        MatchSet<PlayerMatch> matchSet = await session.Query(new GetMatchHistory(tag).Take(matchesPerCall).Skip(allMatches.Count)
+                                                    .InGameModes(modes) );
+
                         if (matchSet != null) { allMatches.AddRange(matchSet.Results); }
 
                         matchesRemaining = CheckIfMatchesRemaining(matchSet, earliestMatchDate);
@@ -43,11 +41,10 @@ namespace H5_DataPipeline.Properties
                     {
                         Console.WriteLine("The Halo API threw an exception for gamertag {0}, status code: {1}.  Stopping calls.", tag, e.HaloApiError.StatusCode);
                         matchesRemaining = false;
-                        throw new NotImplementedException();
+                        //TODO -> Handle errors here... removing 404's?  Common class for handling API errors?
                     }
                 }
             }
-
             return allMatches;
         }
 
