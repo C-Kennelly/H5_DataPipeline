@@ -17,7 +17,8 @@ namespace H5_DataPipeline.Models
             matchID = id;
             team1_Players = null;
             team2_Players = null;
-            DNF_Players = null;  //TODO update model with check for JSON
+            //other_Players = null;
+            //DNF_Players = null;  //TODO update model with check for JSON
             
             //team3_Players = null;
             //team4_Players = null;
@@ -33,23 +34,35 @@ namespace H5_DataPipeline.Models
 
             List<string> team1Players = new List<string>();
             List<string> team2Players = new List<string>();
-            List<string> DNF = new List<string>();
-
-            //if team game
+            List<string> otherTeamPlayers = new List<string>();
+            List<string> DNFPlayers = new List<string>();
+            
 
             foreach (ArenaMatchPlayerStat playerStat in carnageReport.PlayerStats)
             {
-                if(playerStat.DNF != true)
+                if (!(playerStat.DNF))
                 {
-                    if(playerStat.TeamId ==)
+                    DNFPlayers.Add(playerStat.Player.Gamertag);
                 }
                 else
                 {
-                    DNF.Add(playerStat.Player.Gamertag);
+                    if (playerStat.TeamId == 0) //Red Team
+                    {
+                        team1Players.Add(playerStat.Player.Gamertag);
+                    }
+                    else if (playerStat.TeamId == 1) //Blue Team
+                    {
+                        team2Players.Add(playerStat.Player.Gamertag);
+                    }
+                    else  //other team or FFA
+                    {
+                        otherTeamPlayers.Add(playerStat.Player.Gamertag);
+                    }
                 }
             }
-            team1_Players = 
-            team2_Players = null;
+
+            string team1players = JsonConvert.
+
         }
 
         public t_h5matches_playersformatch(string id, WarzoneMatch carnageReport)
