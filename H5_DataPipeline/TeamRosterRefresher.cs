@@ -318,6 +318,8 @@ namespace H5_DataPipeline
                 Console.WriteLine("RosterUpdate caught exception {0} with message: {0}", e.HResult, e.Message);
             }
 
+
+            Console.WriteLine();
         }
 
         private void SaveNewTeamsToDatabase()
@@ -356,9 +358,16 @@ namespace H5_DataPipeline
                         t_players_to_teams oldRecord = db.t_players_to_teams.FirstOrDefault(x => x.gamertag == player.gamertag && x.t_teams.teamSource == waypointSourceName);
                         if(oldRecord != null)
                         {
-                            oldRecord.teamId = roster.teamId;
-                            oldRecord.lastUpdated = DateTime.UtcNow;
-//                            db.t_players_to_teams.Remove(oldRecord);
+                            if(oldRecord.teamId == roster.teamId)
+                            {
+                                oldRecord.lastUpdated = DateTime.UtcNow;
+                            }
+                            else
+                            {
+                                db.t_players_to_teams.Remove(oldRecord);
+                                db.SaveChanges();
+                                player.t_players_to_teams.Add(roster);
+                            }
                         }
                         else
                         {

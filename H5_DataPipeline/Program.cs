@@ -22,13 +22,15 @@ namespace H5_DataPipeline
 
             Setup();
 
+            Console.WriteLine();
+
             Console.WriteLine("Done!");
             Console.ReadLine();
         }
 
         public static void Setup()
         {
-            RefreshTeamRosterOlderThanXDays(1);
+            RefreshTeamRosterOlderThanXDays(7);
             //List<t_players> playersForToday = GetListOfPlayers(playerCountGoal);
         }
 
