@@ -43,14 +43,12 @@ namespace H5_DataPipeline
             PlayerFinder playerFinder = new PlayerFinder();
             HaloClientFactory haloClientFactory = new HaloClientFactory();
 
-            string warzoneMatchID = "03be25c0-7df1-4135-9e61-5257de8191a0";
-
             List<Enumeration.Halo5.GameMode> gameModes = new List<Enumeration.Halo5.GameMode>();
             gameModes.Add(Enumeration.Halo5.GameMode.Arena);
             gameModes.Add(Enumeration.Halo5.GameMode.Warzone);
             gameModes.Add(Enumeration.Halo5.GameMode.Custom);
 
-            List <t_h5matches> matchHistory = matchCaller.GetMatchHistoryForPlayerAfterDate("Sn1p3r C", DateTime.UtcNow, gameModes, haloClientFactory.GetDevClient());
+            List <t_h5matches> matchHistory = matchCaller.GetMatchHistoryForPlayerAfterDate("Sn1p3r C", new DateTime(2017, 7, 1), gameModes, haloClientFactory.GetDevClient());
 
             foreach(t_h5matches match in matchHistory)
             {
