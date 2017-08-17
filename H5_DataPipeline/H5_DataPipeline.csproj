@@ -96,6 +96,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\t_h5matches_playersformatchExtensions.cs" />
+    <Compile Include="PlayerFinder.cs" />
     <Compile Include="HaloClientFactory.cs" />
     <Compile Include="Models\H5DataPipelineModel.Context.cs">
       <AutoGen>True</AutoGen>

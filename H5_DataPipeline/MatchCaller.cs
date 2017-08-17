@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using H5_DataPipeline.Models;
 using HaloSharp;
@@ -15,11 +14,11 @@ using HaloSharp.Exception;
 
 namespace H5_DataPipeline
 {
-    class MatchCaller
+    public class MatchCaller
     {
         private const int matchesPerCall = 25;
 
-        public async Task<List<PlayerMatch>> GetAllMatchesForPlayerAfterDate(string tag, DateTime earliestMatchDate, List<Enumeration.Halo5.GameMode> modes,  HaloClient client)
+        public async Task<List<PlayerMatch>> GetMatchHistoryForPlayerAfterDate(string tag, DateTime earliestMatchDate, List<Enumeration.Halo5.GameMode> modes,  HaloClient client)
         {
             bool matchesRemaining = true;
             List<PlayerMatch> allMatches = new List<PlayerMatch>();
@@ -61,5 +60,11 @@ namespace H5_DataPipeline
                 return false;
             }
         }
+
+
+
+
+
+
     }
 }
