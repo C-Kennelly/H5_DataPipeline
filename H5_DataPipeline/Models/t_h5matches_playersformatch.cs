@@ -17,6 +17,8 @@ namespace H5_DataPipeline.Models
         public string matchID { get; set; }
         public string team1_Players { get; set; }
         public string team2_Players { get; set; }
+        public string other_Players { get; set; }
+        public string DNF_Players { get; set; }
     
         public virtual t_h5matches t_h5matches { get; set; }
     }

@@ -20,18 +20,6 @@ namespace H5_DataPipeline.Models
         public Nullable<int> team1_Score { get; set; }
         public int team2_Rank { get; set; }
         public Nullable<int> team2_Score { get; set; }
-        public Nullable<int> team3_Rank { get; set; }
-        public Nullable<int> team4_Rank { get; set; }
-        public Nullable<int> team5_Rank { get; set; }
-        public Nullable<int> team6_Rank { get; set; }
-        public Nullable<int> team7_Rank { get; set; }
-        public Nullable<int> team8_Rank { get; set; }
-        public Nullable<int> team3_Score { get; set; }
-        public Nullable<int> team4_Score { get; set; }
-        public Nullable<int> team5_Score { get; set; }
-        public Nullable<int> team6_Score { get; set; }
-        public Nullable<int> team7_Score { get; set; }
-        public Nullable<int> team8_Score { get; set; }
     
         public virtual t_h5matches t_h5matches { get; set; }
     }

@@ -45,6 +45,7 @@ namespace H5_DataPipeline
                 default:
                 {
                     throw new NotImplementedException();
+                        //Don't expect to handle campaign games
                     break;
                 }
             }
