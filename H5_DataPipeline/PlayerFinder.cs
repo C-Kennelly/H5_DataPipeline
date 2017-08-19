@@ -25,27 +25,36 @@ namespace H5_DataPipeline
             {
                 case ((int)Enumeration.Halo5.GameMode.Arena):
                 {
-                        ArenaMatch carnageReport = await GetArenaMatchCarnageReport(match.matchId, client);
-                        result = new t_h5matches_playersformatch(match.matchId, carnageReport);
-                        break;
+                    ArenaMatch carnageReport = await GetArenaMatchCarnageReport(match.matchId, client);
+                    result = new t_h5matches_playersformatch(match.matchId, carnageReport);
+                    break;
                 }
                 case ((int)Enumeration.Halo5.GameMode.Warzone):
                 {
-                        WarzoneMatch carnageReport = await GetWarzoneMatchCarnageReport(match.matchId, client);
-                        result = new t_h5matches_playersformatch(match.matchId, carnageReport);
-                        break;
+                    WarzoneMatch carnageReport = await GetWarzoneMatchCarnageReport(match.matchId, client);
+                    result = new t_h5matches_playersformatch(match.matchId, carnageReport);
+                    break;
                 }
 
                 case ((int)Enumeration.Halo5.GameMode.Custom):
                 {
-                        CustomMatch carnageReport = await GetCustomMatchCarnageReport(match.matchId, client);
-                        result = new t_h5matches_playersformatch(match.matchId, carnageReport);
-                        break;
+                    CustomMatch carnageReport = await GetCustomMatchCarnageReport(match.matchId, client);
+                    result = new t_h5matches_playersformatch(match.matchId, carnageReport);
+                    break;
+                }
+                case ((int)Enumeration.Halo5.GameMode.Campaign):
+                {
+                    result = null;
+                    break;
+                }
+                case ((int)Enumeration.Halo5.GameMode.Error): 
+                {
+                    result = null;
+                    break;
                 }
                 default:
                 {
-                    throw new NotImplementedException();
-                        //Don't expect to handle campaign games
+                    result = null;
                     break;
                 }
             }

@@ -96,6 +96,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MatchHistorian.cs" />
+    <Compile Include="Models\t_h5matchesExtensions.cs" />
     <Compile Include="Models\t_h5matches_playersformatchExtensions.cs" />
     <Compile Include="PlayerFinder.cs" />
     <Compile Include="HaloClientFactory.cs" />
@@ -152,6 +154,7 @@
     <Compile Include="MatchCaller.cs" />
     <Compile Include="Secrets\SecretAPIKey.cs" />
     <Compile Include="TeamRosterRefresher.cs" />
+    <Compile Include="t_h5matches_matchdetailsExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

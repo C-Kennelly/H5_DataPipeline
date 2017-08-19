@@ -41,20 +41,13 @@ namespace H5_DataPipeline
         {
             MatchCaller matchCaller = new MatchCaller();
             PlayerFinder playerFinder = new PlayerFinder();
-            HaloClientFactory haloClientFactory = new HaloClientFactory();
-
-            List<Enumeration.Halo5.GameMode> gameModes = new List<Enumeration.Halo5.GameMode>();
-            gameModes.Add(Enumeration.Halo5.GameMode.Arena);
-            gameModes.Add(Enumeration.Halo5.GameMode.Warzone);
-            gameModes.Add(Enumeration.Halo5.GameMode.Custom);
-
+            
             //string sampleMatchID = "03be25c0-7df1-4135-9e61-5257de8191a0";
             //string sampleMatchID = "2a9639ec-5723-4b8c-83b2-0201a88fe9de";
             //string sampleMatchID = "3123265c-04ba-4564-9d62-38d8a378720a";
             string sampleMatchID = "3244be2d-8e52-48ab-ad84-fb3f7e0c50cc";
 
 
-            //List <t_h5matches> matchHistory = matchCaller.GetMatchHistoryForPlayerAfterDate("Sn1p3r C", new DateTime(2017, 7, 1), gameModes, haloClientFactory.GetDevClient());
 
             t_h5matches match = new t_h5matches
             {
