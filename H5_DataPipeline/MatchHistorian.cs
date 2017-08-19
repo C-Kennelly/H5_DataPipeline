@@ -83,6 +83,7 @@ namespace H5_DataPipeline
                     NewMatchProcesser newMatchProcessor = new NewMatchProcesser(match);
                     newMatchProcessor.ProcessMatch();
 
+                    //This isn't thread safe, nerd.  Systems.Collections.Concurrent?
                     uniqueMatchesFromMatchHistory.Add(matchRecord);
                 }
                 else
