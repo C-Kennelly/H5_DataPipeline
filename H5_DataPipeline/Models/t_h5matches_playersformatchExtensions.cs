@@ -19,7 +19,7 @@ namespace H5_DataPipeline.Models
             matchID = id;
             team1_Players = null;
             team2_Players = null;
-            other_Players = null;
+            other_Players = null; //TODO update model with check for JSON
             DNF_Players = null;  //TODO update model with check for JSON
         }
 

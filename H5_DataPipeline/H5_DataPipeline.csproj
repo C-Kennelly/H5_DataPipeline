@@ -147,7 +147,6 @@
     </Compile>
     <Compile Include="Models\t_playersExtensions.cs" />
     <Compile Include="Models\t_teamsourcesExtensions.cs" />
-    <Compile Include="PlayerAlarm.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MatchCaller.cs" />
