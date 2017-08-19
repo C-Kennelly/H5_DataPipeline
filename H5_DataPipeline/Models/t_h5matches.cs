@@ -17,7 +17,7 @@ namespace H5_DataPipeline.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public t_h5matches()
         {
-            this.t_players = new HashSet<t_players>();
+            this.t_players_to_h5matches = new HashSet<t_players_to_h5matches>();
         }
     
         public string matchID { get; set; }
@@ -29,11 +29,11 @@ namespace H5_DataPipeline.Models
         public int queryStatus { get; set; }
     
         public virtual t_h5matches_matchdetails t_h5matches_matchdetails { get; set; }
-        public virtual t_h5matches_teamsinvolved_halowaypointcompanies t_h5matches_teamsinvolved_halowaypointcompanies { get; set; }
-        public virtual t_h5matches_teamsinvolved_spartanclashfireteams t_h5matches_teamsinvolved_spartanclashfireteams { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<t_players> t_players { get; set; }
         public virtual t_h5matches_playersformatch t_h5matches_playersformatch { get; set; }
         public virtual t_h5matches_ranksandscores t_h5matches_ranksandscores { get; set; }
+        public virtual t_h5matches_teamsinvolved_halowaypointcompanies t_h5matches_teamsinvolved_halowaypointcompanies { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<t_players_to_h5matches> t_players_to_h5matches { get; set; }
+        public virtual t_h5matches_teamsinvolved_spartanclashfireteams t_h5matches_teamsinvolved_spartanclashfireteams { get; set; }
     }
 }

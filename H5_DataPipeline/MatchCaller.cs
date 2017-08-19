@@ -29,7 +29,8 @@ namespace H5_DataPipeline
                 {
                     try
                     {
-                        MatchSet<PlayerMatch> matchSet = await session.Query(new GetMatchHistory(tag).Take(matchesPerCall).Skip(allMatches.Count)
+                        MatchSet<PlayerMatch> matchSet = await session.Query(new GetMatchHistory(tag)
+                                                    .Skip(allMatches.Count)
                                                     .InGameModes(modes) );
 
                         if (matchSet != null) { allMatches.AddRange(matchSet.Results); }

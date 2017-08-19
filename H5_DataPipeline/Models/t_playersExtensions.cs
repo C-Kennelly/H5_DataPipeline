@@ -9,6 +9,7 @@ namespace H5_DataPipeline.Models
 {
     public partial class t_players
     {
+        private DateTime firstDayOfHalo5 = new DateTime(2015, 10, 26);
 
         public t_players(string playerName)
         {
@@ -20,6 +21,18 @@ namespace H5_DataPipeline.Models
         {
             gamertag = playerName;
             scanThresholdInDays = customScanThreshold;
+        }
+
+        public DateTime GetEarliestDateToScanMatches()
+        {
+            if (dateLastMatchScan == null)
+            {
+                return firstDayOfHalo5;
+            }
+            else
+            {
+                return (DateTime)dateLastMatchScan;
+            }
         }
 
         public bool MatchesReadyToBeSearched()

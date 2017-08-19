@@ -17,8 +17,8 @@ namespace H5_DataPipeline.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public t_players()
         {
+            this.t_players_to_h5matches = new HashSet<t_players_to_h5matches>();
             this.t_players_to_teams = new HashSet<t_players_to_teams>();
-            this.t_h5matches = new HashSet<t_h5matches>();
         }
     
         public string gamertag { get; set; }
@@ -29,8 +29,8 @@ namespace H5_DataPipeline.Models
         public int queryStatus { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<t_players_to_teams> t_players_to_teams { get; set; }
+        public virtual ICollection<t_players_to_h5matches> t_players_to_h5matches { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<t_h5matches> t_h5matches { get; set; }
+        public virtual ICollection<t_players_to_teams> t_players_to_teams { get; set; }
     }
 }

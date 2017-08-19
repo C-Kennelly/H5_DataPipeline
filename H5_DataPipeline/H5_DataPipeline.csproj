@@ -99,6 +99,10 @@
     <Compile Include="MatchHistorian.cs" />
     <Compile Include="Models\t_h5matchesExtensions.cs" />
     <Compile Include="Models\t_h5matches_playersformatchExtensions.cs" />
+    <Compile Include="Models\t_players_to_h5matches.cs">
+      <DependentUpon>H5DataPipelineModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\t_players_to_h5matchesExtension.cs" />
     <Compile Include="PlayerFinder.cs" />
     <Compile Include="HaloClientFactory.cs" />
     <Compile Include="Models\H5DataPipelineModel.Context.cs">
