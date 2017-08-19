@@ -10,6 +10,11 @@ namespace H5_DataPipeline.Models
     public partial class t_h5matches_matchdetails
     {
 
+        public t_h5matches_matchdetails()
+        {
+
+        }
+
         public t_h5matches_matchdetails(PlayerMatch match)
         {
             matchId = match.Id.MatchId.ToString();

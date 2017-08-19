@@ -48,12 +48,23 @@ namespace H5_DataPipeline
                 playersSearched++;
                 Console.WriteLine("Scanning player {0} of {1}: {2} at {3}", playersSearched, testPlayers.Count, player.gamertag, DateTime.UtcNow);
 
-                //player.RecordMatchScan();
+
+                //Open player instead of recording match scan
                 MatchHistorian matchHistorian = new MatchHistorian(player);
 
-                countOfMatchesFound = matchHistorian.BuildUniqueMatchHistoryRecords();
+                try
+                {
+                    countOfMatchesFound = matchHistorian.BuildUniqueMatchHistoryRecords();
+                    player.RecordMatchScan();
+                    player.UpdateDatabase();
+                    Console.WriteLine("Found {0} unique matches for player,", countOfMatchesFound);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);  
+                }
 
-                Console.WriteLine("Found {0} unique matches for player,", countOfMatchesFound);
+                //Close player
                 Console.WriteLine();
 
             }

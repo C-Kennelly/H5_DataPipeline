@@ -42,8 +42,8 @@ namespace H5_DataPipeline
                 RateLimit = new RateLimit
                 {
                     RequestCount = requestCountOverTenSeconds,
-                    TimeSpan = new TimeSpan(0, 0, 0, 0),
-                    Timeout = new TimeSpan(0, 0, 0, 0)
+                    TimeSpan = new TimeSpan(0, 0, 0, 10),
+                    Timeout = new TimeSpan(0, 0, 0, 10)
                 }
             };
 

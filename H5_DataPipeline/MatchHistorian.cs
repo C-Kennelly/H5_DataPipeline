@@ -7,13 +7,14 @@ using H5_DataPipeline.Models;
 using HaloSharp.Model.Halo5.Stats;
 using HaloSharp.Model.Halo5.Stats.Common;
 using HaloSharp.Model;
+using HaloSharp;
 
 namespace H5_DataPipeline
 {
     class MatchHistorian
     {
+        HaloClient haloClient;
         private t_players player;
-        private HaloClientFactory haloClientFactory;
         private List<Enumeration.Halo5.GameMode> gameModes = new List<Enumeration.Halo5.GameMode>();
    
         private List<PlayerMatch> matchHistory;
@@ -24,7 +25,8 @@ namespace H5_DataPipeline
         {
             player = spartan;
             SetDefaultGameModes();
-            haloClientFactory = new HaloClientFactory();
+            HaloClientFactory haloClientFactory = new HaloClientFactory();
+            haloClient = haloClientFactory.GetProdClient();
         }
 
         public void SetGameModes(List<Enumeration.Halo5.GameMode> modesToQuery)
@@ -58,7 +60,8 @@ namespace H5_DataPipeline
         private async Task FindMatchHistory()
         {
             MatchCaller matchCaller = new MatchCaller();
-            matchHistory = await matchCaller.GetMatchHistoryForPlayerAfterDate(player.gamertag, player.GetEarliestDateToScanMatches(), gameModes, haloClientFactory.GetDevClient());
+            matchHistory = await matchCaller.GetMatchHistoryForPlayerAfterDate(player.gamertag, player.GetEarliestDateToScanMatches(), gameModes, haloClient);
+            Console.WriteLine("Finished searching match history, begin processing.");
         }
 
         public void ProcessMatch(PlayerMatch match)

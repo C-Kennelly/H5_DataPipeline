@@ -20,9 +20,9 @@ namespace H5_DataPipeline
         public void ProcessMatch()
         {
             SaveMatchDetails();
-            SaveMatchPlayers();
-            SaveMatchRanksAndScores();
-            SaveMatchWaypointCompaniesInvolved();
+            //SaveMatchPlayers();
+            //SaveMatchRanksAndScores();
+            //SaveMatchWaypointCompaniesInvolved();
             
             //SaveMatchCustomTeamsInvolved();
         }
@@ -31,29 +31,37 @@ namespace H5_DataPipeline
 
         private void SaveMatchDetails()
         {
-            t_h5matches_matchdetails matchDetails = new t_h5matches_matchdetails(match);
-            throw new NotImplementedException();
+            using (var db = new dev_spartanclashbackendEntities())
+            {
+                t_h5matches_matchdetails currentRecord = db.t_h5matches_matchdetails.FirstOrDefault(record => record.matchId == match.Id.MatchId.ToString());
+
+                if (currentRecord == null)
+                {
+                    db.t_h5matches_matchdetails.Add( new t_h5matches_matchdetails(match) );
+                    db.SaveChanges();
+                }
+            }
         }
 
-        private void SaveMatchPlayers()
-        {
-            throw new NotImplementedException();
-            t_h5matches_playersformatch playersForMatch = new t_h5matches_playersformatch(match);
-
-        }
-
-        private void SaveMatchRanksAndScores()
-        {
-            throw new NotImplementedException();
-            t_h5matches_ranksandscores ranksAndScores = new t_h5matches_ranksandscores(match);
-        }
-
-        private void SaveMatchWaypointCompaniesInvolved()
-        {
-            throw new NotImplementedException();
-            t_h5matches_teamsinvolved_halowaypointcompanies waypointTeamsInvolved = new t_h5matches_teamsinvolved_halowaypointcompanies(matchRecord.t_h5matches_playersformatch);
-
-        }
+        //private void SaveMatchPlayers()
+        //{
+        //    throw new NotImplementedException();
+        //    t_h5matches_playersformatch playersForMatch = new t_h5matches_playersformatch(match);
+        //
+        //}
+        //
+        //private void SaveMatchRanksAndScores()
+        //{
+        //    throw new NotImplementedException();
+        //    t_h5matches_ranksandscores ranksAndScores = new t_h5matches_ranksandscores(match);
+        //}
+        //
+        //private void SaveMatchWaypointCompaniesInvolved()
+        //{
+        //    throw new NotImplementedException();
+        //    t_h5matches_teamsinvolved_halowaypointcompanies waypointTeamsInvolved = new t_h5matches_teamsinvolved_halowaypointcompanies(matchRecord.t_h5matches_playersformatch);
+        //
+        //}
 
         //private void SaveMatchCustomTeamsInvolved()
         //{
