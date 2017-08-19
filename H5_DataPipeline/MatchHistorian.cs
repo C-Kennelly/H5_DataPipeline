@@ -77,13 +77,9 @@ namespace H5_DataPipeline
 
                 if (newMatchFound)
                 {
-                    HandleNewMatch(matchRecord);
-                    //SetDates on these things, handle new players, and scan companies when needed - and we'll need to save them here
-                    matchRecord.t_h5matches_matchdetails = new t_h5matches_matchdetails(match);
-                    matchRecord.t_h5matches_playersformatch = new t_h5matches_playersformatch(match);
-                    //matchRecord.t_h5matches_ranksandscores = new t_h5matches_ranksandscores(match);
-                    //matchRecord.t_h5matches_teamsinvolved_halowaypointcompanies = new t_h5matches_teamsinvolved_halowaypointcompanies(matchRecord.t_h5matches_playersformatch);
-                    //matchRecord.t_h5matches_teamsinvolved_spartanclashfireteams = new t_h5matches_teamsinvolved_spartanclashfireteams(matchRecord.t_h5matches_playersformatch);
+                    NewMatchProcesser newMatchProcessor = new NewMatchProcesser(match);
+                    newMatchProcessor.ProcessMatch();
+
                     uniqueMatchesFromMatchHistory.Add(matchRecord);
                 }
                 else
@@ -93,11 +89,6 @@ namespace H5_DataPipeline
 
 
             }
-        }
-
-        private void HandleNewMatch(t_h5matches match)
-        {
-
         }
 
         private void MakeNewMatchAssociationIfNotExists(t_h5matches match)
