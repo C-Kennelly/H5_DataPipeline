@@ -6,13 +6,14 @@ using System.Threading.Tasks;
 using H5_DataPipeline.Models;
 using HaloSharp.Model.Halo5.Stats;
 using HaloSharp;
+using HaloSharp.Exception;
 
 namespace H5_DataPipeline
 {
     class NewMatchProcesser
     {
         PlayerMatch match;
-        List<string> playersInMatch;
+        List<string> playersInMatch = new List<string>();
         HaloClient client;
 
         public NewMatchProcesser(PlayerMatch matchToProcess, HaloClient haloClient)
@@ -55,23 +56,33 @@ namespace H5_DataPipeline
         {
             Console.Write("\r Saving players in match...");
             PlayerFinder playerFinder = new PlayerFinder();
-            t_h5matches_playersformatch playersForMatch = await playerFinder.GetPlayersForMatch(matchDetails, client);
 
-            using (var db = new dev_spartanclashbackendEntities())
+            try
             {
-                t_h5matches_playersformatch currentRecord = db.t_h5matches_playersformatch.FirstOrDefault(record => record.matchID == matchDetails.matchId);
+                t_h5matches_playersformatch playersForMatch = await playerFinder.GetPlayersForMatch(matchDetails, client);
 
-                if (currentRecord == null)
+                using (var db = new dev_spartanclashbackendEntities())
                 {
-                    db.t_h5matches_playersformatch.Add(playersForMatch);
-                    db.SaveChanges();
-                    playersInMatch = playersForMatch.ToListOfGamertags();
+                    t_h5matches_playersformatch currentRecord = db.t_h5matches_playersformatch.FirstOrDefault(record => record.matchID == matchDetails.matchId);
+
+                    if (currentRecord == null)
+                    {
+                        db.t_h5matches_playersformatch.Add(playersForMatch);
+                        db.SaveChanges();
+                        playersInMatch = playersForMatch.ToListOfGamertags();
+                    }
+                    else
+                    {
+                        playersInMatch = currentRecord.ToListOfGamertags();
+                    }
                 }
-                else
-                {
-                    playersInMatch = currentRecord.ToListOfGamertags();
-                }
+
             }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+
 
         }
         

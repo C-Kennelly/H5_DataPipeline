@@ -70,16 +70,28 @@ namespace H5_DataPipeline
 
             using (var session = client.StartSession())
             {
-                try
-                {
-                    arenaCarnageReport = await session.Query(new GetArenaMatchDetails(new Guid(matchID)));
-                }
-                catch (HaloApiException haloAPIException)
-                {
-                    Console.WriteLine("The Halo API threw an exception for match {0}, status code: {1}.  Stopping calls.", matchID, haloAPIException.HaloApiError.StatusCode);
-                }
+                bool resultFound = false;
 
+                while(resultFound == false)
+                {
+                    resultFound = true;
+                    try
+                    {
+                        
+                        arenaCarnageReport = await session.Query(new GetArenaMatchDetails(new Guid(matchID)));
+                    }
+                    catch (HaloApiException haloAPIException)
+                    {
+                        if (haloAPIException.HaloApiError.StatusCode == 429)
+                        {
+                            resultFound = false;
+                            await Task.Delay(50);
+                        }
+                        Console.WriteLine("The Halo API threw an exception for match {0}, status code: {1}.  Stopping calls.", matchID, haloAPIException.HaloApiError.StatusCode);
+                    }
+                }
                 return arenaCarnageReport;
+
             }
         }
 
@@ -89,15 +101,26 @@ namespace H5_DataPipeline
 
             using (var session = client.StartSession())
             {
-                try
-                {
-                    warzoneCarnageReport = await session.Query(new GetWarzoneMatchDetails(new Guid(matchID)));
-                }
-                catch (HaloApiException haloAPIException)
-                {
-                    Console.WriteLine("The Halo API threw an exception for match {0}, status code: {1}.  Stopping calls.", matchID, haloAPIException.HaloApiError.StatusCode);
-                }
+                bool resultFound = false;
 
+                while (resultFound == false)
+                {
+                    resultFound = true;
+                    try
+                    {
+                        warzoneCarnageReport = await session.Query(new GetWarzoneMatchDetails(new Guid(matchID)));
+                    }
+                    catch (HaloApiException haloAPIException)
+                    {
+                        if (haloAPIException.HaloApiError.StatusCode == 429)
+                        {
+                            resultFound = false;
+                            await Task.Delay(50);
+                        }
+                        Console.WriteLine("The Halo API threw an exception for match {0}, status code: {1}.  Stopping calls.", matchID, haloAPIException.HaloApiError.StatusCode);
+                    }
+
+                }
                 return warzoneCarnageReport;
             }
         }
@@ -108,13 +131,25 @@ namespace H5_DataPipeline
 
             using (var session = client.StartSession())
             {
-                try
+                bool resultFound = false;
+
+                while(resultFound == false)
                 {
-                    customCarnageReport = await session.Query(new GetCustomMatchDetails(new Guid(matchID)));
-                }
-                catch (HaloApiException haloAPIException)
-                {
-                    Console.WriteLine("The Halo API threw an exception for match {0}, status code: {1}.  Stopping calls.", matchID, haloAPIException.HaloApiError.StatusCode);
+                    resultFound = true;
+                    try
+                    {
+                        customCarnageReport = await session.Query(new GetCustomMatchDetails(new Guid(matchID)));
+                    }
+                    catch (HaloApiException haloAPIException)
+                    {
+                        if (haloAPIException.HaloApiError.StatusCode == 429)
+                        {
+                            resultFound = false;
+                            await Task.Delay(50);
+                        }
+                        Console.WriteLine("The Halo API threw an exception for match {0}, status code: {1}.  Stopping calls.", matchID, haloAPIException.HaloApiError.StatusCode);
+                    }
+
                 }
 
                 return customCarnageReport;

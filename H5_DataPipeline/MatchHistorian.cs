@@ -51,13 +51,18 @@ namespace H5_DataPipeline
 
             Parallel.ForEach(matchHistory, match =>
             {
-                List<string> playersDiscoveredInMatch = ParallelProcessMatch(match);
-                
 
-                foreach(string tag in playersDiscoveredInMatch)
+                //foreach(PlayerMatch match in matchHistory)
+                //{
+                List<string> playersDiscoveredInMatch = ParallelProcessMatch(match);
+
+
+                foreach (string tag in playersDiscoveredInMatch)
                 {
                     allPlayersFoundInMatches.Add(tag);
                 }
+
+                //}
             });
 
             Console.WriteLine();
