@@ -8,6 +8,7 @@ using HaloSharp.Model.Halo5.Stats;
 using HaloSharp.Model.Halo5.Stats.Common;
 using HaloSharp.Model;
 using HaloSharp;
+using System.Collections.Concurrent;
 
 namespace H5_DataPipeline
 {
@@ -19,7 +20,8 @@ namespace H5_DataPipeline
    
         private List<PlayerMatch> matchHistory;
 
-        public List<t_h5matches> uniqueMatchesFromMatchHistory = new List<t_h5matches>();
+        public ConcurrentBag<t_h5matches> uniqueMatchesFromMatchHistory = new ConcurrentBag<t_h5matches>();
+        //public List<t_h5matches> uniqueMatchesFromMatchHistory = new List<t_h5matches>();
 
         public MatchHistorian(t_players spartan)
         {
@@ -51,7 +53,7 @@ namespace H5_DataPipeline
             //}
             Parallel.ForEach(matchHistory, match =>
             {
-                ProcessMatch(match);
+                ParallelProcessMatch(match);
             });
 
             return uniqueMatchesFromMatchHistory.Count;
@@ -64,7 +66,7 @@ namespace H5_DataPipeline
             Console.WriteLine("Finished searching match history, begin processing.");
         }
 
-        public void ProcessMatch(PlayerMatch match)
+        public void ParallelProcessMatch(PlayerMatch match)
         {
             bool newMatchFound = true;
             t_h5matches matchRecord = new t_h5matches(match);
@@ -83,7 +85,6 @@ namespace H5_DataPipeline
                     NewMatchProcesser newMatchProcessor = new NewMatchProcesser(match);
                     newMatchProcessor.ProcessMatch();
 
-                    //This isn't thread safe, nerd.  Systems.Collections.Concurrent?
                     uniqueMatchesFromMatchHistory.Add(matchRecord);
                 }
                 else

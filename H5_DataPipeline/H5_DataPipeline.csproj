@@ -159,7 +159,7 @@
     <Compile Include="MatchCaller.cs" />
     <Compile Include="Secrets\SecretAPIKey.cs" />
     <Compile Include="TeamRosterRefresher.cs" />
-    <Compile Include="t_h5matches_matchdetailsExtensions.cs" />
+    <Compile Include="Models\t_h5matches_matchdetailsExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

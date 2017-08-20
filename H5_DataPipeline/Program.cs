@@ -50,6 +50,7 @@ namespace H5_DataPipeline
 
 
                 //Open player instead of recording match scan
+                //player.RecordMatchScan();
                 MatchHistorian matchHistorian = new MatchHistorian(player);
 
                 try
