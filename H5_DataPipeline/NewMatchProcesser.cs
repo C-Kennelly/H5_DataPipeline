@@ -32,6 +32,7 @@ namespace H5_DataPipeline
 
         private t_h5matches_matchdetails SaveMatchDetails()
         {
+            Console.Write("\r Saving match details...");
             using (var db = new dev_spartanclashbackendEntities())
             {
                 t_h5matches_matchdetails currentRecord = db.t_h5matches_matchdetails.FirstOrDefault(record => record.matchId == match.Id.MatchId.ToString());
@@ -52,6 +53,7 @@ namespace H5_DataPipeline
 
         private async Task SaveMatchPlayers(t_h5matches_matchdetails matchDetails)
         {
+            Console.Write("\r Saving players in match...");
             PlayerFinder playerFinder = new PlayerFinder();
             t_h5matches_playersformatch playersForMatch = await playerFinder.GetPlayersForMatch(matchDetails, client);
 
@@ -75,8 +77,10 @@ namespace H5_DataPipeline
         
         private void SaveMatchRanksAndScores()
         {
+            Console.Write("\r Saving ranks and scores...");
             using (var db = new dev_spartanclashbackendEntities())
             {
+                
                 t_h5matches_ranksandscores currentRecord = db.t_h5matches_ranksandscores.FirstOrDefault(record => record.matchId == match.Id.MatchId.ToString());
 
                 if (currentRecord == null)
