@@ -43,37 +43,57 @@ namespace H5_DataPipeline
             int playersSearched = 0;
             int countOfMatchesFound;
 
-            //while(count of players to scan > 0)
-            //players to scan = t_players where dateLastMatchscan isNull
 
-            foreach (t_players player in testPlayers)
+            List<t_players> playersToScan = GetListOfPlayersToScan();
+            int playersLeftToScan = playersToScan.Count();
+
+            while (playersLeftToScan > 0)
             {
-                playersSearched++;
-                Console.WriteLine("Scanning player {0} of {1}: {2} at {3}", playersSearched, testPlayers.Count, player.gamertag, DateTime.UtcNow);
-
-
-                //Open player instead of recording match scan
-                player.RecordMatchScan();
-                MatchHistorian matchHistorian = new MatchHistorian(player);
-
-                try
+                foreach (t_players player in playersToScan)
                 {
-                    countOfMatchesFound = matchHistorian.BuildUniqueMatchHistoryRecords();
-                    player.RecordMatchScan();
+                    playersSearched++;
+                    Console.WriteLine("Scanning player {0} of {1}: {2} at {3}", playersSearched, playersToScan.Count, player.gamertag, DateTime.UtcNow);
+
+                    player.queryStatus = -1;
                     player.UpdateDatabase();
-                    Console.WriteLine("Found {0} unique matches for player,", countOfMatchesFound);
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e.Message);  
-                }
 
-                Console.WriteLine();
+                    MatchHistorian matchHistorian = new MatchHistorian(player);
+
+                    try
+                    {
+                        countOfMatchesFound = matchHistorian.BuildUniqueMatchHistoryRecords();
+                        player.RecordMatchScan();
+                        player.UpdateDatabase();
+                        Console.WriteLine("Found {0} unique matches for player,", countOfMatchesFound);
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e.Message);
+                    }
+
+                    Console.WriteLine();
+
+
+                }
+                playersToScan = GetListOfPlayersToScan();
+                playersLeftToScan = playersToScan.Count();
 
             }
 
 
+
             Console.WriteLine("Did the thing!");
+        }
+
+        private static List<t_players> GetListOfPlayersToScan()
+        {
+            using (var db = new dev_spartanclashbackendEntities())
+            {
+                return db.t_players.Where   ( player =>
+                                                player.dateLastMatchScan == null
+                                            ||  player.queryStatus == -1
+                                            ).ToList();
+            }
         }
 
         public static void RefreshTeamRosterOlderThanXDays(int days)
@@ -87,11 +107,11 @@ namespace H5_DataPipeline
         private static List<t_players> MakeTestPlayerList()
         {
             List<t_players> testPlayerList = new List<t_players> {
-                new t_players("Sn1p3r C"),
-                new t_players("Black Picture"),
-                new t_players("Randy 355"),
-                new t_players("ADarkerTrev"),
-                new t_players("Ray Benefield")
+                new t_players("Sn1p3r C")//,
+//                new t_players("Black Picture"),
+//                new t_players("Randy 355"),
+//                new t_players("ADarkerTrev"),
+//                new t_players("Ray Benefield")
             };
 
             return testPlayerList;
