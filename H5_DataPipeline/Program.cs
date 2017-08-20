@@ -63,6 +63,7 @@ namespace H5_DataPipeline
                     {
                         countOfMatchesFound = matchHistorian.BuildUniqueMatchHistoryRecords();
                         player.RecordMatchScan();
+                        player.queryStatus = 0;
                         player.UpdateDatabase();
                         Console.WriteLine("Found {0} unique matches for player,", countOfMatchesFound);
                     }
