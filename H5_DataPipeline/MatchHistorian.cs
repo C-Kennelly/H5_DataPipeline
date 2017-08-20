@@ -40,7 +40,7 @@ namespace H5_DataPipeline
         {
             gameModes.Add(Enumeration.Halo5.GameMode.Arena);
             gameModes.Add(Enumeration.Halo5.GameMode.Warzone);
-            gameModes.Add(Enumeration.Halo5.GameMode.Custom);
+            //gameModes.Add(Enumeration.Halo5.GameMode.Custom);
         }
 
         public int BuildUniqueMatchHistoryRecords()
