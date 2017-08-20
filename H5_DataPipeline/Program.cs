@@ -43,6 +43,9 @@ namespace H5_DataPipeline
             int playersSearched = 0;
             int countOfMatchesFound;
 
+            //while(count of players to scan > 0)
+            //players to scan = t_players where dateLastMatchscan isNull
+
             foreach (t_players player in testPlayers)
             {
                 playersSearched++;
@@ -65,7 +68,6 @@ namespace H5_DataPipeline
                     Console.WriteLine(e.Message);  
                 }
 
-                //Close player
                 Console.WriteLine();
 
             }

@@ -15,12 +15,20 @@ namespace H5_DataPipeline.Models
         {
             gamertag = playerName;
             scanThresholdInDays = 7;
+            dateLastMatchScan = null;
+            dateCompanyRosterUpdated = null;
+            dateCustomTeamsUpdated = null;
+            queryStatus = 0;
         }
 
         public t_players(string playerName, int customScanThreshold)
         {
             gamertag = playerName;
             scanThresholdInDays = customScanThreshold;
+            dateLastMatchScan = null;
+            dateCompanyRosterUpdated = null;
+            dateCustomTeamsUpdated = null;
+            queryStatus = 0;
         }
 
         public DateTime GetEarliestDateToScanMatches()

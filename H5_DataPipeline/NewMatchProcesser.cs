@@ -21,17 +21,14 @@ namespace H5_DataPipeline
             client = haloClient;
         }
 
-        public void ProcessMatch()
+        public List<string> ProcessMatch()
         {
             t_h5matches_matchdetails matchDetails = SaveMatchDetails();
             SaveMatchPlayers(matchDetails).Wait();
             SaveMatchRanksAndScores();
-            //SaveMatchWaypointCompaniesInvolved();
-            
-            //SaveMatchCustomTeamsInvolved();
-        }
 
-        //SetDates on these things, handle new players, and scan companies when needed - and we'll need to save them here
+            return playersInMatch;
+        }
 
         private t_h5matches_matchdetails SaveMatchDetails()
         {
@@ -89,21 +86,6 @@ namespace H5_DataPipeline
                 }
             }
         }
-        
-        //private void SaveMatchWaypointCompaniesInvolved()
-        //{
-        //    throw new NotImplementedException();    
-        //    
-        //    //t_h5matches_teamsinvolved_halowaypointcompanies waypointTeamsInvolved = new t_h5matches_teamsinvolved_halowaypointcompanies(matchRecord.t_h5matches_playersformatch);
-        //
-        //}
-
-        //private void SaveMatchCustomTeamsInvolved()
-        //{
-        //    throw new NotImplementedException();
-        //    matchRecord.t_h5matches_teamsinvolved_spartanclashfireteams = new t_h5matches_teamsinvolved_spartanclashfireteams(matchRecord.t_h5matches_playersformatch);
-        //}
-
 
     }
 }

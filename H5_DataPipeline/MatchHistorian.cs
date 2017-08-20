@@ -47,18 +47,29 @@ namespace H5_DataPipeline
         {
             FindMatchHistory().Wait();
 
-            PlayerFinder playerFinder = new PlayerFinder();
+            ConcurrentBag<string> allPlayersFoundInMatches = new ConcurrentBag<string>();
 
-
-            //foreach(PlayerMatch match in matchHistory)
-            //{
-            //    ProcessMatch(match);
-            //}
             Parallel.ForEach(matchHistory, match =>
             {
-                ParallelProcessMatch(match);
+                List<string> playersDiscoveredInMatch = ParallelProcessMatch(match);
+                
+
+                foreach(string tag in playersDiscoveredInMatch)
+                {
+                    allPlayersFoundInMatches.Add(tag);
+                }
             });
 
+            Console.WriteLine();
+
+            List<string> uniquePlayers = allPlayersFoundInMatches.Select(x => x).Distinct().ToList();
+
+            RegisterNewPlayers(uniquePlayers);
+
+            //UpdateRostersWhereNecessary(uniquePlayers);
+            //ThenTagClanBattles(matchHistory);
+            //    TagCompanyBattles(matchHistory);
+            //    TagCustomBattles(matchHistory);
             return uniqueMatchesFromMatchHistory.Count;
         }
 
@@ -69,24 +80,25 @@ namespace H5_DataPipeline
             Console.WriteLine("Finished searching match history, begin processing.");
         }
 
-        public void ParallelProcessMatch(PlayerMatch match)
+        public List<string> ParallelProcessMatch(PlayerMatch match)
         {
             bool newMatchFound = true;
             t_h5matches matchRecord = new t_h5matches(match);
-
+            List<string> gamertagsFoundInMatch = new List<string>();
             //open match?
 
             using (var db = new dev_spartanclashbackendEntities())
             {
                 if (matchRecord.AlreadySavedToDatabase())   { newMatchFound = false; }
-                else                                        { matchRecord.UpdateDatabase(); }
+                else                                        { matchRecord.queryStatus = -1; matchRecord.UpdateDatabase(); }
 
                 MakeNewMatchAssociationIfNotExists(matchRecord);
 
                 if (newMatchFound)
                 {
                     NewMatchProcesser newMatchProcessor = new NewMatchProcesser(match, haloClient);
-                    newMatchProcessor.ProcessMatch();
+                    gamertagsFoundInMatch = newMatchProcessor.ProcessMatch();
+                    
 
                     uniqueMatchesFromMatchHistory.Add(matchRecord);
                 }
@@ -95,7 +107,13 @@ namespace H5_DataPipeline
                     //What do we do when 
                 }
 
+                matchRecord.dateDetailsScan = DateTime.UtcNow;
+                matchRecord.datePlayersScan = DateTime.UtcNow;
+                matchRecord.dateResultsScan = DateTime.UtcNow;
+                matchRecord.queryStatus = 0;
+                matchRecord.UpdateDatabase();
 
+                return gamertagsFoundInMatch;
             }
         }
 
@@ -111,6 +129,27 @@ namespace H5_DataPipeline
                     db.SaveChanges();
                 }
 
+            }
+        }
+
+        private void RegisterNewPlayers(List<string> playersFromMatches)
+        {
+
+            using (var db = new dev_spartanclashbackendEntities())
+            {
+                Parallel.ForEach(playersFromMatches, gamertag =>
+                {
+                    t_players currentRecord = db.t_players.FirstOrDefault(x => x.gamertag == gamertag);
+
+                    if(currentRecord == null)
+                    {
+                        Console.WriteLine("Now tracking {0}", gamertag);
+                        t_players newPlayer = new t_players(gamertag);
+                        db.t_players.Add(newPlayer);
+                        db.SaveChangesAsync();
+                        Console.WriteLine("{0} successfully saved", gamertag);
+                    }
+                });
             }
         }
     }
