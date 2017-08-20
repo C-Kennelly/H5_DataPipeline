@@ -133,24 +133,24 @@ namespace H5_DataPipeline
         }
 
         private void RegisterNewPlayers(List<string> playersFromMatches)
-        {
-
-            using (var db = new dev_spartanclashbackendEntities())
-            {
+        {            
                 Parallel.ForEach(playersFromMatches, gamertag =>
                 {
-                    t_players currentRecord = db.t_players.FirstOrDefault(x => x.gamertag == gamertag);
-
-                    if(currentRecord == null)
+                    using (var db = new dev_spartanclashbackendEntities())
                     {
-                        Console.WriteLine("Now tracking {0}", gamertag);
-                        t_players newPlayer = new t_players(gamertag);
-                        db.t_players.Add(newPlayer);
-                        db.SaveChangesAsync();
-                        Console.WriteLine("{0} successfully saved", gamertag);
+                       t_players currentRecord = db.t_players.FirstOrDefault(x => x.gamertag == gamertag);
+
+                       if(currentRecord == null)
+                       {
+                           
+                           t_players newPlayer = new t_players(gamertag);
+                           db.t_players.Add(newPlayer);
+                           db.SaveChangesAsync();
+                           Console.WriteLine("Now tracking {0}", gamertag);
+                       }
                     }
                 });
-            }
+            
         }
     }
 }
