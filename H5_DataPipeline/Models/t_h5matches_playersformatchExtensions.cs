@@ -29,38 +29,38 @@ namespace H5_DataPipeline.Models
             DNF_Players = null;  //TODO update model with check for JSON
         }
 
-        public List<t_players> ToListOfPlayers()
+        public List<string> ToListOfGamertags()
         {
-            List<t_players> result = new List<t_players>();
+            List<string> result = new List<string>();
 
             if (team1_Players != null)
             {
-                List<t_players> workingList = (List<t_players>)JsonConvert.DeserializeObject(team1_Players);
-                foreach (t_players player in workingList)
+                List<string> workingList = JsonConvert.DeserializeObject<List<string>>(team1_Players);
+                foreach (string player in workingList)
                 {
                     result.Add(player);
                 }
             }
             if (team2_Players != null)
             {
-                List<t_players> workingList = (List<t_players>)JsonConvert.DeserializeObject(team2_Players);
-                foreach (t_players player in workingList)
+                List<string> workingList = JsonConvert.DeserializeObject<List<string>>(team2_Players);
+                foreach (string player in workingList)
                 {
                     result.Add(player);
                 }
             }
             if (other_Players != null)
             {
-                List<t_players> workingList = (List<t_players>)JsonConvert.DeserializeObject(other_Players);
-                foreach (t_players player in workingList)
+                List<string> workingList = JsonConvert.DeserializeObject<List<string>>(other_Players);
+                foreach (string player in workingList)
                 {
                     result.Add(player);
                 }
             }
             if (DNF_Players != null)
             {
-                List<t_players> workingList = (List<t_players>)JsonConvert.DeserializeObject(team1_Players);
-                foreach (t_players player in workingList)
+                List<string> workingList = JsonConvert.DeserializeObject<List<string>>(DNF_Players);
+                foreach (string player in workingList)
                 {
                     result.Add(player);
                 }

@@ -12,7 +12,7 @@ namespace H5_DataPipeline
     class NewMatchProcesser
     {
         PlayerMatch match;
-        List<t_players> playersInMatch;
+        List<string> playersInMatch;
         HaloClient client;
 
         public NewMatchProcesser(PlayerMatch matchToProcess, HaloClient haloClient)
@@ -21,10 +21,10 @@ namespace H5_DataPipeline
             client = haloClient;
         }
 
-        public async void ProcessMatch()
+        public void ProcessMatch()
         {
             t_h5matches_matchdetails matchDetails = SaveMatchDetails();
-            //playersInMatch = await SaveMatchPlayers(matchDetails);
+            SaveMatchPlayers(matchDetails).Wait();
             SaveMatchRanksAndScores();
             //SaveMatchWaypointCompaniesInvolved();
             
@@ -53,7 +53,7 @@ namespace H5_DataPipeline
             }
         }
 
-        private async Task<List<t_players>> SaveMatchPlayers(t_h5matches_matchdetails matchDetails)
+        private async Task SaveMatchPlayers(t_h5matches_matchdetails matchDetails)
         {
             PlayerFinder playerFinder = new PlayerFinder();
             t_h5matches_playersformatch playersForMatch = await playerFinder.GetPlayersForMatch(matchDetails, client);
@@ -66,11 +66,11 @@ namespace H5_DataPipeline
                 {
                     db.t_h5matches_playersformatch.Add(playersForMatch);
                     db.SaveChanges();
-                    return playersForMatch.ToListOfPlayers();
+                    playersInMatch = playersForMatch.ToListOfGamertags();
                 }
                 else
                 {
-                    return currentRecord.ToListOfPlayers();
+                    playersInMatch = currentRecord.ToListOfGamertags();
                 }
             }
 
@@ -92,8 +92,9 @@ namespace H5_DataPipeline
         
         //private void SaveMatchWaypointCompaniesInvolved()
         //{
-        //    throw new NotImplementedException();
-        //    t_h5matches_teamsinvolved_halowaypointcompanies waypointTeamsInvolved = new t_h5matches_teamsinvolved_halowaypointcompanies(matchRecord.t_h5matches_playersformatch);
+        //    throw new NotImplementedException();    
+        //    
+        //    //t_h5matches_teamsinvolved_halowaypointcompanies waypointTeamsInvolved = new t_h5matches_teamsinvolved_halowaypointcompanies(matchRecord.t_h5matches_playersformatch);
         //
         //}
 
