@@ -5,23 +5,27 @@ using System.Text;
 using System.Threading.Tasks;
 using H5_DataPipeline.Models;
 using HaloSharp.Model.Halo5.Stats;
+using HaloSharp;
 
 namespace H5_DataPipeline
 {
     class NewMatchProcesser
     {
         PlayerMatch match;
+        List<t_players> playersInMatch;
+        HaloClient client;
 
-        public NewMatchProcesser(PlayerMatch matchToProcess)
+        public NewMatchProcesser(PlayerMatch matchToProcess, HaloClient haloClient)
         {
             match = matchToProcess;
+            client = haloClient;
         }
 
-        public void ProcessMatch()
+        public async void ProcessMatch()
         {
-            SaveMatchDetails();
-            //SaveMatchPlayers();
-            //SaveMatchRanksAndScores();
+            t_h5matches_matchdetails matchDetails = SaveMatchDetails();
+            //playersInMatch = await SaveMatchPlayers(matchDetails);
+            SaveMatchRanksAndScores();
             //SaveMatchWaypointCompaniesInvolved();
             
             //SaveMatchCustomTeamsInvolved();
@@ -29,7 +33,7 @@ namespace H5_DataPipeline
 
         //SetDates on these things, handle new players, and scan companies when needed - and we'll need to save them here
 
-        private void SaveMatchDetails()
+        private t_h5matches_matchdetails SaveMatchDetails()
         {
             using (var db = new dev_spartanclashbackendEntities())
             {
@@ -37,25 +41,55 @@ namespace H5_DataPipeline
 
                 if (currentRecord == null)
                 {
-                    db.t_h5matches_matchdetails.Add( new t_h5matches_matchdetails(match) );
+                    t_h5matches_matchdetails details = new t_h5matches_matchdetails(match);
+                    db.t_h5matches_matchdetails.Add(details);
                     db.SaveChanges();
+                    return details;
+                }
+                else
+                {
+                    return currentRecord;
                 }
             }
         }
 
-        //private void SaveMatchPlayers()
-        //{
-        //    throw new NotImplementedException();
-        //    t_h5matches_playersformatch playersForMatch = new t_h5matches_playersformatch(match);
-        //
-        //}
-        //
-        //private void SaveMatchRanksAndScores()
-        //{
-        //    throw new NotImplementedException();
-        //    t_h5matches_ranksandscores ranksAndScores = new t_h5matches_ranksandscores(match);
-        //}
-        //
+        private async Task<List<t_players>> SaveMatchPlayers(t_h5matches_matchdetails matchDetails)
+        {
+            PlayerFinder playerFinder = new PlayerFinder();
+            t_h5matches_playersformatch playersForMatch = await playerFinder.GetPlayersForMatch(matchDetails, client);
+
+            using (var db = new dev_spartanclashbackendEntities())
+            {
+                t_h5matches_playersformatch currentRecord = db.t_h5matches_playersformatch.FirstOrDefault(record => record.matchID == matchDetails.matchId);
+
+                if (currentRecord == null)
+                {
+                    db.t_h5matches_playersformatch.Add(playersForMatch);
+                    db.SaveChanges();
+                    return playersForMatch.ToListOfPlayers();
+                }
+                else
+                {
+                    return currentRecord.ToListOfPlayers();
+                }
+            }
+
+        }
+        
+        private void SaveMatchRanksAndScores()
+        {
+            using (var db = new dev_spartanclashbackendEntities())
+            {
+                t_h5matches_ranksandscores currentRecord = db.t_h5matches_ranksandscores.FirstOrDefault(record => record.matchId == match.Id.MatchId.ToString());
+
+                if (currentRecord == null)
+                {
+                    db.t_h5matches_ranksandscores.Add(new t_h5matches_ranksandscores(match));
+                    db.SaveChanges();
+                }
+            }
+        }
+        
         //private void SaveMatchWaypointCompaniesInvolved()
         //{
         //    throw new NotImplementedException();

@@ -15,7 +15,10 @@ namespace H5_DataPipeline.Models
 {
     public partial class t_h5matches_playersformatch
     {
+        public t_h5matches_playersformatch()
+        {
 
+        }
 
         public t_h5matches_playersformatch(string id)
         {
@@ -26,46 +29,44 @@ namespace H5_DataPipeline.Models
             DNF_Players = null;  //TODO update model with check for JSON
         }
 
-        public t_h5matches_playersformatch(PlayerMatch match)
+        public List<t_players> ToListOfPlayers()
         {
-            matchID = match.Id.MatchId.ToString();
+            List<t_players> result = new List<t_players>();
 
-            List<string> team1Players = new List<string>();
-            List<string> team2Players = new List<string>();
-            List<string> otherTeamPlayers = new List<string>();
-            List<string> DNFPlayers = new List<string>();
-
-            foreach (Player player in match.Players)
+            if (team1_Players != null)
             {
-                if (player.Rank == 0) 
+                List<t_players> workingList = (List<t_players>)JsonConvert.DeserializeObject(team1_Players);
+                foreach (t_players player in workingList)
                 {
-                    //Player Rank from https://developer.haloapi.com/docs/services/58acdf27e2f7f71ad0dad84b/operations/58acdf28e2f7f70db4854b3b
-                    //   Did Not Finish = 0, 
-                    DNFPlayers.Add(player.Identity.Gamertag);
+                    result.Add(player);
                 }
-                else
+            }
+            if (team2_Players != null)
+            {
+                List<t_players> workingList = (List<t_players>)JsonConvert.DeserializeObject(team2_Players);
+                foreach (t_players player in workingList)
                 {
-                    if (player.TeamId == 0) //Red Team
-                    {
-                        team1Players.Add(player.Identity.Gamertag);
-                    }
-                    else if (player.TeamId == 1) //Blue Team
-                    {
-                        team2Players.Add(player.Identity.Gamertag);
-                    }
-                    else  //other team or FFA
-                    {
-                        otherTeamPlayers.Add(player.Identity.Gamertag);
-                    }
+                    result.Add(player);
                 }
-
+            }
+            if (other_Players != null)
+            {
+                List<t_players> workingList = (List<t_players>)JsonConvert.DeserializeObject(other_Players);
+                foreach (t_players player in workingList)
+                {
+                    result.Add(player);
+                }
+            }
+            if (DNF_Players != null)
+            {
+                List<t_players> workingList = (List<t_players>)JsonConvert.DeserializeObject(team1_Players);
+                foreach (t_players player in workingList)
+                {
+                    result.Add(player);
+                }
             }
 
-            team1_Players = JsonConvert.SerializeObject(team1Players);
-            team2_Players = JsonConvert.SerializeObject(team2Players);
-            other_Players = JsonConvert.SerializeObject(otherTeamPlayers);
-            DNF_Players = JsonConvert.SerializeObject(DNFPlayers);
-
+            return result;
         }
 
         public t_h5matches_playersformatch(string id, ArenaMatch carnageReport)

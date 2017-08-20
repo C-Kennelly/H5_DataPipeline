@@ -47,6 +47,9 @@ namespace H5_DataPipeline
         {
             FindMatchHistory().Wait();
 
+            PlayerFinder playerFinder = new PlayerFinder();
+
+
             //foreach(PlayerMatch match in matchHistory)
             //{
             //    ProcessMatch(match);
@@ -82,7 +85,7 @@ namespace H5_DataPipeline
 
                 if (newMatchFound)
                 {
-                    NewMatchProcesser newMatchProcessor = new NewMatchProcesser(match);
+                    NewMatchProcesser newMatchProcessor = new NewMatchProcesser(match, haloClient);
                     newMatchProcessor.ProcessMatch();
 
                     uniqueMatchesFromMatchHistory.Add(matchRecord);
