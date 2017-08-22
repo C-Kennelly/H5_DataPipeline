@@ -12,7 +12,7 @@ using System.Collections.Concurrent;
 
 namespace H5_DataPipeline
 {
-    class MatchHistorian
+    class Marshall
     {
         HaloClient haloClient;
         private t_players player;
@@ -23,7 +23,7 @@ namespace H5_DataPipeline
         public ConcurrentBag<t_h5matches> uniqueMatchesFromMatchHistory = new ConcurrentBag<t_h5matches>();
         //public List<t_h5matches> uniqueMatchesFromMatchHistory = new List<t_h5matches>();
 
-        public MatchHistorian(t_players spartan)
+        public Marshall(t_players spartan)
         {
             player = spartan;
             SetDefaultGameModes();

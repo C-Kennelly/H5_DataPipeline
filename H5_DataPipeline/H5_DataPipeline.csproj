@@ -96,7 +96,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MatchHistorian.cs" />
+    <Compile Include="Marshall.cs" />
     <Compile Include="Models\t_h5matchesExtensions.cs" />
     <Compile Include="Models\t_h5matches_playersformatchExtensions.cs" />
     <Compile Include="Models\t_h5matches_ranksandscoresExtension.cs" />

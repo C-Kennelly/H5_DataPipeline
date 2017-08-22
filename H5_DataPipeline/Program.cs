@@ -57,7 +57,7 @@ namespace H5_DataPipeline
                     player.queryStatus = -1;
                     player.UpdateDatabase();
 
-                    MatchHistorian matchHistorian = new MatchHistorian(player);
+                    Marshall matchHistorian = new Marshall(player);
 
                     try
                     {
