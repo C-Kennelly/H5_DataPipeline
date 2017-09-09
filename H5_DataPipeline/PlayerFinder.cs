@@ -11,6 +11,7 @@ using HaloSharp.Model.Halo5.Stats.CarnageReport.Common;
 using HaloSharp.Extension;
 using HaloSharp.Exception;
 using HaloSharp.Model;
+using System.Threading;
 
 namespace H5_DataPipeline
 {
@@ -85,9 +86,10 @@ namespace H5_DataPipeline
                         if (haloAPIException.HaloApiError.StatusCode == 429)
                         {
                             resultFound = false;
-                            await Task.Delay(50);
+                            Thread.Sleep(500);
+            
                         }
-                        Console.WriteLine("The Halo API threw an exception for match {0}, status code: {1}.  Stopping calls.", matchID, haloAPIException.HaloApiError.StatusCode);
+                        Console.WriteLine("PlayerFinderArnea: The Halo API threw an exception for match {0}, status code: {1}.  Stopping calls.", matchID, haloAPIException.HaloApiError.StatusCode);
                     }
                 }
                 return arenaCarnageReport;
@@ -115,9 +117,9 @@ namespace H5_DataPipeline
                         if (haloAPIException.HaloApiError.StatusCode == 429)
                         {
                             resultFound = false;
-                            await Task.Delay(50);
+                            Thread.Sleep(500);
                         }
-                        Console.WriteLine("The Halo API threw an exception for match {0}, status code: {1}.  Stopping calls.", matchID, haloAPIException.HaloApiError.StatusCode);
+                        Console.WriteLine("PlayerFinderWarzone: The Halo API threw an exception for match {0}, status code: {1}.  Stopping calls.", matchID, haloAPIException.HaloApiError.StatusCode);
                     }
 
                 }
@@ -145,9 +147,9 @@ namespace H5_DataPipeline
                         if (haloAPIException.HaloApiError.StatusCode == 429)
                         {
                             resultFound = false;
-                            await Task.Delay(50);
+                            Thread.Sleep(500);
                         }
-                        Console.WriteLine("The Halo API threw an exception for match {0}, status code: {1}.  Stopping calls.", matchID, haloAPIException.HaloApiError.StatusCode);
+                        Console.WriteLine("PlayerFinderCustom: The Halo API threw an exception for match {0}, status code: {1}.  Stopping calls.", matchID, haloAPIException.HaloApiError.StatusCode);
                     }
 
                 }

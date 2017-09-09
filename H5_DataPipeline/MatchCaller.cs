@@ -42,7 +42,7 @@ namespace H5_DataPipeline
                     }
                     catch (HaloApiException e)
                     {
-                        Console.WriteLine("The Halo API threw an exception for gamertag {0}, error {1} - {2}.  Stopping calls.", tag, e.HaloApiError.StatusCode, e.HaloApiError.Message);
+                        Console.WriteLine("MatchCaller: The Halo API threw an exception for gamertag {0}, error {1} - {2}.  Stopping calls.", tag, e.HaloApiError.StatusCode, e.HaloApiError.Message);
                         matchesRemaining = false;
                         //TODO -> Handle errors here... removing 404's?  Common class for handling API errors?
                     }
