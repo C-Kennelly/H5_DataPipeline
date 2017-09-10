@@ -22,7 +22,7 @@ namespace H5_DataPipeline
 
             using (var db = new dev_spartanclashbackendEntities())
             {
-                matchDetails = db.t_h5matches_matchdetails.FirstOrDefault(record => record.matchId == matchToFind.matchID);
+                matchDetails = db.t_h5matches_matchdetails.Find(matchToFind.matchID);
             }
 
             if(matchDetails != null)

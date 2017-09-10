@@ -36,11 +36,15 @@ namespace H5_DataPipeline.Assistants
         private List<t_teams> GetSpartanCompaniesTrackedInDatabase()
         {
             string waypointSourceName = t_teamsources.GetWaypointSourceName();
+            string noCompanyFoundID = t_teams.GetNoWaypointCompanyFoundID();
+
             using (var db = new dev_spartanclashbackendEntities())
             {
-                return db.t_teams.Where( team => 
-                    team.teamSource == waypointSourceName
-                ).ToList();
+                return db.t_teams.Where(team => 
+                        team.teamSource == waypointSourceName
+                        && team.teamId != noCompanyFoundID)
+                    .ToList();
+
             }
         }
 

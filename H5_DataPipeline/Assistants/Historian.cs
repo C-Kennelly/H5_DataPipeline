@@ -40,9 +40,41 @@ namespace H5_DataPipeline.Assistants
 
         private List<t_players> GetTrackedPlayers()
         {
+            //Only search players who are in a Spartan Company on Waypoint
             using (var db = new dev_spartanclashbackendEntities())
             {
-                return db.t_players.ToList();
+
+                string waypointSourceName = t_teamsources.GetWaypointSourceName();
+                string noCompanyFoundID = t_teams.GetNoWaypointCompanyFoundID();
+
+                //Get all teams in the database from the Waypoint source, excluding the special team for NoCompanyFound.
+                List<t_teams> teamsFromWaypoint = db.t_teams.Where(team =>
+                        team.teamSource == waypointSourceName
+                        && team.teamId != noCompanyFoundID)
+                    .ToList();
+
+                List<t_players_to_teams> rosterEntriesFromWayoint = new List<t_players_to_teams>(teamsFromWaypoint.Count);
+
+                foreach(t_teams team in teamsFromWaypoint)
+                {
+                    List<t_players_to_teams> rosterEntriesForTeam = db.t_players_to_teams.Where(x => x.teamId == team.teamId).ToList();
+                    if(rosterEntriesForTeam != null)
+                    {
+                        rosterEntriesFromWayoint.AddRange(rosterEntriesForTeam);
+                    }
+                }
+
+                List<t_players> playersOnWaypointTeams = new List<t_players>(rosterEntriesFromWayoint.Count);
+                foreach (t_players_to_teams rosterEntries in rosterEntriesFromWayoint)
+                {
+                    t_players playerInRoster = db.t_players.Find(rosterEntries.gamertag);
+                    if(playerInRoster!= null)
+                    {
+                        playersOnWaypointTeams.Add(playerInRoster);
+                    }
+                }
+
+                return playersOnWaypointTeams;
             }
         }
 
@@ -50,8 +82,6 @@ namespace H5_DataPipeline.Assistants
         {
             int counter = 0;
             int total = players.Count;
-
-            Console.WriteLine("Historian could use some logic to prevent needless scanning of players");
 
             foreach (t_players player in players)
             {
