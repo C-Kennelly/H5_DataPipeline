@@ -99,8 +99,9 @@
     <Compile Include="Assistants\Clanalyzer.cs" />
     <Compile Include="Assistants\Historian.cs" />
     <Compile Include="Assistants\FieldMarshall.cs" />
+    <Compile Include="Assistants\HistorianScribe.cs" />
     <Compile Include="Assistants\Mortician.cs" />
-    <Compile Include="Marshall.cs" />
+    <Compile Include="DeleteTheseSoon\Marshall.cs" />
     <Compile Include="Models\t_h5matchesExtensions.cs" />
     <Compile Include="Models\t_h5matches_playersformatchExtensions.cs" />
     <Compile Include="Models\t_h5matches_ranksandscoresExtension.cs" />
@@ -108,7 +109,7 @@
       <DependentUpon>H5DataPipelineModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\t_players_to_h5matchesExtension.cs" />
-    <Compile Include="NewMatchProcesser.cs" />
+    <Compile Include="DeleteTheseSoon\NewMatchProcesser.cs" />
     <Compile Include="PlayerFinder.cs" />
     <Compile Include="HaloClientFactory.cs" />
     <Compile Include="Models\H5DataPipelineModel.Context.cs">
@@ -165,7 +166,7 @@
     <Compile Include="Assistants\Quartermaster.cs" />
     <Compile Include="Secrets\SecretAPIKey.cs" />
     <Compile Include="SpartanClashSettings.cs" />
-    <Compile Include="TeamRosterRefresher.cs" />
+    <Compile Include="DeleteTheseSoon\TeamRosterRefresher.cs" />
     <Compile Include="Models\t_h5matches_matchdetailsExtensions.cs" />
     <Compile Include="WaypointSetup.cs" />
   </ItemGroup>

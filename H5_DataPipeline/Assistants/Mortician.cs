@@ -100,11 +100,11 @@ namespace H5_DataPipeline.Assistants
             
             }
 
-            UpdateDatesScanned(parentRecord);
+            UpdatePlayersForMatchDatesScanned(parentRecord);
 
         }
 
-        private void UpdateDatesScanned(t_h5matches match)
+        private void UpdatePlayersForMatchDatesScanned(t_h5matches match)
         {
             using (var db = new dev_spartanclashbackendEntities())
             {
@@ -112,7 +112,7 @@ namespace H5_DataPipeline.Assistants
 
                 if(currentRecord != null)
                 {
-                    currentRecord.dateResultsScan = DateTime.UtcNow;
+                    currentRecord.datePlayersScan = DateTime.UtcNow;
 
                     db.SaveChanges();
                 }

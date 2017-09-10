@@ -68,22 +68,18 @@ namespace H5_DataPipeline.Assistants
         private async Task ProcessPlayer(t_players player)
         {
             Console.WriteLine("Historian still doesn't process players");
-
-            List<PlayerMatch> recentMatchHistory = await GetRecentMatchHistory(player);
-            //StoreMatchDetails();
-            //StoreRanksAndScores();
-        }
-
-        private async Task<List<PlayerMatch>> GetRecentMatchHistory(t_players playerToQuery)
-        {
             MatchCaller matchCaller = new MatchCaller();
+            HistorianScribe scribe = new HistorianScribe();
 
-            return await matchCaller.GetMatchHistoryForPlayerAfterDate(
-                            playerToQuery.gamertag,
-                            spartanClashSettings.GetDateToSearchFrom(playerToQuery),
+
+            List<PlayerMatch> recentH5MatchHistory = await matchCaller.GetH5MatchHistoryForPlayerAfterDate(
+                            player.gamertag,
+                            spartanClashSettings.GetDateToSearchFrom(player),
                             spartanClashSettings.gameModes,
                             haloSession
                         );
+
+            scribe.RecordMatchHistoryForPlayer(recentH5MatchHistory, player);
         }
 
     }
