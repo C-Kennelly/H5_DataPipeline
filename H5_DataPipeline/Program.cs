@@ -14,7 +14,7 @@ namespace H5_DataPipeline
             Console.WriteLine("Hello, Infinity!");
             Console.WriteLine();
 
-            FieldMarshall marshall = new FieldMarshall();
+            Marshall marshall = new Marshall();
             marshall.DoTheThing();
 
             Console.WriteLine();

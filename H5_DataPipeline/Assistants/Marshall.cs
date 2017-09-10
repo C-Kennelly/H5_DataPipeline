@@ -13,7 +13,7 @@ namespace H5_DataPipeline.Assistants
     /// <summary>
     /// The Field Marshall's job is to handle flow for the assistants.
     /// </summary>
-    class FieldMarshall
+    class Marshall
     {
         IHaloSession haloSession;
 
@@ -24,7 +24,7 @@ namespace H5_DataPipeline.Assistants
 
         SpartanClashSettings spartanClashSettings = new SpartanClashSettings();
 
-        public FieldMarshall()
+        public Marshall()
         {
             spartanClashSettings = new SpartanClashSettings();
             SetupHaloSharpComponents();            
