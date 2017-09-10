@@ -9,7 +9,7 @@ using H5_DataPipeline.Models;
 namespace H5_DataPipeline.Assistants
 {
     /// <summary>
-    /// The historian's job is to know the details of every battle.  She goes through tracked players and scans recent games, recording their details.
+    /// The historian's job is to know the details of every battle.  She goes through tracked players and scans recent games, recording their details and scores.
     /// </summary>
     class Historian
     {
@@ -52,6 +52,11 @@ namespace H5_DataPipeline.Assistants
                 Console.Write("\rProcessing {0} of {1}: {2}", counter, total, player.gamertag);
 
                 ProcessPlayer(player);
+            }
+
+            if (total == 0)
+            {
+                Console.Write("No matches for Historian to process.");
             }
         }
 

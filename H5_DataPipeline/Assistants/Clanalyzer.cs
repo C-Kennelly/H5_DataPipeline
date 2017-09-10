@@ -62,6 +62,11 @@ namespace H5_DataPipeline.Assistants
 
                 ProcessMatch(match);
             }
+
+            if (total == 0)
+            {
+                Console.Write("No matches for Clanalyzer to process.");
+            }
         }
 
         private void ProcessMatch(t_h5matches match)

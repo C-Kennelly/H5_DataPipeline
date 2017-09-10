@@ -56,6 +56,11 @@ namespace H5_DataPipeline.Assistants
 
                 ProcessCompany(company);
             }
+
+            if (total == 1)  //[NOCOMPANYFOUND is the one]
+            {
+                Console.Write("No Companies for Quartermaster to process.");
+            }
         }
 
         private void ProcessCompany(t_teams team)

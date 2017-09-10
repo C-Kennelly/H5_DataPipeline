@@ -14,6 +14,7 @@ namespace H5_DataPipeline.Assistants
     /// </summary>
     class FieldMarshall
     {
+        HaloClientFactory haloClientFactory;
         HaloClient haloClient;
         IHaloSession haloSession;
 
@@ -30,16 +31,15 @@ namespace H5_DataPipeline.Assistants
 
         private void SetupHaloSharpComponents()
         {
-            HaloClientFactory haloClientFactory = new HaloClientFactory();
+            haloClientFactory = new HaloClientFactory();
             haloClient = haloClientFactory.GetProdClient();
-            haloSession = haloClient.StartSession();
         }
 
         private void SetupAssistants()
         {
             quartermaster = new Quartermaster(haloSession);
             historian = new Historian(haloSession);
-            mortician = new Mortician(haloSession);
+            mortician = new Mortician(haloClientFactory);
             clanalyzer = new Clanalyzer(haloSession);
         }
 

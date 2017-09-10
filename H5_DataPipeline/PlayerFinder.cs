@@ -16,30 +16,49 @@ namespace H5_DataPipeline
 {
     public class PlayerFinder
     {
+        private int? GetGameModeForMatch(t_h5matches matchToFind)
+        {
+            t_h5matches_matchdetails matchDetails;
 
-        public async Task<t_h5matches_playersformatch> GetPlayersForMatch(t_h5matches_matchdetails match, HaloClient client)
+            using (var db = new dev_spartanclashbackendEntities())
+            {
+                matchDetails = db.t_h5matches_matchdetails.FirstOrDefault(record => record.matchId == matchToFind.matchID);
+            }
+
+            if(matchDetails != null)
+            {
+                return matchDetails.GameMode;
+            }
+            else
+            {
+                throw new NotImplementedException("Don't know the game mode, can't find the players!");
+            }
+        }
+
+        public async Task<t_h5matches_playersformatch> GetPlayersForMatch(t_h5matches match, HaloClient client)
         {
             t_h5matches_playersformatch result = null;
-
-            switch(match.GameMode)
+            int? gameMode = GetGameModeForMatch(match);
+            
+            switch(gameMode)
             {
                 case ((int)Enumeration.Halo5.GameMode.Arena):
                 {
-                    ArenaMatch carnageReport = await GetArenaMatchCarnageReport(match.matchId, client);
-                    result = new t_h5matches_playersformatch(match.matchId, carnageReport);
+                    ArenaMatch carnageReport = await GetArenaMatchCarnageReport(match.matchID, client);
+                    result = new t_h5matches_playersformatch(match.matchID, carnageReport);
                     break;
                 }
                 case ((int)Enumeration.Halo5.GameMode.Warzone):
                 {
-                    WarzoneMatch carnageReport = await GetWarzoneMatchCarnageReport(match.matchId, client);
-                    result = new t_h5matches_playersformatch(match.matchId, carnageReport);
+                    WarzoneMatch carnageReport = await GetWarzoneMatchCarnageReport(match.matchID, client);
+                    result = new t_h5matches_playersformatch(match.matchID, carnageReport);
                     break;
                 }
 
                 case ((int)Enumeration.Halo5.GameMode.Custom):
                 {
-                    CustomMatch carnageReport = await GetCustomMatchCarnageReport(match.matchId, client);
-                    result = new t_h5matches_playersformatch(match.matchId, carnageReport);
+                    CustomMatch carnageReport = await GetCustomMatchCarnageReport(match.matchID, client);
+                    result = new t_h5matches_playersformatch(match.matchID, carnageReport);
                     break;
                 }
                 case ((int)Enumeration.Halo5.GameMode.Campaign):

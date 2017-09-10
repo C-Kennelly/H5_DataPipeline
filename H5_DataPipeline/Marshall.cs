@@ -101,8 +101,8 @@ namespace H5_DataPipeline
 
                 if (newMatchFound)
                 {
-                    NewMatchProcesser newMatchProcessor = new NewMatchProcesser(match, haloClient);
-                    gamertagsFoundInMatch = newMatchProcessor.ProcessMatch();
+                    //NewMatchProcesser newMatchProcessor = new NewMatchProcesser(match, haloClient);
+                    //gamertagsFoundInMatch = newMatchProcessor.ProcessMatch();
                     
 
                     uniqueMatchesFromMatchHistory.Add(matchRecord);

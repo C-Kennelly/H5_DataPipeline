@@ -13,11 +13,12 @@ namespace H5_DataPipeline.Assistants
     /// </summary>
     class Mortician
     {
-        IHaloSession haloSession;
+        HaloClient haloClient;
 
-        public Mortician(IHaloSession session)
+
+        public Mortician(HaloClientFactory clientFactory)
         {
-            haloSession = session;
+            haloClient = clientFactory.GetProdClient();
         }
 
 
@@ -53,15 +54,73 @@ namespace H5_DataPipeline.Assistants
             {
                 counter++;
                 Console.Write("\rProcessing {0} of {1}: {2}", counter, total, match.matchID);
+                ProcessMatch(match).Wait();
+            }
 
-                ProcessMatch(match);
+            if(total == 0)
+            {
+                Console.Write("No matches for Mortician to process.");
             }
         }
 
-        private void ProcessMatch(t_h5matches match)
+        private async Task ProcessMatch(t_h5matches matchToQuery)
         {
-            Console.WriteLine("Mortician doesn't actually process matches yet.");
-                //Store players, and what company they were on when the match was saved
+            PlayerFinder playerFinder = new PlayerFinder();
+            
+            t_h5matches_playersformatch playersForMatch = await playerFinder.GetPlayersForMatch(matchToQuery, haloClient);
+
+            if(playersForMatch != null)
+            {
+                SavePlayersForMatch(playersForMatch, matchToQuery);
+            }
+            else
+            {
+                //TODO - remove match or create dummy record
+            }
+        }
+
+        private void SavePlayersForMatch(t_h5matches_playersformatch playersRecord, t_h5matches parentRecord)
+        {
+            using (var db = new dev_spartanclashbackendEntities())
+            {
+                t_h5matches_playersformatch currentRecord = db.t_h5matches_playersformatch.FirstOrDefault(record => 
+                                                                record.matchID == playersRecord.matchID
+                                                            );
+            
+                if(currentRecord == null)
+                {
+                    db.t_h5matches_playersformatch.Add(playersRecord);
+                    db.SaveChanges();
+                }
+                else
+                {
+                    //Record exists, don't touch it.
+                }
+            
+            
+            }
+
+            UpdateDatesScanned(parentRecord);
+
+        }
+
+        private void UpdateDatesScanned(t_h5matches match)
+        {
+            using (var db = new dev_spartanclashbackendEntities())
+            {
+                t_h5matches currentRecord = db.t_h5matches.Find(match.matchID);
+
+                if(currentRecord != null)
+                {
+                    currentRecord.dateResultsScan = DateTime.UtcNow;
+
+                    db.SaveChanges();
+                }
+                else
+                {
+                    throw new NotImplementedException("Impossibility condition reached - couldn't find parent 'h5matches' record for matchID: " + match.matchID);
+                }
+            }
         }
 
     }
