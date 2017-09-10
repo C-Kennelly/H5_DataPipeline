@@ -81,7 +81,7 @@ namespace H5_DataPipeline
         private async Task FindMatchHistory()
         {
             MatchCaller matchCaller = new MatchCaller();
-            matchHistory = await matchCaller.GetMatchHistoryForPlayerAfterDate(player.gamertag, player.GetEarliestDateToScanMatches(), gameModes, haloClient);
+            matchHistory = await matchCaller.GetMatchHistoryForPlayerAfterDate(player.gamertag, player.GetEarliestDateToScanMatches(), gameModes, haloClient.StartSession());
             Console.WriteLine("Finished searching match history, begin processing.");
         }
 

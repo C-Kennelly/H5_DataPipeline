@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using H5_DataPipeline.Models;
 using H5_DataPipeline.Assistants;
 using HaloSharp;
+using HaloSharp.Model;
 
 namespace H5_DataPipeline.Assistants
 {
@@ -14,34 +15,39 @@ namespace H5_DataPipeline.Assistants
     /// </summary>
     class FieldMarshall
     {
-        HaloClientFactory haloClientFactory;
-        HaloClient haloClient;
         IHaloSession haloSession;
 
         Quartermaster quartermaster;
-        Historian historian; 
-        Mortician  mortician;
+        Historian historian;
+        Mortician mortician;
         Clanalyzer clanalyzer;
+
+        SpartanClashSettings spartanClashSettings = new SpartanClashSettings();
 
         public FieldMarshall()
         {
+            spartanClashSettings = new SpartanClashSettings();
             SetupHaloSharpComponents();            
             SetupAssistants();
         }
 
         private void SetupHaloSharpComponents()
         {
-            haloClientFactory = new HaloClientFactory();
-            haloClient = haloClientFactory.GetProdClient();
+            HaloClientFactory haloClientFactory = new HaloClientFactory();
+            HaloClient haloClient = haloClientFactory.GetProdClient();
+            haloSession = haloClient.StartSession();
         }
 
         private void SetupAssistants()
         {
             quartermaster = new Quartermaster(haloSession);
-            historian = new Historian(haloSession);
-            mortician = new Mortician(haloClientFactory);
+            historian = new Historian(haloSession, spartanClashSettings);
+            mortician = new Mortician(haloSession);
             clanalyzer = new Clanalyzer(haloSession);
         }
+
+
+
 
         public void DoTheThing()
         {

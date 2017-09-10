@@ -61,7 +61,8 @@ namespace H5_DataPipeline
 
             try
             {
-                t_h5matches_playersformatch playersForMatch = await playerFinder.GetPlayersForMatch(match, client);
+                t_h5matches_playersformatch playersForMatch = new t_h5matches_playersformatch();
+                        //= await playerFinder.GetPlayersForMatch(match, client);
 
                 using (var db = new dev_spartanclashbackendEntities())
                 {

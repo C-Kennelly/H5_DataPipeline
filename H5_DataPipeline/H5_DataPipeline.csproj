@@ -164,6 +164,7 @@
     <Compile Include="MatchCaller.cs" />
     <Compile Include="Assistants\Quartermaster.cs" />
     <Compile Include="Secrets\SecretAPIKey.cs" />
+    <Compile Include="SpartanClashSettings.cs" />
     <Compile Include="TeamRosterRefresher.cs" />
     <Compile Include="Models\t_h5matches_matchdetailsExtensions.cs" />
     <Compile Include="WaypointSetup.cs" />

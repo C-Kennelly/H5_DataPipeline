@@ -5,6 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using HaloSharp;
 using H5_DataPipeline.Models;
+using HaloSharp.Model;
+using HaloSharp.Model.Halo5.Stats;
+
 
 namespace H5_DataPipeline.Assistants
 {
@@ -13,11 +16,13 @@ namespace H5_DataPipeline.Assistants
     /// </summary>
     class Historian
     {
+        SpartanClashSettings spartanClashSettings;
         IHaloSession haloSession;
 
-        public Historian(IHaloSession session)
+        public Historian(IHaloSession session, SpartanClashSettings settings)
         {
             haloSession = session;
+            spartanClashSettings = settings;
         }
 
         public void RecordRecentGames()
@@ -51,23 +56,37 @@ namespace H5_DataPipeline.Assistants
                 counter++;
                 Console.Write("\rProcessing {0} of {1}: {2}", counter, total, player.gamertag);
 
-                ProcessPlayer(player);
+                ProcessPlayer(player).Wait();
             }
 
             if (total == 0)
             {
-                Console.Write("No matches for Historian to process.");
+                Console.Write("No players for Historian to process.");
             }
         }
 
-        private void ProcessPlayer(t_players player)
+        private async Task ProcessPlayer(t_players player)
         {
-            Console.WriteLine("Historian doesn't actually process players yet.");
-            //GetListOfMatchesBeforeDate();
+            Console.WriteLine("Historian still doesn't process players");
+
+            List<PlayerMatch> recentMatchHistory = await GetRecentMatchHistory(player);
             //StoreMatchDetails();
             //StoreRanksAndScores();
-            //MarkActivityStatus();
+        }
+
+        private async Task<List<PlayerMatch>> GetRecentMatchHistory(t_players playerToQuery)
+        {
+            MatchCaller matchCaller = new MatchCaller();
+
+            return await matchCaller.GetMatchHistoryForPlayerAfterDate(
+                            playerToQuery.gamertag,
+                            spartanClashSettings.GetDateToSearchFrom(playerToQuery),
+                            spartanClashSettings.gameModes,
+                            haloSession
+                        );
         }
 
     }
 }
+
+

@@ -13,12 +13,12 @@ namespace H5_DataPipeline.Assistants
     /// </summary>
     class Mortician
     {
-        HaloClient haloClient;
+        IHaloSession haloSession;
 
 
-        public Mortician(HaloClientFactory clientFactory)
+        public Mortician(IHaloSession session)
         {
-            haloClient = clientFactory.GetProdClient();
+            haloSession = session;
         }
 
 
@@ -67,7 +67,7 @@ namespace H5_DataPipeline.Assistants
         {
             PlayerFinder playerFinder = new PlayerFinder();
             
-            t_h5matches_playersformatch playersForMatch = await playerFinder.GetPlayersForMatch(matchToQuery, haloClient);
+            t_h5matches_playersformatch playersForMatch = await playerFinder.GetPlayersForMatch(matchToQuery, haloSession);
 
             if(playersForMatch != null)
             {
@@ -75,7 +75,7 @@ namespace H5_DataPipeline.Assistants
             }
             else
             {
-                //TODO - remove match or create dummy record
+                //TODO - remove match or create record indicating bad results
             }
         }
 
