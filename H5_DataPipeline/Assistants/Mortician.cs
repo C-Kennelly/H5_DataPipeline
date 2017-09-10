@@ -53,7 +53,7 @@ namespace H5_DataPipeline.Assistants
             foreach (t_h5matches match in matches)
             {
                 counter++;
-                Console.Write("\rProcessing {0} of {1}: {2}", counter, total, match.matchID);
+                Console.Write("\rProcessing {0} of {1}: {2}                ", counter, total, match.matchID);
                 ProcessMatch(match).Wait();
             }
 

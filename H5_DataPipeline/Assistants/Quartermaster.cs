@@ -52,7 +52,7 @@ namespace H5_DataPipeline.Assistants
             foreach (t_teams company in companies)
             {
                 counter++;
-                Console.Write("\rProcessing {0} of {1}: {2}", counter, total, company.teamName);
+                Console.Write("\rProcessing {0} of {1}: {2}                ", counter, total, company.teamName);
 
                 ProcessCompany(company);
             }

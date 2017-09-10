@@ -46,7 +46,7 @@ namespace H5_DataPipeline
                 }
             }
                
-            Console.WriteLine();
+            //Console.WriteLine();
             return allMatches;
         }
 

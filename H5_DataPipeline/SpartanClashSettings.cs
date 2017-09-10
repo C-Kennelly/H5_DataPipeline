@@ -23,7 +23,7 @@ namespace H5_DataPipeline
 
         private void SetEarliestDate()
         {
-            lookForMatchesNoEarlierThan = new DateTime(2017, 06, 01, 0, 0, 0);
+            lookForMatchesNoEarlierThan = new DateTime(2017, 09, 01, 0, 0, 0);
         }
 
         private void SetDefaultGameModes()

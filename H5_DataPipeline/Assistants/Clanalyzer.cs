@@ -58,7 +58,7 @@ namespace H5_DataPipeline.Assistants
             foreach (t_h5matches match in matches)
             {
                 counter++;
-                Console.Write("\rProcessing {0} of {1}: {2}", counter, total, match.matchID);
+                Console.Write("\rProcessing {0} of {1}: {2}                ", counter, total, match.matchID);
 
                 ProcessMatch(match);
             }
@@ -71,7 +71,6 @@ namespace H5_DataPipeline.Assistants
 
         private void ProcessMatch(t_h5matches match)
         {
-            Console.WriteLine("Clanalyzer doesn't actually process matches yet.");
                 //Look through records and go for counts on numbers of teams to tag.
         }
 

@@ -51,10 +51,12 @@ namespace H5_DataPipeline.Assistants
             int counter = 0;
             int total = players.Count;
 
+            Console.WriteLine("Historian could use some logic to prevent needless scanning of players");
+
             foreach (t_players player in players)
             {
                 counter++;
-                Console.Write("\rProcessing {0} of {1}: {2}", counter, total, player.gamertag);
+                Console.Write("\rProcessing {0} of {1}: {2}                ",counter, total, player.gamertag);
 
                 ProcessPlayer(player).Wait();
             }
@@ -67,7 +69,6 @@ namespace H5_DataPipeline.Assistants
 
         private async Task ProcessPlayer(t_players player)
         {
-            Console.WriteLine("Historian still doesn't process players");
             MatchCaller matchCaller = new MatchCaller();
             HistorianScribe scribe = new HistorianScribe();
 
