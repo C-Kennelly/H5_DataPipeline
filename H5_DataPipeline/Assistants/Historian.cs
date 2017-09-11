@@ -27,18 +27,18 @@ namespace H5_DataPipeline.Assistants
 
         public void RecordRecentGames()
         {
-            List<t_players> trackedPlayers = GetTrackedPlayers();
+            List<t_players> trackedWaypointPlayers = GetTrackedPlayersFromWaypoint();
 
             Console.WriteLine("Updating player Match Histories at: {0}", DateTime.UtcNow);
             Console.WriteLine();
 
-            ProcessPlayers(trackedPlayers);
+            ProcessPlayers(trackedWaypointPlayers);
 
             Console.WriteLine(); Console.WriteLine();
             Console.WriteLine("Finished updating player Match Histories at: {0}", DateTime.UtcNow);
         }
 
-        private List<t_players> GetTrackedPlayers()
+        private List<t_players> GetTrackedPlayersFromWaypoint()
         {
             //Only search players who are in a Spartan Company on Waypoint
             using (var db = new dev_spartanclashbackendEntities())

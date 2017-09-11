@@ -97,6 +97,41 @@ namespace H5_DataPipeline.Models
             }
         }
 
+        public static string GetSpartanCompanyIDForGamertag(string gt)
+        {
+            t_players placeHolderPlayer = new t_players(gt);
+            return placeHolderPlayer.GetSpartanCompanyIDForThisPlayer();
+        }
+
+        public static string[] GetSpartanClashIDsForGamertag(string gt)
+        {
+            t_players placeHolderPlayer = new t_players(gt);
+            return placeHolderPlayer.GetSpartanClashIDsForThisPlayer();
+        }
+
+        public string GetSpartanCompanyIDForThisPlayer()
+        {
+            using (var db = new dev_spartanclashbackendEntities())
+            {
+                string spartanCompanyID = t_teams.GetNoWaypointCompanyFoundID();
+
+                t_players_to_teams rosterForThisPlayer = db.t_players_to_teams.FirstOrDefault(roster => roster.gamertag == this.gamertag);
+
+                if(rosterForThisPlayer != null)
+                {
+                    spartanCompanyID = rosterForThisPlayer.teamId;
+                }
+
+                return spartanCompanyID;
+            }
+        }
+
+        public string[] GetSpartanClashIDsForThisPlayer()
+        {
+            return null;
+        }
+
+
 
 
         public void RecordMatchScan()
