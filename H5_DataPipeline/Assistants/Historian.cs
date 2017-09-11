@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using HaloSharp;
 using H5_DataPipeline.Models;
@@ -65,14 +66,19 @@ namespace H5_DataPipeline.Assistants
                 }
 
                 List<t_players> playersOnWaypointTeams = new List<t_players>(rosterEntriesFromWayoint.Count);
-                foreach (t_players_to_teams rosterEntries in rosterEntriesFromWayoint)
+
+                Parallel.ForEach(rosterEntriesFromWayoint, rosterEntry =>
                 {
-                    t_players playerInRoster = db.t_players.Find(rosterEntries.gamertag);
-                    if(playerInRoster!= null)
+                    using(var dbp = new dev_spartanclashbackendEntities())
                     {
-                        playersOnWaypointTeams.Add(playerInRoster);
+                        playersOnWaypointTeams.Add(dbp.t_players.Find(rosterEntry.gamertag));
                     }
-                }
+                });
+
+                //foreach (t_players_to_teams rosterEntries in rosterEntriesFromWayoint)
+                //{
+                //    playersOnWaypointTeams.Add(db.t_players.Find(rosterEntries.gamertag));
+                //}
 
                 return playersOnWaypointTeams;
             }
