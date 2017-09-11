@@ -11,6 +11,7 @@ using HaloSharp.Model.Halo5.Stats.CarnageReport.Common;
 using HaloSharp.Extension;
 using HaloSharp.Exception;
 using HaloSharp.Model;
+using System.Threading;
 
 namespace H5_DataPipeline
 {
@@ -101,6 +102,7 @@ namespace H5_DataPipeline
                 {
                     if (haloAPIException.HaloApiError.StatusCode == 429)
                     {
+
                         resultFound = false;
                         await Task.Delay(50);
                     }
@@ -131,6 +133,7 @@ namespace H5_DataPipeline
                     {
                         resultFound = false;
                         await Task.Delay(50);
+
                     }
                     Console.WriteLine("The Halo API threw an exception for match {0}, status code: {1}.  Stopping calls.", matchID, haloAPIException.HaloApiError.StatusCode);
                 }
@@ -159,6 +162,7 @@ namespace H5_DataPipeline
                     {
                         resultFound = false;
                         await Task.Delay(50);
+
                     }
                     Console.WriteLine("The Halo API threw an exception for match {0}, status code: {1}.  Stopping calls.", matchID, haloAPIException.HaloApiError.StatusCode);
                 }
