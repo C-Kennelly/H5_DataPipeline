@@ -14,10 +14,13 @@ namespace H5_DataPipeline.Assistants
     class Clanalyzer
     {
         IHaloSession haloSession;
+        SpartanClashSettings spartanClashSettings;
 
-        public Clanalyzer(IHaloSession session)
+        public Clanalyzer(IHaloSession session, SpartanClashSettings settings)
         {
             haloSession = session;
+            spartanClashSettings = settings;
+
         }
 
         public void AnalyzeClanBattles()
@@ -45,8 +48,8 @@ namespace H5_DataPipeline.Assistants
             using (var db = new dev_spartanclashbackendEntities())
             {
                 return db.t_h5matches.Where(match =>
-                  match.t_h5matches_teamsinvolved_halowaypointcompanies == null
-                ).ToList();
+                    match.t_h5matches_teamsinvolved_halowaypointcompanies == null)
+                .ToList();
             }
         }
 
@@ -71,7 +74,83 @@ namespace H5_DataPipeline.Assistants
 
         private void ProcessMatch(t_h5matches match)
         {
-                //Look through records and go for counts on numbers of teams to tag.
+            t_h5matches_teamsinvolved_halowaypointcompanies waypointCompaniesInvolved = IdentifyWaypointCompaniesPresentBasedOnPlayers(match);
+
+            if(waypointCompaniesInvolved != null)
+            {
+                SaveWaypointTeamsInvolvedForMatch(waypointCompaniesInvolved, match);
+            }
+            else
+            {
+                //TODO - create default record or handle failure.
+            }
+        }
+
+        private t_h5matches_teamsinvolved_halowaypointcompanies IdentifyWaypointCompaniesPresentBasedOnPlayers(t_h5matches matchToQuery)
+        {
+            t_h5matches_teamsinvolved_halowaypointcompanies result = null;
+
+            t_h5matches_playersformatch playersForMatch;
+            using (var db = new dev_spartanclashbackendEntities())
+            {
+                playersForMatch = db.t_h5matches_playersformatch.Find(matchToQuery.matchID);
+            }
+
+            if(playersForMatch != null)
+            {
+                result = new t_h5matches_teamsinvolved_halowaypointcompanies(playersForMatch, spartanClashSettings);
+            }
+            else
+            {
+                Console.WriteLine("Detected Mortician failure during Clan Battle Tagging {0}", matchToQuery.matchID);
+                //TODO - handle record... it needed to be scanned so we probably had a failure.
+            }
+
+            return result;
+        }
+
+        private void SaveWaypointTeamsInvolvedForMatch(t_h5matches_teamsinvolved_halowaypointcompanies waypointRecord, t_h5matches parentRecord)
+        {
+            using (var db = new dev_spartanclashbackendEntities())
+            {
+                t_h5matches_teamsinvolved_halowaypointcompanies currentRecord = db.t_h5matches_teamsinvolved_halowaypointcompanies.FirstOrDefault(record =>
+                                                                record.matchID == waypointRecord.matchID
+                                                            );
+
+                if (currentRecord == null)
+                {
+                    db.t_h5matches_teamsinvolved_halowaypointcompanies.Add(waypointRecord);
+                    db.SaveChanges();
+                }
+                else
+                {
+                    //Record exists, don't touch it.
+                }
+
+
+            }
+
+            UpdateWaypointTeamsDatesScanned(parentRecord);
+
+        }
+
+        private void UpdateWaypointTeamsDatesScanned(t_h5matches match)
+        {
+            using (var db = new dev_spartanclashbackendEntities())
+            {
+                t_h5matches currentRecord = db.t_h5matches.Find(match.matchID);
+
+                if (currentRecord != null)
+                {
+                    currentRecord.dateCompaniesInvolvedUpdated = DateTime.UtcNow;
+
+                    db.SaveChanges();
+                }
+                else
+                {
+                    throw new NotImplementedException("Impossibility condition reached - couldn't find parent 'h5matches' record for matchID: " + match.matchID);
+                }
+            }
         }
 
     }

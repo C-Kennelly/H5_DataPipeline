@@ -43,7 +43,7 @@ namespace H5_DataPipeline.Assistants
             quartermaster = new Quartermaster(haloSession);
             historian = new Historian(haloSession, spartanClashSettings);
             mortician = new Mortician(haloSession);
-            clanalyzer = new Clanalyzer(haloSession);
+            clanalyzer = new Clanalyzer(haloSession, spartanClashSettings);
         }
 
 
