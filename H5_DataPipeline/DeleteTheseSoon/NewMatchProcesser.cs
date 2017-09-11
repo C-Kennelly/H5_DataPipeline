@@ -25,7 +25,7 @@ namespace H5_DataPipeline
         public List<string> ProcessMatch()
         {
             t_h5matches_matchdetails matchDetails = SaveMatchDetails();
-            SaveMatchPlayers(matchDetails).Wait();
+            SaveMatchPlayers(matchDetails.t_h5matches).Wait();
             SaveMatchRanksAndScores();
 
             return playersInMatch;
@@ -52,14 +52,17 @@ namespace H5_DataPipeline
             }
         }
 
-        private async Task SaveMatchPlayers(t_h5matches_matchdetails matchDetails)
+        private async Task SaveMatchPlayers(t_h5matches match)
         {
+            t_h5matches_matchdetails matchDetails = match.t_h5matches_matchdetails;
+
             Console.Write("\r Saving players in match...");
             PlayerFinder playerFinder = new PlayerFinder();
 
             try
             {
-                t_h5matches_playersformatch playersForMatch = await playerFinder.GetPlayersForMatch(matchDetails, client);
+                t_h5matches_playersformatch playersForMatch = new t_h5matches_playersformatch();
+                        //= await playerFinder.GetPlayersForMatch(match, client);
 
                 using (var db = new dev_spartanclashbackendEntities())
                 {

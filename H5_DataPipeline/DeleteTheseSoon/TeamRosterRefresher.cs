@@ -50,7 +50,7 @@ namespace H5_DataPipeline
 
         private void RefreshSpecificPlayersCompanyRosters(List<t_players> specificPlayersToScan)
         {
-            WaypointSourceSetup();
+            WaypointSetup.SetupWaypointSourcesInDatabase();
 
             SpartanCompanyCurrentRosterSetup();
 
@@ -102,44 +102,12 @@ namespace H5_DataPipeline
             }
         }
 
-        private void WaypointSourceSetup()
-        {
-            AddDefaultTeamSourceRecord();
-            AddDefaultTeamsRecords();
-        }
-
-        private void AddDefaultTeamSourceRecord()
-        {
-            using (var db = new dev_spartanclashbackendEntities())
-            {
-                t_teamsources defaultSpartanCompanySource = db.t_teamsources.Find(t_teamsources.GetWaypointSourceName());
-                if (defaultSpartanCompanySource == null)
-                {
-                    db.t_teamsources.Add(t_teamsources.GetNewDefaultWaypointRecord());
-                }
-                db.SaveChanges();
-            }
-        }
-
-        private void AddDefaultTeamsRecords()
-        {
-            using (var db = new dev_spartanclashbackendEntities())
-            {
-                t_teams defaultSpartanCompanyNoCompanyFoundTeam = db.t_teams.Find(t_teams.GetNoWaypointCompanyFoundID());
-                if (defaultSpartanCompanyNoCompanyFoundTeam == null)
-                {
-                    db.t_teams.Add(t_teams.GetNewDefaultNoCompanyFoundRecord());
-                }
-
-                db.SaveChanges();
-            }
-        }
 
         private void RefreshAllPlayersCompanyRosters()
         {
             int playersLeftToScan = 1;
 
-            WaypointSourceSetup();
+            WaypointSetup.SetupWaypointSourcesInDatabase();
 
             while(playersLeftToScan >= 0)
             {

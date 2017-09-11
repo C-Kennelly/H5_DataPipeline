@@ -18,25 +18,23 @@ namespace H5_DataPipeline
     {
         private const int matchesPerCall = 25;
 
-        public async Task<List<PlayerMatch>> GetMatchHistoryForPlayerAfterDate(string tag, DateTime earliestMatchDate, List<Enumeration.Halo5.GameMode> modes, HaloClient client)
+        public async Task<List<PlayerMatch>> GetH5MatchHistoryForPlayerAfterDate(string tag, DateTime earliestMatchDate, List<Enumeration.Halo5.GameMode> modes, IHaloSession session)
         {
             bool matchesRemaining = true;
             List<PlayerMatch> allMatches = new List<PlayerMatch>();
 
-            using (var session = client.StartSession())
+            while (matchesRemaining)
             {
-                while (matchesRemaining)
+                try
                 {
-                    try
-                    {
 
-                        MatchSet<PlayerMatch> matchSet = await session.Query(new GetMatchHistory(tag)
-                                                    .Skip(allMatches.Count)
-                                                    .InGameModes(modes) );
+                    MatchSet<PlayerMatch> matchSet = await session.Query(new GetMatchHistory(tag)
+                                                .Skip(allMatches.Count)
+                                                .InGameModes(modes) );
 
-                        if (matchSet != null) { allMatches.AddRange(matchSet.Results); }
+                    if (matchSet != null) { allMatches.AddRange(matchSet.Results); }
 
-                        Console.Write("\rFound {0} matches so far", allMatches.Count);
+                    //Console.Write("\rFound {0} matches so far", allMatches.Count);
 
                         matchesRemaining = CheckIfMatchesRemaining(matchSet, earliestMatchDate);
                     }
@@ -46,9 +44,11 @@ namespace H5_DataPipeline
                         matchesRemaining = false;
                         //TODO -> Handle errors here... removing 404's?  Common class for handling API errors?
                     }
+
                 }
             }
-            Console.WriteLine();
+               
+            //Console.WriteLine();
             return allMatches;
         }
 

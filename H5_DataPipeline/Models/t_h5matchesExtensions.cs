@@ -22,9 +22,9 @@ namespace H5_DataPipeline.Models
             queryStatus = 0;
         }
 
-        public t_h5matches(PlayerMatch playerName)
+        public t_h5matches(PlayerMatch playerMatch)
         {
-            matchID = playerName.Id.MatchId.ToString();
+            matchID = playerMatch.Id.MatchId.ToString();
             dateDetailsScan = null;
             datePlayersScan = null;
             dateResultsScan = null;
