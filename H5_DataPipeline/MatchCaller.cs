@@ -30,21 +30,19 @@ namespace H5_DataPipeline
 
                     MatchSet<PlayerMatch> matchSet = await session.Query(new GetMatchHistory(tag)
                                                 .Skip(allMatches.Count)
-                                                .InGameModes(modes) );
+                                                .InGameModes(modes));
 
                     if (matchSet != null) { allMatches.AddRange(matchSet.Results); }
 
                     //Console.Write("\rFound {0} matches so far", allMatches.Count);
 
-                        matchesRemaining = CheckIfMatchesRemaining(matchSet, earliestMatchDate);
-                    }
-                    catch (HaloApiException e)
-                    {
-                        Console.WriteLine("MatchCaller: The Halo API threw an exception for gamertag {0}, error {1} - {2}.  Stopping calls.", tag, e.HaloApiError.StatusCode, e.HaloApiError.Message);
-                        matchesRemaining = false;
-                        //TODO -> Handle errors here... removing 404's?  Common class for handling API errors?
-                    }
-
+                    matchesRemaining = CheckIfMatchesRemaining(matchSet, earliestMatchDate);
+                }
+                catch (HaloApiException e)
+                {
+                    Console.WriteLine("MatchCaller: The Halo API threw an exception for gamertag {0}, error {1} - {2}.  Stopping calls.", tag, e.HaloApiError.StatusCode, e.HaloApiError.Message);
+                    matchesRemaining = false;
+                    //TODO -> Handle errors here... removing 404's?  Common class for handling API errors?
                 }
             }
                
