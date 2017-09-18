@@ -167,7 +167,7 @@ namespace H5_DataPipeline
                     {
                         var query = new GetPlayerAppearance(player.gamertag);
                         PlayerAppearance playerAppearance = await session.Query(query);
-                        company = playerAppearance.company;
+                        company = playerAppearance.Company;
 
                         HandleCompanyResults(player, company);
                     }
