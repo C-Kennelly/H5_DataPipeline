@@ -86,18 +86,27 @@ namespace H5_DataPipeline.Assistants
                 t_h5matches_playersformatch currentRecord = db.t_h5matches_playersformatch.FirstOrDefault(record => 
                                                                 record.matchID == playersRecord.matchID
                                                             );
-            
-                if(currentRecord == null)
+                try
                 {
-                    db.t_h5matches_playersformatch.Add(playersRecord);
-                    db.SaveChanges();
+                    if (currentRecord == null)
+                    {
+                        db.t_h5matches_playersformatch.Add(playersRecord);
+                        db.SaveChanges();
+                    }
+                    else
+                    {
+                        Console.WriteLine("Record was null");
+                        //Record exists, don't touch it.
+                    }
+
                 }
-                else
+                catch(Exception e)
                 {
-                    //Record exists, don't touch it.
+                    Console.WriteLine(e.Message);
                 }
-            
-            
+
+
+
             }
 
             UpdatePlayersForMatchDatesScanned(parentRecord);
