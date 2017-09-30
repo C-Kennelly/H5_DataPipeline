@@ -13,17 +13,15 @@
 
 
 -- Dumping database structure for dev_spartanclashbackend
-DROP DATABASE IF EXISTS `dev_spartanclashbackend`;
 CREATE DATABASE IF NOT EXISTS `dev_spartanclashbackend` /*!40100 DEFAULT CHARACTER SET latin1 */;
 USE `dev_spartanclashbackend`;
 
 -- Dumping structure for table dev_spartanclashbackend.t_h5matches
-DROP TABLE IF EXISTS `t_h5matches`;
 CREATE TABLE IF NOT EXISTS `t_h5matches` (
   `matchID` varchar(64) NOT NULL,
   `dateDetailsScan` datetime DEFAULT NULL,
-  `datePlayersScan` datetime DEFAULT NULL,
   `dateResultsScan` datetime DEFAULT NULL,
+  `datePlayersScan` datetime DEFAULT NULL,
   `dateCompaniesInvolvedUpdated` datetime DEFAULT NULL,
   `dateCustomTeamsUpdated` datetime DEFAULT NULL,
   `queryStatus` int(4) NOT NULL DEFAULT 0,
@@ -32,7 +30,6 @@ CREATE TABLE IF NOT EXISTS `t_h5matches` (
 
 -- Data exporting was unselected.
 -- Dumping structure for table dev_spartanclashbackend.t_h5matches_matchdetails
-DROP TABLE IF EXISTS `t_h5matches_matchdetails`;
 CREATE TABLE IF NOT EXISTS `t_h5matches_matchdetails` (
   `matchId` varchar(64) NOT NULL,
   `GameMode` int(32) DEFAULT NULL,
@@ -57,7 +54,6 @@ CREATE TABLE IF NOT EXISTS `t_h5matches_matchdetails` (
 
 -- Data exporting was unselected.
 -- Dumping structure for table dev_spartanclashbackend.t_h5matches_playersformatch
-DROP TABLE IF EXISTS `t_h5matches_playersformatch`;
 CREATE TABLE IF NOT EXISTS `t_h5matches_playersformatch` (
   `matchID` varchar(64) NOT NULL,
   `team1_Players` varchar(1024) DEFAULT NULL,
@@ -72,7 +68,6 @@ CREATE TABLE IF NOT EXISTS `t_h5matches_playersformatch` (
 
 -- Data exporting was unselected.
 -- Dumping structure for table dev_spartanclashbackend.t_h5matches_ranksandscores
-DROP TABLE IF EXISTS `t_h5matches_ranksandscores`;
 CREATE TABLE IF NOT EXISTS `t_h5matches_ranksandscores` (
   `matchId` varchar(64) NOT NULL,
   `IsTeamGame` binary(50) NOT NULL,
@@ -86,7 +81,6 @@ CREATE TABLE IF NOT EXISTS `t_h5matches_ranksandscores` (
 
 -- Data exporting was unselected.
 -- Dumping structure for table dev_spartanclashbackend.t_h5matches_teamsinvolved_halowaypointcompanies
-DROP TABLE IF EXISTS `t_h5matches_teamsinvolved_halowaypointcompanies`;
 CREATE TABLE IF NOT EXISTS `t_h5matches_teamsinvolved_halowaypointcompanies` (
   `matchID` varchar(64) NOT NULL,
   `teamSource` varchar(128) DEFAULT 'Halo Waypoint',
@@ -102,7 +96,6 @@ CREATE TABLE IF NOT EXISTS `t_h5matches_teamsinvolved_halowaypointcompanies` (
 
 -- Data exporting was unselected.
 -- Dumping structure for table dev_spartanclashbackend.t_h5matches_teamsinvolved_spartanclashfireteams
-DROP TABLE IF EXISTS `t_h5matches_teamsinvolved_spartanclashfireteams`;
 CREATE TABLE IF NOT EXISTS `t_h5matches_teamsinvolved_spartanclashfireteams` (
   `matchID` varchar(64) NOT NULL,
   `teamSource` varchar(128) DEFAULT 'Spartan Clash',
@@ -118,7 +111,6 @@ CREATE TABLE IF NOT EXISTS `t_h5matches_teamsinvolved_spartanclashfireteams` (
 
 -- Data exporting was unselected.
 -- Dumping structure for table dev_spartanclashbackend.t_players
-DROP TABLE IF EXISTS `t_players`;
 CREATE TABLE IF NOT EXISTS `t_players` (
   `gamertag` varchar(32) NOT NULL,
   `dateLastMatchScan` datetime DEFAULT NULL,
@@ -131,7 +123,6 @@ CREATE TABLE IF NOT EXISTS `t_players` (
 
 -- Data exporting was unselected.
 -- Dumping structure for table dev_spartanclashbackend.t_players_to_h5matches
-DROP TABLE IF EXISTS `t_players_to_h5matches`;
 CREATE TABLE IF NOT EXISTS `t_players_to_h5matches` (
   `gamertag` varchar(32) NOT NULL,
   `matchID` varchar(64) NOT NULL,
@@ -145,11 +136,13 @@ CREATE TABLE IF NOT EXISTS `t_players_to_h5matches` (
 
 -- Data exporting was unselected.
 -- Dumping structure for table dev_spartanclashbackend.t_players_to_teams
-DROP TABLE IF EXISTS `t_players_to_teams`;
 CREATE TABLE IF NOT EXISTS `t_players_to_teams` (
   `gamertag` varchar(128) NOT NULL,
   `teamId` varchar(128) NOT NULL,
+  `role` int(16) NOT NULL DEFAULT 0,
   `lastUpdated` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `joinedDate` datetime DEFAULT NULL,
+  `membershipLastModifiedDate` datetime DEFAULT NULL,
   PRIMARY KEY (`gamertag`,`teamId`),
   KEY `gamertag` (`gamertag`),
   KEY `teamId` (`teamId`),
@@ -159,12 +152,12 @@ CREATE TABLE IF NOT EXISTS `t_players_to_teams` (
 
 -- Data exporting was unselected.
 -- Dumping structure for table dev_spartanclashbackend.t_teams
-DROP TABLE IF EXISTS `t_teams`;
 CREATE TABLE IF NOT EXISTS `t_teams` (
   `teamId` varchar(128) NOT NULL,
   `teamName` varchar(128) NOT NULL,
   `teamSource` varchar(128) NOT NULL,
   `lastUpdated` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `rosterLastUdated` timestamp NULL DEFAULT NULL,
   `parentTeamId` varchar(128) DEFAULT NULL,
   `parentTeamName` varchar(128) DEFAULT NULL,
   `parentTeamSource` varchar(128) DEFAULT NULL,
@@ -176,7 +169,6 @@ CREATE TABLE IF NOT EXISTS `t_teams` (
 
 -- Data exporting was unselected.
 -- Dumping structure for table dev_spartanclashbackend.t_teamsources
-DROP TABLE IF EXISTS `t_teamsources`;
 CREATE TABLE IF NOT EXISTS `t_teamsources` (
   `teamSource` varchar(128) NOT NULL COMMENT 'Name of the source, like "Halo Waypoint."',
   `sourceURL` varchar(128) NOT NULL COMMENT 'Top level URL for the source, like "www.halowaypoint.com"',
