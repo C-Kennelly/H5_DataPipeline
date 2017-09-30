@@ -11,8 +11,8 @@
           </Key>
           <Property Name="matchID" Type="varchar" MaxLength="64" Nullable="false" />
           <Property Name="dateDetailsScan" Type="datetime" Precision="0" />
-          <Property Name="datePlayersScan" Type="datetime" Precision="0" />
           <Property Name="dateResultsScan" Type="datetime" Precision="0" />
+          <Property Name="datePlayersScan" Type="datetime" Precision="0" />
           <Property Name="dateCompaniesInvolvedUpdated" Type="datetime" Precision="0" />
           <Property Name="dateCustomTeamsUpdated" Type="datetime" Precision="0" />
           <Property Name="queryStatus" Type="int" Nullable="false" />
@@ -109,7 +109,10 @@
           </Key>
           <Property Name="gamertag" Type="varchar" MaxLength="128" Nullable="false" />
           <Property Name="teamId" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="role" Type="int" Nullable="false" />
           <Property Name="lastUpdated" Type="timestamp" Precision="0" Nullable="false" />
+          <Property Name="joinedDate" Type="datetime" Precision="0" />
+          <Property Name="membershipLastModifiedDate" Type="datetime" Precision="0" />
         </EntityType>
         <EntityType Name="t_teams">
           <Key>
@@ -119,6 +122,7 @@
           <Property Name="teamName" Type="varchar" MaxLength="128" Nullable="false" />
           <Property Name="teamSource" Type="varchar" MaxLength="128" Nullable="false" />
           <Property Name="lastUpdated" Type="timestamp" Precision="0" Nullable="false" />
+          <Property Name="rosterLastUdated" Type="timestamp" Precision="0" />
           <Property Name="parentTeamId" Type="varchar" MaxLength="128" />
           <Property Name="parentTeamName" Type="varchar" MaxLength="128" />
           <Property Name="parentTeamSource" Type="varchar" MaxLength="128" />
@@ -428,8 +432,8 @@
           </Key>
           <Property Name="matchID" Type="String" Nullable="false" MaxLength="64" FixedLength="false" Unicode="false" />
           <Property Name="dateDetailsScan" Type="DateTime" />
-          <Property Name="datePlayersScan" Type="DateTime" />
           <Property Name="dateResultsScan" Type="DateTime" />
+          <Property Name="datePlayersScan" Type="DateTime" />
           <Property Name="dateCompaniesInvolvedUpdated" Type="DateTime" />
           <Property Name="dateCustomTeamsUpdated" Type="DateTime" />
           <Property Name="queryStatus" Type="Int32" Nullable="false" />
@@ -543,7 +547,10 @@
           </Key>
           <Property Name="gamertag" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="false" />
           <Property Name="teamId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="role" Type="Int32" Nullable="false" />
           <Property Name="lastUpdated" Type="DateTime" Nullable="false" />
+          <Property Name="joinedDate" Type="DateTime" />
+          <Property Name="membershipLastModifiedDate" Type="DateTime" />
           <NavigationProperty Name="t_players" Relationship="dev_spartanclashbackendModel.fk_tplayerstoteams_t_players" FromRole="t_players_to_teams" ToRole="t_players" />
           <NavigationProperty Name="t_teams" Relationship="dev_spartanclashbackendModel.fk_tplayerstoteams_t_teams" FromRole="t_players_to_teams" ToRole="t_teams" />
         </EntityType>
@@ -555,6 +562,7 @@
           <Property Name="teamName" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="false" />
           <Property Name="teamSource" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="false" />
           <Property Name="lastUpdated" Type="DateTime" Nullable="false" />
+          <Property Name="rosterLastUdated" Type="DateTime" />
           <Property Name="parentTeamId" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
           <Property Name="parentTeamName" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
           <Property Name="parentTeamSource" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
@@ -749,8 +757,8 @@
                 <ScalarProperty Name="queryStatus" ColumnName="queryStatus" />
                 <ScalarProperty Name="dateCustomTeamsUpdated" ColumnName="dateCustomTeamsUpdated" />
                 <ScalarProperty Name="dateCompaniesInvolvedUpdated" ColumnName="dateCompaniesInvolvedUpdated" />
-                <ScalarProperty Name="dateResultsScan" ColumnName="dateResultsScan" />
                 <ScalarProperty Name="datePlayersScan" ColumnName="datePlayersScan" />
+                <ScalarProperty Name="dateResultsScan" ColumnName="dateResultsScan" />
                 <ScalarProperty Name="dateDetailsScan" ColumnName="dateDetailsScan" />
                 <ScalarProperty Name="matchID" ColumnName="matchID" />
               </MappingFragment>
@@ -850,7 +858,10 @@
           <EntitySetMapping Name="t_players_to_teams">
             <EntityTypeMapping TypeName="dev_spartanclashbackendModel.t_players_to_teams">
               <MappingFragment StoreEntitySet="t_players_to_teams">
+                <ScalarProperty Name="membershipLastModifiedDate" ColumnName="membershipLastModifiedDate" />
+                <ScalarProperty Name="joinedDate" ColumnName="joinedDate" />
                 <ScalarProperty Name="lastUpdated" ColumnName="lastUpdated" />
+                <ScalarProperty Name="role" ColumnName="role" />
                 <ScalarProperty Name="teamId" ColumnName="teamId" />
                 <ScalarProperty Name="gamertag" ColumnName="gamertag" />
               </MappingFragment>
@@ -862,6 +873,7 @@
                 <ScalarProperty Name="parentTeamSource" ColumnName="parentTeamSource" />
                 <ScalarProperty Name="parentTeamName" ColumnName="parentTeamName" />
                 <ScalarProperty Name="parentTeamId" ColumnName="parentTeamId" />
+                <ScalarProperty Name="rosterLastUdated" ColumnName="rosterLastUdated" />
                 <ScalarProperty Name="lastUpdated" ColumnName="lastUpdated" />
                 <ScalarProperty Name="teamSource" ColumnName="teamSource" />
                 <ScalarProperty Name="teamName" ColumnName="teamName" />

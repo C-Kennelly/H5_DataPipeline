@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using H5_DataPipeline.Models;
 using HaloSharp;
+using HaloSharp.Model.Halo5.Stats;
 
 namespace H5_DataPipeline.Assistants
 {
@@ -58,7 +59,7 @@ namespace H5_DataPipeline.Assistants
                 counter++;
                 Console.Write("\rProcessing {0} of {1}: {2}                ", counter, total, company.teamName);
 
-                ProcessCompany(company);
+                ProcessCompany(company).Wait();
             }
 
             if (total == 1)  //[NOCOMPANYFOUND is the one]
@@ -67,16 +68,30 @@ namespace H5_DataPipeline.Assistants
             }
         }
 
-        private void ProcessCompany(t_teams team)
-        {
-            Console.WriteLine("Quartermaster doesn't actually process companies yet.");
-            //Check for special company like [NOCOMPANYFOUND]
+        private async Task ProcessCompany(t_teams team)
+        {            
+            if(team.teamId == t_teams.GetNoWaypointCompanyFoundID())
+            {
+                Console.WriteLine("Default company detected");
+                //Check for special company like [NOCOMPANYFOUND]
                 //Handle special company
-            //For all others
-                //Query database to get tracked roster
-                //query ID's to get list of current members
+            }
+            else
+            {
+                CompanyCaller companyCaller = new CompanyCaller();
 
-                //Resolve differences(current roster, actual roster)
+                SpartanCompany companyResult = await companyCaller.GetWaypointCompanyInformation(
+                                team.teamId,
+                                haloSession
+                            );
+
+                if(companyResult != null)
+                {
+                    QuartermasterScribe scribe = new QuartermasterScribe(team, companyResult);
+                    scribe.ResolveDifferencesAndUpdateRosters();
+                }
+            }
+
         }
 
 

@@ -22,8 +22,8 @@ namespace H5_DataPipeline.Models
     
         public string matchID { get; set; }
         public Nullable<System.DateTime> dateDetailsScan { get; set; }
-        public Nullable<System.DateTime> datePlayersScan { get; set; }
         public Nullable<System.DateTime> dateResultsScan { get; set; }
+        public Nullable<System.DateTime> datePlayersScan { get; set; }
         public Nullable<System.DateTime> dateCompaniesInvolvedUpdated { get; set; }
         public Nullable<System.DateTime> dateCustomTeamsUpdated { get; set; }
         public int queryStatus { get; set; }

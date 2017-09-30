@@ -24,6 +24,7 @@ namespace H5_DataPipeline.Models
         public string teamName { get; set; }
         public string teamSource { get; set; }
         public System.DateTime lastUpdated { get; set; }
+        public Nullable<System.DateTime> rosterLastUdated { get; set; }
         public string parentTeamId { get; set; }
         public string parentTeamName { get; set; }
         public string parentTeamSource { get; set; }
