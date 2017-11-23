@@ -1,5 +1,5 @@
 # H5_DataPipeline
-The [Spartan Clash pipeline](https://github.com/C-Kennelly/SpartanClashCore), organized around single company flow.  I'll have a better explanation of the code once it's in a more stable state.  In the meantime, you can take a look at the next section to see the old README that explained how I used to process the data.  We're still making the same output in the new repository (for now), but this time it's not scattered across 5 codebases.
+The [Spartan Clash](https://github.com/C-Kennelly/SpartanClashCore) data pipeline, organized around single company flow.  I'll have a better explanation of the code once it's in a more stable state.  In the meantime, you can take a look at the next section to see the old README that explained how I used to process the data.  We're still making the same output in the new repository (for now), but this time it's not scattered across 5 codebases.
 
 # How We (Used To) Get The Data
 For a brief overview of what goes on to produce the data for [Spartan Clash](https://github.com/C-Kennelly/SpartanClash), I'm mashing up the "Spartan Company" [roster](https://www.halowaypoint.com/en-us#media-ab21c50895234cc0bea295f4e6556cf0) with the post-game match details available from the [Halo 5 API](https://developer.haloapi.com/).
