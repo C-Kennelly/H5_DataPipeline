@@ -11,6 +11,7 @@
           </Key>
           <Property Name="configName" Type="varchar" MaxLength="16" Nullable="false" />
           <Property Name="siteLaunchDate" Type="date" Nullable="false" />
+          <Property Name="companyClanBattleThreshold" Type="double" Nullable="false" />
         </EntityType>
         <EntityType Name="t_h5matches">
           <Key>
@@ -309,18 +310,18 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="dev_spartanclashbackendModelStoreContainer">
-          <EntitySet Name="t_configoptions" EntityType="Self.t_configoptions" Schema="dev_spartanclashbackend" store:Type="Tables" />
-          <EntitySet Name="t_h5matches" EntityType="Self.t_h5matches" Schema="dev_spartanclashbackend" store:Type="Tables" />
-          <EntitySet Name="t_h5matches_matchdetails" EntityType="Self.t_h5matches_matchdetails" Schema="dev_spartanclashbackend" store:Type="Tables" />
-          <EntitySet Name="t_h5matches_playersformatch" EntityType="Self.t_h5matches_playersformatch" Schema="dev_spartanclashbackend" store:Type="Tables" />
-          <EntitySet Name="t_h5matches_ranksandscores" EntityType="Self.t_h5matches_ranksandscores" Schema="dev_spartanclashbackend" store:Type="Tables" />
-          <EntitySet Name="t_h5matches_teamsinvolved_halowaypointcompanies" EntityType="Self.t_h5matches_teamsinvolved_halowaypointcompanies" Schema="dev_spartanclashbackend" store:Type="Tables" />
-          <EntitySet Name="t_h5matches_teamsinvolved_spartanclashfireteams" EntityType="Self.t_h5matches_teamsinvolved_spartanclashfireteams" Schema="dev_spartanclashbackend" store:Type="Tables" />
-          <EntitySet Name="t_players" EntityType="Self.t_players" Schema="dev_spartanclashbackend" store:Type="Tables" />
-          <EntitySet Name="t_players_to_h5matches" EntityType="Self.t_players_to_h5matches" Schema="dev_spartanclashbackend" store:Type="Tables" />
-          <EntitySet Name="t_players_to_teams" EntityType="Self.t_players_to_teams" Schema="dev_spartanclashbackend" store:Type="Tables" />
-          <EntitySet Name="t_teams" EntityType="Self.t_teams" Schema="dev_spartanclashbackend" store:Type="Tables" />
-          <EntitySet Name="t_teamsources" EntityType="Self.t_teamsources" Schema="dev_spartanclashbackend" store:Type="Tables" />
+          <EntitySet Name="t_configoptions" EntityType="Self.t_configoptions" Schema="spartanclash_datapipeline" store:Type="Tables" />
+          <EntitySet Name="t_h5matches" EntityType="Self.t_h5matches" Schema="spartanclash_datapipeline" store:Type="Tables" />
+          <EntitySet Name="t_h5matches_matchdetails" EntityType="Self.t_h5matches_matchdetails" Schema="spartanclash_datapipeline" store:Type="Tables" />
+          <EntitySet Name="t_h5matches_playersformatch" EntityType="Self.t_h5matches_playersformatch" Schema="spartanclash_datapipeline" store:Type="Tables" />
+          <EntitySet Name="t_h5matches_ranksandscores" EntityType="Self.t_h5matches_ranksandscores" Schema="spartanclash_datapipeline" store:Type="Tables" />
+          <EntitySet Name="t_h5matches_teamsinvolved_halowaypointcompanies" EntityType="Self.t_h5matches_teamsinvolved_halowaypointcompanies" Schema="spartanclash_datapipeline" store:Type="Tables" />
+          <EntitySet Name="t_h5matches_teamsinvolved_spartanclashfireteams" EntityType="Self.t_h5matches_teamsinvolved_spartanclashfireteams" Schema="spartanclash_datapipeline" store:Type="Tables" />
+          <EntitySet Name="t_players" EntityType="Self.t_players" Schema="spartanclash_datapipeline" store:Type="Tables" />
+          <EntitySet Name="t_players_to_h5matches" EntityType="Self.t_players_to_h5matches" Schema="spartanclash_datapipeline" store:Type="Tables" />
+          <EntitySet Name="t_players_to_teams" EntityType="Self.t_players_to_teams" Schema="spartanclash_datapipeline" store:Type="Tables" />
+          <EntitySet Name="t_teams" EntityType="Self.t_teams" Schema="spartanclash_datapipeline" store:Type="Tables" />
+          <EntitySet Name="t_teamsources" EntityType="Self.t_teamsources" Schema="spartanclash_datapipeline" store:Type="Tables" />
           <AssociationSet Name="fk_gamertag_players_to_matches" Association="Self.fk_gamertag_players_to_matches">
             <End Role="t_players" EntitySet="t_players" />
             <End Role="t_players_to_h5matches" EntitySet="t_players_to_h5matches" />
@@ -375,6 +376,7 @@
     <edmx:ConceptualModels>
       <Schema Namespace="dev_spartanclashbackendModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="dev_spartanclashbackendEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="t_configoptions" EntityType="dev_spartanclashbackendModel.t_configoptions" />
           <EntitySet Name="t_h5matches" EntityType="dev_spartanclashbackendModel.t_h5matches" />
           <EntitySet Name="t_h5matches_matchdetails" EntityType="dev_spartanclashbackendModel.t_h5matches_matchdetails" />
           <EntitySet Name="t_h5matches_playersformatch" EntityType="dev_spartanclashbackendModel.t_h5matches_playersformatch" />
@@ -434,8 +436,15 @@
             <End Role="t_teamsources" EntitySet="t_teamsources" />
             <End Role="t_teams" EntitySet="t_teams" />
           </AssociationSet>
-          <EntitySet Name="t_configoptions" EntityType="dev_spartanclashbackendModel.t_configoptions" />
         </EntityContainer>
+        <EntityType Name="t_configoptions">
+          <Key>
+            <PropertyRef Name="configName" />
+          </Key>
+          <Property Name="configName" Type="String" Nullable="false" MaxLength="16" FixedLength="false" Unicode="false" />
+          <Property Name="siteLaunchDate" Type="DateTime" Nullable="false" />
+          <Property Name="companyClanBattleThreshold" Type="Double" Nullable="false" />
+        </EntityType>
         <EntityType Name="t_h5matches">
           <Key>
             <PropertyRef Name="matchID" />
@@ -571,6 +580,7 @@
           <Property Name="teamId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="false" />
           <Property Name="teamName" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="false" />
           <Property Name="teamSource" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="trackingIndex" Type="Int32" Nullable="false" />
           <Property Name="lastUpdated" Type="DateTime" Nullable="false" />
           <Property Name="rosterLastUdated" Type="DateTime" />
           <Property Name="parentTeamId" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
@@ -578,7 +588,6 @@
           <Property Name="parentTeamSource" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="t_players_to_teams" Relationship="dev_spartanclashbackendModel.fk_tplayerstoteams_t_teams" FromRole="t_teams" ToRole="t_players_to_teams" />
           <NavigationProperty Name="t_teamsources" Relationship="dev_spartanclashbackendModel.fk_teamsource_teams" FromRole="t_teams" ToRole="t_teamsources" />
-          <Property Name="trackingIndex" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="t_teamsources">
           <Key>
@@ -756,19 +765,21 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="t_configoptions">
-          <Key>
-            <PropertyRef Name="configName" />
-          </Key>
-          <Property Name="configName" Type="String" Nullable="false" MaxLength="16" FixedLength="false" Unicode="false" />
-          <Property Name="siteLaunchDate" Type="DateTime" Nullable="false" />
-        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="dev_spartanclashbackendModelStoreContainer" CdmEntityContainer="dev_spartanclashbackendEntities">
+          <EntitySetMapping Name="t_configoptions">
+            <EntityTypeMapping TypeName="dev_spartanclashbackendModel.t_configoptions">
+              <MappingFragment StoreEntitySet="t_configoptions">
+                <ScalarProperty Name="companyClanBattleThreshold" ColumnName="companyClanBattleThreshold" />
+                <ScalarProperty Name="siteLaunchDate" ColumnName="siteLaunchDate" />
+                <ScalarProperty Name="configName" ColumnName="configName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="t_h5matches">
             <EntityTypeMapping TypeName="dev_spartanclashbackendModel.t_h5matches">
               <MappingFragment StoreEntitySet="t_h5matches">
@@ -888,12 +899,12 @@
           <EntitySetMapping Name="t_teams">
             <EntityTypeMapping TypeName="dev_spartanclashbackendModel.t_teams">
               <MappingFragment StoreEntitySet="t_teams">
-                <ScalarProperty Name="trackingIndex" ColumnName="trackingIndex" />
                 <ScalarProperty Name="parentTeamSource" ColumnName="parentTeamSource" />
                 <ScalarProperty Name="parentTeamName" ColumnName="parentTeamName" />
                 <ScalarProperty Name="parentTeamId" ColumnName="parentTeamId" />
                 <ScalarProperty Name="rosterLastUdated" ColumnName="rosterLastUdated" />
                 <ScalarProperty Name="lastUpdated" ColumnName="lastUpdated" />
+                <ScalarProperty Name="trackingIndex" ColumnName="trackingIndex" />
                 <ScalarProperty Name="teamSource" ColumnName="teamSource" />
                 <ScalarProperty Name="teamName" ColumnName="teamName" />
                 <ScalarProperty Name="teamId" ColumnName="teamId" />
@@ -907,14 +918,6 @@
                 <ScalarProperty Name="teamCommonName" ColumnName="teamCommonName" />
                 <ScalarProperty Name="sourceURL" ColumnName="sourceURL" />
                 <ScalarProperty Name="teamSource" ColumnName="teamSource" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="t_configoptions">
-            <EntityTypeMapping TypeName="dev_spartanclashbackendModel.t_configoptions">
-              <MappingFragment StoreEntitySet="t_configoptions">
-                <ScalarProperty Name="siteLaunchDate" ColumnName="siteLaunchDate" />
-                <ScalarProperty Name="configName" ColumnName="configName" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

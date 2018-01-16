@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 using H5_DataPipeline.Models;
 using HaloSharp.Model.Halo5.Stats;
 
-namespace H5_DataPipeline.Assistants
+namespace H5_DataPipeline.Assistants.MatchDetails
 {
     /// <summary>
-    /// The scribe does the dirty work of the Historian, taking the query results and recording them in the database.
+    /// The scribe does the dirty work of the Historian, taking the query results and recording details, ranks, and scores in the database.
     /// </summary>
     class HistorianScribe
     {

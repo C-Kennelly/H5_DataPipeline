@@ -7,7 +7,7 @@ using HaloSharp;
 using HaloSharp.Model;
 using H5_DataPipeline.Secrets;
 
-namespace H5_DataPipeline
+namespace H5_DataPipeline.Shared
 {
     public class HaloClientFactory
     {

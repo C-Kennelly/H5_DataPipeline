@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using H5_DataPipeline.Shared.Config;
 
 namespace H5_DataPipeline.Models
 {
@@ -62,7 +63,7 @@ namespace H5_DataPipeline.Models
             {
                //If the group is larger than the threshold based on gamertags that finished on team 1...
                //But ignore teams of 1 to filter free-for-all and solo-finishes.
-               if (group.Count() >= (team1Gamertags.Count * settings.spartanCompanyClanBattleThreshold) && group.Count() > 1)
+               if (group.Count() >= (team1Gamertags.Count * settings.GetSpartanCompanyClanBattleThreshold()) && group.Count() > 1)
                {
                    team1_Primary = group.Key;
                    clanBattleFound = true;
@@ -91,7 +92,7 @@ namespace H5_DataPipeline.Models
             {
                 //If the group is larger than the threshold based on gamertags that finished on team 1...
                 //But ignore teams of 1 to filter free-for-all and solo-finishes.
-                if (group.Count() >= (team2Gamertags.Count * settings.spartanCompanyClanBattleThreshold) && group.Count() > 1)
+                if (group.Count() >= (team2Gamertags.Count * settings.GetSpartanCompanyClanBattleThreshold()) && group.Count() > 1)
                 {
                     team2_Primary = group.Key;
                 }

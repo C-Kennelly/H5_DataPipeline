@@ -5,8 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using HaloSharp;
 using H5_DataPipeline.Models;
+using H5_DataPipeline.Shared.Config;
 
-namespace H5_DataPipeline.Assistants
+namespace H5_DataPipeline.Assistants.AnalyzeClanBattles
 {
     /// <summary>
     /// The mortician's job is to know who fought in every battle.  She scans matches for participants and tags clan battles accordingly.

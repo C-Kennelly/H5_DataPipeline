@@ -5,17 +5,18 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="c4c183162ea344c88959d1af35eadfc0" Name="Diagram1" ZoomLevel="77">
+        <EntityTypeShape EntityType="dev_spartanclashbackendModel.t_configoptions" Width="1.5" PointX="0.75" PointY="0.75" />
         <EntityTypeShape EntityType="dev_spartanclashbackendModel.t_h5matches" Width="1.5" PointX="0.75" PointY="10" />
-        <EntityTypeShape EntityType="dev_spartanclashbackendModel.t_h5matches_matchdetails" Width="1.5" PointX="3" PointY="6.5" />
-        <EntityTypeShape EntityType="dev_spartanclashbackendModel.t_h5matches_playersformatch" Width="1.5" PointX="3" PointY="24.125" />
-        <EntityTypeShape EntityType="dev_spartanclashbackendModel.t_h5matches_ranksandscores" Width="1.5" PointX="3" PointY="21.125" />
+        <EntityTypeShape EntityType="dev_spartanclashbackendModel.t_h5matches_matchdetails" Width="1.5" PointX="3" PointY="9.75" />
+        <EntityTypeShape EntityType="dev_spartanclashbackendModel.t_h5matches_playersformatch" Width="1.5" PointX="3" PointY="21.125" />
+        <EntityTypeShape EntityType="dev_spartanclashbackendModel.t_h5matches_ranksandscores" Width="1.5" PointX="3" PointY="24" />
         <EntityTypeShape EntityType="dev_spartanclashbackendModel.t_h5matches_teamsinvolved_halowaypointcompanies" Width="1.5" PointX="6" PointY="10.5" />
-        <EntityTypeShape EntityType="dev_spartanclashbackendModel.t_h5matches_teamsinvolved_spartanclashfireteams" Width="1.5" PointX="3" PointY="14.5" />
-        <EntityTypeShape EntityType="dev_spartanclashbackendModel.t_players" Width="1.5" PointX="0.75" PointY="14.5" />
-        <EntityTypeShape EntityType="dev_spartanclashbackendModel.t_players_to_h5matches" Width="1.5" PointX="3" PointY="11.75" />
-        <EntityTypeShape EntityType="dev_spartanclashbackendModel.t_players_to_teams" Width="1.5" PointX="8.25" PointY="8.375" />
-        <EntityTypeShape EntityType="dev_spartanclashbackendModel.t_teams" Width="1.5" PointX="6" PointY="2.25" />
-        <EntityTypeShape EntityType="dev_spartanclashbackendModel.t_teamsources" Width="1.5" PointX="3.75" PointY="2.625" />
+        <EntityTypeShape EntityType="dev_spartanclashbackendModel.t_h5matches_teamsinvolved_spartanclashfireteams" Width="1.5" PointX="3" PointY="6.5" />
+        <EntityTypeShape EntityType="dev_spartanclashbackendModel.t_players" Width="1.5" PointX="3.75" PointY="2.5" />
+        <EntityTypeShape EntityType="dev_spartanclashbackendModel.t_players_to_h5matches" Width="1.5" PointX="6" PointY="7.75" />
+        <EntityTypeShape EntityType="dev_spartanclashbackendModel.t_players_to_teams" Width="1.5" PointX="9" PointY="9.125" />
+        <EntityTypeShape EntityType="dev_spartanclashbackendModel.t_teams" Width="1.5" PointX="3" PointY="15.125" />
+        <EntityTypeShape EntityType="dev_spartanclashbackendModel.t_teamsources" Width="1.5" PointX="0.75" PointY="6.625" />
         <AssociationConnector Association="dev_spartanclashbackendModel.fk_matchID_h5matches_matchdetails" />
         <AssociationConnector Association="dev_spartanclashbackendModel.fk_matchID_h5matches_playersformatch" />
         <AssociationConnector Association="dev_spartanclashbackendModel.fk_matchID_h5matches_ranksandscores" />
@@ -28,7 +29,6 @@
         <AssociationConnector Association="dev_spartanclashbackendModel.fk_tplayerstoteams_t_players" />
         <AssociationConnector Association="dev_spartanclashbackendModel.fk_tplayerstoteams_t_teams" />
         <AssociationConnector Association="dev_spartanclashbackendModel.fk_teamsource_teams" />
-        <EntityTypeShape EntityType="dev_spartanclashbackendModel.t_configoptions" Width="1.5" PointX="0.75" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

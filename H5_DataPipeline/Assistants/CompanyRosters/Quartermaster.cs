@@ -15,7 +15,6 @@ namespace H5_DataPipeline.Assistants.CompanyRosters
     class Quartermaster
     {
         IHaloSession haloSession;
-        QuartermasterScribe scribe;
 
         public event CompanyRosterScannedHandler CompanyRosterReadyForDatabaseWrite;
         public void OnCompanyRosterReadyForDatabaseWrite(object Sender, CompanyRosterScannedEventArgs e)
@@ -102,9 +101,6 @@ namespace H5_DataPipeline.Assistants.CompanyRosters
                 {
                     CompanyRosterScannedEventArgs companyRosterScannedEventArgs = new CompanyRosterScannedEventArgs(team, companyResult);
                     CompanyRosterReadyForDatabaseWrite?.BeginInvoke(this, companyRosterScannedEventArgs, null, null);
-
-                    //QuartermasterScribe scribe = new QuartermasterScribe();// team, companyResult);
-                    //scribe.ResolveDifferencesAndUpdateRosters();
                 }
             }
 

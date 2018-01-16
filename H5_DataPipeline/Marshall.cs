@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using H5_DataPipeline.Models;
+﻿using H5_DataPipeline.Models;
 using H5_DataPipeline.Assistants.CompanyRosters;
+using H5_DataPipeline.Assistants.MatchDetails;
+using H5_DataPipeline.Assistants.MatchParticipants;
+using H5_DataPipeline.Assistants.AnalyzeClanBattles;
+using H5_DataPipeline.Shared;
+using H5_DataPipeline.Shared.Config;
 using HaloSharp;
 
-namespace H5_DataPipeline.Assistants
+namespace H5_DataPipeline
 {
     /// <summary>
     /// The Field Marshall's job is to handle flow for the assistants.
@@ -53,7 +53,7 @@ namespace H5_DataPipeline.Assistants
             Setup();
 
             quartermaster.UpdateSpartanCompanyRosters();
-            //historian.RecordRecentGames();
+            historian.RecordRecentGames();
             //mortician.ScanMatchesForParticipants();
             //clanalyzer.AnalyzeClanBattles();
         }

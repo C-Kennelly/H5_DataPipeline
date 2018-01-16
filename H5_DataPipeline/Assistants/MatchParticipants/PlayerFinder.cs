@@ -13,7 +13,7 @@ using HaloSharp.Exception;
 using HaloSharp.Model;
 using System.Threading;
 
-namespace H5_DataPipeline
+namespace H5_DataPipeline.Assistants.MatchParticipants
 {
     public class PlayerFinder
     {

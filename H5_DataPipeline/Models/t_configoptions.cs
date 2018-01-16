@@ -16,5 +16,6 @@ namespace H5_DataPipeline.Models
     {
         public string configName { get; set; }
         public System.DateTime siteLaunchDate { get; set; }
+        public double companyClanBattleThreshold { get; set; }
     }
 }

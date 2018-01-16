@@ -6,11 +6,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using HaloSharp;
 using H5_DataPipeline.Models;
+using H5_DataPipeline.Shared.Config;
 using HaloSharp.Model;
 using HaloSharp.Model.Halo5.Stats;
 
 
-namespace H5_DataPipeline.Assistants
+namespace H5_DataPipeline.Assistants.MatchDetails
 {
     /// <summary>
     /// The historian's job is to know the details of every battle.  She goes through tracked players and scans recent games, recording their details and scores.
@@ -111,12 +112,25 @@ namespace H5_DataPipeline.Assistants
 
             List<PlayerMatch> recentH5MatchHistory = await matchCaller.GetH5MatchHistoryForPlayerAfterDate(
                             player.gamertag,
-                            spartanClashSettings.GetDateToSearchFrom(player),
-                            spartanClashSettings.gameModes,
+                            GetDateToSearchFrom(player, spartanClashSettings),
+                            spartanClashSettings.GetGameModes(),
                             haloSession
                         );
 
             scribe.RecordMatchHistoryForPlayer(recentH5MatchHistory, player);
+        }
+
+        public DateTime GetDateToSearchFrom(t_players player, SpartanClashSettings spartanClashSettings)
+        {
+            DateTime result = spartanClashSettings.LookForNoMatchesEarlierThan();
+            DateTime playerRecordScanDate = player.GetEarliestDateToScanMatches();
+
+            if (playerRecordScanDate > result)
+            {
+                result = playerRecordScanDate;
+            }
+
+            return result;
         }
 
     }

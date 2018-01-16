@@ -10,7 +10,7 @@ using HaloSharp.Model;
 using HaloSharp;
 using System.Collections.Concurrent;
 
-namespace H5_DataPipeline.Assistants
+namespace H5_DataPipeline.Assistants.Shared
 {
     /// <summary>
     /// The helper has functions that haven't been placed anywhere yet.

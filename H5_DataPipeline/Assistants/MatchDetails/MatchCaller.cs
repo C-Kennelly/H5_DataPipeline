@@ -12,7 +12,7 @@ using HaloSharp.Extension;
 using HaloSharp.Exception;
 
 
-namespace H5_DataPipeline
+namespace H5_DataPipeline.Assistants.MatchDetails
 {
     public class MatchCaller
     {
