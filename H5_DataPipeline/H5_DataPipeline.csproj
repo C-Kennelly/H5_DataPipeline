@@ -172,10 +172,10 @@
     <Compile Include="Assistants\MatchDetails\MatchCaller.cs" />
     <Compile Include="Assistants\CompanyRosters\Quartermaster.cs" />
     <Compile Include="SampleSecrets\SecretAPIKey.cs" />
-    <Compile Include="Secrets\SecretAPIKey.cs" />
     <Compile Include="Assistants\Shared\Config\SpartanClashSettings.cs" />
     <Compile Include="Models\Extensions\t_h5matches_matchdetailsExtensions.cs" />
     <Compile Include="Models\Extensions\WaypointSetup.cs" />
+    <Compile Include="Secrets\SecretAPIKey.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
