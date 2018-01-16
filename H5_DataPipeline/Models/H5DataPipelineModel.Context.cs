@@ -36,5 +36,6 @@ namespace H5_DataPipeline.Models
         public virtual DbSet<t_players_to_teams> t_players_to_teams { get; set; }
         public virtual DbSet<t_teams> t_teams { get; set; }
         public virtual DbSet<t_teamsources> t_teamsources { get; set; }
+        public virtual DbSet<t_configoptions> t_configoptions { get; set; }
     }
 }

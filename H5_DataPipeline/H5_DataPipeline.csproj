@@ -104,16 +104,19 @@
     <Compile Include="Assistants\Helper.cs" />
     <Compile Include="Assistants\QuartermasterScribe.cs" />
     <Compile Include="CompanyCaller.cs" />
-    <Compile Include="Models\t_h5matchesExtensions.cs" />
-    <Compile Include="Models\t_h5matches_playersformatchExtensions.cs" />
-    <Compile Include="Models\t_h5matches_ranksandscoresExtension.cs" />
-    <Compile Include="Models\t_h5matches_teamsinvolved_halowaypointcompaniesExtension.cs" />
+    <Compile Include="Models\Extensions\t_h5matchesExtensions.cs" />
+    <Compile Include="Models\Extensions\t_h5matches_playersformatchExtensions.cs" />
+    <Compile Include="Models\Extensions\t_h5matches_ranksandscoresExtension.cs" />
+    <Compile Include="Models\Extensions\t_h5matches_teamsinvolved_halowaypointcompaniesExtension.cs" />
+    <Compile Include="Models\t_configoptions.cs">
+      <DependentUpon>H5DataPipelineModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\t_players_to_h5matches.cs">
       <DependentUpon>H5DataPipelineModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\t_players_to_h5matchesExtension.cs" />
+    <Compile Include="Models\Extensions\t_players_to_h5matchesExtension.cs" />
     <Compile Include="DeleteTheseSoon\NewMatchProcesser.cs" />
-    <Compile Include="Models\t_players_to_teamsExtensions.cs" />
+    <Compile Include="Models\Extensions\t_players_to_teamsExtensions.cs" />
     <Compile Include="PlayerFinder.cs" />
     <Compile Include="HaloClientFactory.cs" />
     <Compile Include="Models\H5DataPipelineModel.Context.cs">
@@ -158,12 +161,12 @@
     <Compile Include="Models\t_teams.cs">
       <DependentUpon>H5DataPipelineModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\t_teamsExtensions.cs" />
+    <Compile Include="Models\Extensions\t_teamsExtensions.cs" />
     <Compile Include="Models\t_teamsources.cs">
       <DependentUpon>H5DataPipelineModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\t_playersExtensions.cs" />
-    <Compile Include="Models\t_teamsourcesExtensions.cs" />
+    <Compile Include="Models\Extensions\t_playersExtensions.cs" />
+    <Compile Include="Models\Extensions\t_teamsourcesExtensions.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MatchCaller.cs" />
@@ -171,7 +174,7 @@
     <Compile Include="Secrets\SecretAPIKey.cs" />
     <Compile Include="SpartanClashSettings.cs" />
     <Compile Include="DeleteTheseSoon\TeamRosterRefresher.cs" />
-    <Compile Include="Models\t_h5matches_matchdetailsExtensions.cs" />
+    <Compile Include="Models\Extensions\t_h5matches_matchdetailsExtensions.cs" />
     <Compile Include="WaypointSetup.cs" />
   </ItemGroup>
   <ItemGroup>

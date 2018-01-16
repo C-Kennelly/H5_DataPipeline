@@ -28,6 +28,7 @@
         <AssociationConnector Association="dev_spartanclashbackendModel.fk_tplayerstoteams_t_players" />
         <AssociationConnector Association="dev_spartanclashbackendModel.fk_tplayerstoteams_t_teams" />
         <AssociationConnector Association="dev_spartanclashbackendModel.fk_teamsource_teams" />
+        <EntityTypeShape EntityType="dev_spartanclashbackendModel.t_configoptions" Width="1.5" PointX="0.75" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

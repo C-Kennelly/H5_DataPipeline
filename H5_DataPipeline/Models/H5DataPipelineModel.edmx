@@ -5,6 +5,13 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="dev_spartanclashbackendModel.Store" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.5" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="t_configoptions">
+          <Key>
+            <PropertyRef Name="configName" />
+          </Key>
+          <Property Name="configName" Type="varchar" MaxLength="16" Nullable="false" />
+          <Property Name="siteLaunchDate" Type="date" Nullable="false" />
+        </EntityType>
         <EntityType Name="t_h5matches">
           <Key>
             <PropertyRef Name="matchID" />
@@ -121,6 +128,7 @@
           <Property Name="teamId" Type="varchar" MaxLength="128" Nullable="false" />
           <Property Name="teamName" Type="varchar" MaxLength="128" Nullable="false" />
           <Property Name="teamSource" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="trackingIndex" Type="int" Nullable="false" />
           <Property Name="lastUpdated" Type="timestamp" Precision="0" Nullable="false" />
           <Property Name="rosterLastUdated" Type="timestamp" Precision="0" />
           <Property Name="parentTeamId" Type="varchar" MaxLength="128" />
@@ -301,6 +309,7 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="dev_spartanclashbackendModelStoreContainer">
+          <EntitySet Name="t_configoptions" EntityType="Self.t_configoptions" Schema="dev_spartanclashbackend" store:Type="Tables" />
           <EntitySet Name="t_h5matches" EntityType="Self.t_h5matches" Schema="dev_spartanclashbackend" store:Type="Tables" />
           <EntitySet Name="t_h5matches_matchdetails" EntityType="Self.t_h5matches_matchdetails" Schema="dev_spartanclashbackend" store:Type="Tables" />
           <EntitySet Name="t_h5matches_playersformatch" EntityType="Self.t_h5matches_playersformatch" Schema="dev_spartanclashbackend" store:Type="Tables" />
@@ -425,6 +434,7 @@
             <End Role="t_teamsources" EntitySet="t_teamsources" />
             <End Role="t_teams" EntitySet="t_teams" />
           </AssociationSet>
+          <EntitySet Name="t_configoptions" EntityType="dev_spartanclashbackendModel.t_configoptions" />
         </EntityContainer>
         <EntityType Name="t_h5matches">
           <Key>
@@ -568,6 +578,7 @@
           <Property Name="parentTeamSource" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="t_players_to_teams" Relationship="dev_spartanclashbackendModel.fk_tplayerstoteams_t_teams" FromRole="t_teams" ToRole="t_players_to_teams" />
           <NavigationProperty Name="t_teamsources" Relationship="dev_spartanclashbackendModel.fk_teamsource_teams" FromRole="t_teams" ToRole="t_teamsources" />
+          <Property Name="trackingIndex" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="t_teamsources">
           <Key>
@@ -745,6 +756,13 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="t_configoptions">
+          <Key>
+            <PropertyRef Name="configName" />
+          </Key>
+          <Property Name="configName" Type="String" Nullable="false" MaxLength="16" FixedLength="false" Unicode="false" />
+          <Property Name="siteLaunchDate" Type="DateTime" Nullable="false" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -870,6 +888,7 @@
           <EntitySetMapping Name="t_teams">
             <EntityTypeMapping TypeName="dev_spartanclashbackendModel.t_teams">
               <MappingFragment StoreEntitySet="t_teams">
+                <ScalarProperty Name="trackingIndex" ColumnName="trackingIndex" />
                 <ScalarProperty Name="parentTeamSource" ColumnName="parentTeamSource" />
                 <ScalarProperty Name="parentTeamName" ColumnName="parentTeamName" />
                 <ScalarProperty Name="parentTeamId" ColumnName="parentTeamId" />
@@ -888,6 +907,14 @@
                 <ScalarProperty Name="teamCommonName" ColumnName="teamCommonName" />
                 <ScalarProperty Name="sourceURL" ColumnName="sourceURL" />
                 <ScalarProperty Name="teamSource" ColumnName="teamSource" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="t_configoptions">
+            <EntityTypeMapping TypeName="dev_spartanclashbackendModel.t_configoptions">
+              <MappingFragment StoreEntitySet="t_configoptions">
+                <ScalarProperty Name="siteLaunchDate" ColumnName="siteLaunchDate" />
+                <ScalarProperty Name="configName" ColumnName="configName" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
