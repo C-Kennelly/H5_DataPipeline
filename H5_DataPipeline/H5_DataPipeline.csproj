@@ -193,6 +193,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="database\" />
     <Folder Include="SQL Files\" />
   </ItemGroup>
   <ItemGroup>
