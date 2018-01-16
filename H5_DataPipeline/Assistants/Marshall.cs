@@ -4,9 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using H5_DataPipeline.Models;
-using H5_DataPipeline.Assistants;
+using H5_DataPipeline.Assistants.CompanyRosters;
 using HaloSharp;
-using HaloSharp.Model;
 
 namespace H5_DataPipeline.Assistants
 {
@@ -22,7 +21,7 @@ namespace H5_DataPipeline.Assistants
         Mortician mortician;
         Clanalyzer clanalyzer;
 
-        SpartanClashSettings spartanClashSettings = new SpartanClashSettings();
+        SpartanClashSettings spartanClashSettings;
 
         public Marshall()
         {
@@ -34,7 +33,7 @@ namespace H5_DataPipeline.Assistants
         private void SetupHaloSharpComponents()
         {
             HaloClientFactory haloClientFactory = new HaloClientFactory();
-            HaloClient haloClient = haloClientFactory.GetDevClient();
+            HaloClient haloClient = haloClientFactory.GetProdClient();
             haloSession = haloClient.StartSession();
         }
 
@@ -54,9 +53,9 @@ namespace H5_DataPipeline.Assistants
             Setup();
 
             quartermaster.UpdateSpartanCompanyRosters();
-            historian.RecordRecentGames();
-            mortician.ScanMatchesForParticipants();
-            clanalyzer.AnalyzeClanBattles();
+            //historian.RecordRecentGames();
+            //mortician.ScanMatchesForParticipants();
+            //clanalyzer.AnalyzeClanBattles();
         }
 
         private void Setup()

@@ -24,7 +24,12 @@ namespace H5_DataPipeline
 
         private void SetEarliestDate()
         {
-            lookForMatchesNoEarlierThan = new DateTime(2017, 09, 11, 0, 0, 0);
+            using (var db = new dev_spartanclashbackendEntities())
+            {
+                lookForMatchesNoEarlierThan = db.t_configoptions.Find("active").siteLaunchDate;
+
+                Console.WriteLine("Loaded date: {0}", lookForMatchesNoEarlierThan);
+            }
         }
 
         private void SetDefaultGameModes()

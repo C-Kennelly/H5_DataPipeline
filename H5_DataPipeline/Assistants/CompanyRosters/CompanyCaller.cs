@@ -11,7 +11,7 @@ using HaloSharp.Extension;
 using HaloSharp.Exception;
 
 
-namespace H5_DataPipeline
+namespace H5_DataPipeline.Assistants.CompanyRosters
 {
     public class CompanyCaller
     {

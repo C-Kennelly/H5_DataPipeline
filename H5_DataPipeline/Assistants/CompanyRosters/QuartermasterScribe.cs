@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 using H5_DataPipeline.Models;
 using HaloSharp.Model.Halo5.Stats;
 
-namespace H5_DataPipeline.Assistants
+namespace H5_DataPipeline.Assistants.CompanyRosters
 {
+
     public class QuartermasterScribe
     {
         private t_teams databaseRecord;
@@ -73,7 +74,7 @@ namespace H5_DataPipeline.Assistants
         private bool RosterHasUpdates()
         {
             int changeCount = gamertagsToRemove.Count() + gamertagsToAdd.Count();
-            Console.WriteLine("Detected {0} changes for {1}", changeCount, databaseRecord.teamName);
+            //Console.WriteLine("Detected {0} changes for {1}", changeCount, databaseRecord.teamName);
 
             if (changeCount <= 0)
             {

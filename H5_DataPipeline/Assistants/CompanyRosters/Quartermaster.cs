@@ -7,7 +7,7 @@ using H5_DataPipeline.Models;
 using HaloSharp;
 using HaloSharp.Model.Halo5.Stats;
 
-namespace H5_DataPipeline.Assistants
+namespace H5_DataPipeline.Assistants.CompanyRosters
 {
     /// <summary>
     /// The Quartermaster's job is to figure out who's in what company.  Every morning, he updates the rolls to ensure they're accurate.
@@ -15,11 +15,23 @@ namespace H5_DataPipeline.Assistants
     class Quartermaster
     {
         IHaloSession haloSession;
+        QuartermasterScribe scribe;
+
+        public event CompanyRosterScannedHandler CompanyRosterReadyForDatabaseWrite;
+        public void OnCompanyRosterReadyForDatabaseWrite(object Sender, CompanyRosterScannedEventArgs e)
+        {
+            QuartermasterScribe scribe = new QuartermasterScribe(e.GetCurrentTeamRecord(), e.GetCompanyAPIResult());
+            scribe.ResolveDifferencesAndUpdateRosters();
+        }
+
 
         public Quartermaster(IHaloSession session)
         {
             haloSession = session;
+
+            CompanyRosterReadyForDatabaseWrite += OnCompanyRosterReadyForDatabaseWrite;
         }
+
 
         public void UpdateSpartanCompanyRosters()
         {
@@ -86,10 +98,13 @@ namespace H5_DataPipeline.Assistants
                                 haloSession
                             );
 
-                if(companyResult != null)
+                if (companyResult != null)
                 {
-                    QuartermasterScribe scribe = new QuartermasterScribe(team, companyResult);
-                    scribe.ResolveDifferencesAndUpdateRosters();
+                    CompanyRosterScannedEventArgs companyRosterScannedEventArgs = new CompanyRosterScannedEventArgs(team, companyResult);
+                    CompanyRosterReadyForDatabaseWrite?.BeginInvoke(this, companyRosterScannedEventArgs, null, null);
+
+                    //QuartermasterScribe scribe = new QuartermasterScribe();// team, companyResult);
+                    //scribe.ResolveDifferencesAndUpdateRosters();
                 }
             }
 
