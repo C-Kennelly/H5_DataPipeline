@@ -53,7 +53,7 @@ namespace H5_DataPipeline
             Setup();
 
             quartermaster.UpdateSpartanCompanyRosters();
-            historian.RecordRecentGames();
+            //historian.RecordRecentGames();
             //mortician.ScanMatchesForParticipants();
             //clanalyzer.AnalyzeClanBattles();
         }

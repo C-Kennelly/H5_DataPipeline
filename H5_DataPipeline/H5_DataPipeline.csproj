@@ -192,10 +192,11 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="infrastructure\" />
     <Folder Include="SQL Files\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="database\spartanclash_datapipeline_Schema01.sql" />
+    <Content Include="database\spartanclash_datapipeline_SchemaDump.sql" />
     <Content Include="Models\H5DataPipelineModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>H5DataPipelineModel.edmx</DependentUpon>
