@@ -41,8 +41,9 @@ namespace H5_DataPipeline.Assistants
 
             using (var db = new dev_spartanclashbackendEntities())
             {
-                return db.t_teams.Where(team => 
+                return db.t_teams.Where(team =>
                         team.teamSource == waypointSourceName
+                        && team.trackingIndex > 0
                         && team.teamId != noCompanyFoundID)
                     .ToList();
 

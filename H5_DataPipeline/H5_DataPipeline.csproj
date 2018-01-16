@@ -171,6 +171,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MatchCaller.cs" />
     <Compile Include="Assistants\Quartermaster.cs" />
+    <Compile Include="SampleSecrets\SecretAPIKey.cs" />
     <Compile Include="Secrets\SecretAPIKey.cs" />
     <Compile Include="SpartanClashSettings.cs" />
     <Compile Include="DeleteTheseSoon\TeamRosterRefresher.cs" />
@@ -183,6 +184,8 @@
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>H5DataPipelineModel.Designer.cs</LastGenOutput>
     </EntityDeploy>
+    <None Include="SampleSecrets\connections.config" />
+    <None Include="Secrets\connections.config" />
     <None Include="H5_DataPipeline_TemporaryKey.pfx" />
     <None Include="Models\H5DataPipelineModel.edmx.diagram">
       <DependentUpon>H5DataPipelineModel.edmx</DependentUpon>
