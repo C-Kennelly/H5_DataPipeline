@@ -17,24 +17,15 @@ namespace H5_DataPipeline.Assistants.CompanyRosters
     class Quartermaster
     {
         IHaloSession haloSession;
-        private static Referee referee = new Referee();
-
-
+        private Referee referee = new Referee();
         public event CompanyRosterScannedHandler CompanyRosterReadyForDatabaseWrite;
-        public void OnCompanyRosterReadyForDatabaseWrite(object Sender, CompanyRosterScannedEventArgs e)
-        {
-            QuartermasterScribe scribe = new QuartermasterScribe(e.GetCurrentTeamRecord(), e.GetCompanyAPIResult(), e.GetReferee(), e.GetJobID());
-            scribe.ResolveDifferencesAndUpdateRosters();
-        }
-
-
+        
         public Quartermaster(IHaloSession session)
         {
             haloSession = session;
-
             CompanyRosterReadyForDatabaseWrite += OnCompanyRosterReadyForDatabaseWrite;
+            referee = new Referee();
         }
-
 
         public void UpdateSpartanCompanyRosters()
         {
@@ -44,20 +35,8 @@ namespace H5_DataPipeline.Assistants.CompanyRosters
             Console.WriteLine();
 
             ProcessCompanies(companiesTrackedInDatabase);
-
-            bool jobsAreDone = false;
-            while(!jobsAreDone)
-            {
-                Console.WriteLine("Found {0} jobs in the job book.", referee.jobBook.Values.Count());
-                if(referee.AllJobsAreDone())
-                {
-                    jobsAreDone = true;
-                }
-                else
-                {
-                    Thread.Sleep(250);   
-                }
-            }
+            WaitUntilAllJobsAreDone();
+            
 
             Console.WriteLine(); Console.WriteLine();
             Console.WriteLine("Finished updating Spartan Company Rosters at: {0}", DateTime.UtcNow);
@@ -75,7 +54,6 @@ namespace H5_DataPipeline.Assistants.CompanyRosters
                         && team.trackingIndex > 0
                         && team.teamId != noCompanyFoundID)
                     .ToList();
-
             }
         }
 
@@ -86,28 +64,18 @@ namespace H5_DataPipeline.Assistants.CompanyRosters
 
             foreach (t_teams company in companies)
             {
-               
                 Console.Write("\rProcessing {0} of {1}: {2}                ", counter, total, company.teamName);
+
                 referee.RegisterJob(counter);
                 ProcessCompany(company, counter);
-                counter++;
-            }
 
-            if (total == 1)  //[NOCOMPANYFOUND is the one]
-            {
-                Console.Write("No Companies for Quartermaster to process.");
+                counter++;
             }
         }
 
         private async Task ProcessCompany(t_teams team, int jobIndex)
         {            
-            if(team.teamId == t_teams.GetNoWaypointCompanyFoundID())
-            {
-                Console.WriteLine("Default company detected");
-                //Check for special company like [NOCOMPANYFOUND]
-                //Handle special company
-            }
-            else
+            if(team.teamId != t_teams.GetNoWaypointCompanyFoundID())
             {
                 CompanyCaller companyCaller = new CompanyCaller();
 
@@ -121,21 +89,32 @@ namespace H5_DataPipeline.Assistants.CompanyRosters
                     CompanyRosterReadyForDatabaseWrite?.BeginInvoke(this, new CompanyRosterScannedEventArgs(team, companyResult, referee, jobIndex), null, null);
                 }
             }
+        }
 
+        protected virtual void OnCompanyRosterReadyForDatabaseWrite(object Sender, CompanyRosterScannedEventArgs e)
+        {
+            QuartermasterScribe scribe = new QuartermasterScribe(e.GetCurrentTeamRecord(), e.GetCompanyAPIResult(), e.GetReferee(), e.GetJobID());
+            scribe.ResolveDifferencesAndUpdateRosters();
         }
 
 
-
-
-        //public bool IsNewCompany(string companyName)
-        //{
-        //
-        //}
-        //
-        //public void HandleNewCompany(string companyName)
-        //{
-        //
-        //}
+        private void WaitUntilAllJobsAreDone()
+        {
+            bool jobsAreDone = false;
+            while (!jobsAreDone)
+            {
+                Console.Write("\rWaiting on {0} jobs to complete.                                  ",
+                                        referee.GetNumberOfUnfinishedJobs());
+                if (referee.AllJobsAreDone())
+                {
+                    jobsAreDone = true;
+                }
+                else
+                {
+                    Thread.Sleep(250);
+                }
+            }
+        }
 
     }
 }

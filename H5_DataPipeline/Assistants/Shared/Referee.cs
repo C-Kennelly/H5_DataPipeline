@@ -8,7 +8,7 @@ namespace H5_DataPipeline.Assistants.Shared
 {
     public class Referee
     {
-        public ConcurrentDictionary<int, bool> jobBook;
+        private ConcurrentDictionary<int, bool> jobBook;
 
         public Referee()
         {
@@ -19,13 +19,18 @@ namespace H5_DataPipeline.Assistants.Shared
         {
             bool result = false;
 
-            int unfinishedJobCounts = jobBook.Values.Where(value => value == false).Count();
+            int unfinishedJobCounts = GetNumberOfUnfinishedJobs();
             if(unfinishedJobCounts == 0)
             {
                 result = true;
             }
 
             return result;
+        }
+
+        public int GetNumberOfUnfinishedJobs()
+        {
+            return jobBook.Values.Where(value => value == false).Count();
         }
 
         public void RegisterJob(int jobNumber)
@@ -55,6 +60,7 @@ namespace H5_DataPipeline.Assistants.Shared
             }
             
         }
+
 
 
 

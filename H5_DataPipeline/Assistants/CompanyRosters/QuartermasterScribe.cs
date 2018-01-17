@@ -34,15 +34,15 @@ namespace H5_DataPipeline.Assistants.CompanyRosters
             ResolveDifferences();
             MakeUpdatesToRoster();
 
-            referee.MarkJobDone(jobId);
+            SignalThatWriteHasCompleted(jobId);
         }
 
         private void ResolveDifferences()
         {
             if (IsValidComparison())
             {
-                List<string> currentListOfPlayers = new List<string>(10);
-                List<string> newListOfPlayers = new List<string>(10);
+                List<string> currentListOfPlayers = new List<string>();
+                List<string> newListOfPlayers = new List<string>();
 
                 using (var db = new dev_spartanclashbackendEntities())
                 {
@@ -62,9 +62,13 @@ namespace H5_DataPipeline.Assistants.CompanyRosters
             if (databaseRecord != null
                 && companyAPIResult != null
                 && databaseRecord.teamId == companyAPIResult.Id.ToString())
-            { return true; }
-
-            else { return false; }
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
 
@@ -75,8 +79,6 @@ namespace H5_DataPipeline.Assistants.CompanyRosters
                 RemoveRosterEntriesForPlayers(gamertagsToRemove);
                 AddRosterEntriesForPlayers(gamertagsToAdd);
             }
-
-            //TODO - UpdateCompanyRanks
         }
 
         private bool RosterHasUpdates()
@@ -84,14 +86,8 @@ namespace H5_DataPipeline.Assistants.CompanyRosters
             int changeCount = gamertagsToRemove.Count() + gamertagsToAdd.Count();
             //Console.WriteLine("Detected {0} changes for {1}", changeCount, databaseRecord.teamName);
 
-            if (changeCount <= 0)
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
+            if (changeCount <= 0){  return false;  }
+            else {  return true;  }
         }
 
         private void RemoveRosterEntriesForPlayers(List<string> gamertags)
@@ -151,6 +147,11 @@ namespace H5_DataPipeline.Assistants.CompanyRosters
             }
         }
 
+
+        private void SignalThatWriteHasCompleted(int jobNumber)
+        {
+            referee.MarkJobDone(jobNumber);
+        }
 
 
     }

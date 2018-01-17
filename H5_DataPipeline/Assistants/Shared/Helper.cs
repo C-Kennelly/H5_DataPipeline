@@ -45,6 +45,8 @@ namespace H5_DataPipeline.Assistants.Shared
             }
         }
 
+
+
         //This exists in HistorianScribe;
         public static void MakeNewMatchAssociationIfNotExists(t_players player, t_h5matches match)
         {
@@ -60,5 +62,15 @@ namespace H5_DataPipeline.Assistants.Shared
 
             }
         }
+
+        //public bool IsNewCompany(string companyName)
+        //{
+        //
+        //}
+        //
+        //public void HandleNewCompany(string companyName)
+        //{
+        //
+        //}
     }
 }
