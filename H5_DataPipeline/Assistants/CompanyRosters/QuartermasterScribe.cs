@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using H5_DataPipeline.Models;
 using HaloSharp.Model.Halo5.Stats;
 using H5_DataPipeline.Assistants.Shared;
+using System.Threading;
 
 namespace H5_DataPipeline.Assistants.CompanyRosters
 {

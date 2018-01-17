@@ -8,7 +8,7 @@ namespace H5_DataPipeline.Assistants.Shared
 {
     public class Referee
     {
-        private ConcurrentDictionary<int, bool> jobBook;
+        public ConcurrentDictionary<int, bool> jobBook;
 
         public Referee()
         {
@@ -30,12 +30,30 @@ namespace H5_DataPipeline.Assistants.Shared
 
         public void RegisterJob(int jobNumber)
         {
-            jobBook.AddOrUpdate(jobNumber, false, (key, oldValue) => oldValue = false);
+            bool retry = true;
+
+            while (retry)
+            {
+                bool result = jobBook.TryAdd(jobNumber, false);
+                if (result == true)
+                {
+                    retry = false;
+                }
+            }
         }
 
-        public async void MarkJobDone(int jobNumber)
+        public void MarkJobDone(int jobNumber)
         {
-            jobBook.TryUpdate(jobNumber, true, false);
+            bool retry = true;
+            while (retry)
+            {
+                bool result = jobBook.TryUpdate(jobNumber, true, false);
+                if (result == true)
+                {
+                    retry = false;
+                }
+            }
+            
         }
 
 

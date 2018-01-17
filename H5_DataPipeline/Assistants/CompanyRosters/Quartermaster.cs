@@ -17,7 +17,7 @@ namespace H5_DataPipeline.Assistants.CompanyRosters
     class Quartermaster
     {
         IHaloSession haloSession;
-        private static Referee refree = new Referee();
+        private static Referee referee = new Referee();
 
 
         public event CompanyRosterScannedHandler CompanyRosterReadyForDatabaseWrite;
@@ -48,7 +48,8 @@ namespace H5_DataPipeline.Assistants.CompanyRosters
             bool jobsAreDone = false;
             while(!jobsAreDone)
             {
-                if(refree.AllJobsAreDone())
+                Console.WriteLine("Found {0} jobs in the job book.", referee.jobBook.Values.Count());
+                if(referee.AllJobsAreDone())
                 {
                     jobsAreDone = true;
                 }
@@ -87,7 +88,7 @@ namespace H5_DataPipeline.Assistants.CompanyRosters
             {
                
                 Console.Write("\rProcessing {0} of {1}: {2}                ", counter, total, company.teamName);
-
+                referee.RegisterJob(counter);
                 ProcessCompany(company, counter);
                 counter++;
             }
@@ -117,8 +118,7 @@ namespace H5_DataPipeline.Assistants.CompanyRosters
 
                 if (companyResult != null)
                 {
-                    refree.RegisterJob(jobIndex);
-                    CompanyRosterReadyForDatabaseWrite?.BeginInvoke(this, new CompanyRosterScannedEventArgs(team, companyResult, refree, jobIndex), null, null);
+                    CompanyRosterReadyForDatabaseWrite?.BeginInvoke(this, new CompanyRosterScannedEventArgs(team, companyResult, referee, jobIndex), null, null);
                 }
             }
 
