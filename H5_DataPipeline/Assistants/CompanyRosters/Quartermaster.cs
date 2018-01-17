@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using H5_DataPipeline.Models;
 using HaloSharp;
 using HaloSharp.Model.Halo5.Stats;
+using H5_DataPipeline.Assistants.Shared;
+using System.Threading;
 
 namespace H5_DataPipeline.Assistants.CompanyRosters
 {
@@ -15,11 +17,13 @@ namespace H5_DataPipeline.Assistants.CompanyRosters
     class Quartermaster
     {
         IHaloSession haloSession;
+        private static Referee refree = new Referee();
+
 
         public event CompanyRosterScannedHandler CompanyRosterReadyForDatabaseWrite;
         public void OnCompanyRosterReadyForDatabaseWrite(object Sender, CompanyRosterScannedEventArgs e)
         {
-            QuartermasterScribe scribe = new QuartermasterScribe(e.GetCurrentTeamRecord(), e.GetCompanyAPIResult());
+            QuartermasterScribe scribe = new QuartermasterScribe(e.GetCurrentTeamRecord(), e.GetCompanyAPIResult(), e.GetReferee(), e.GetJobID());
             scribe.ResolveDifferencesAndUpdateRosters();
         }
 
@@ -40,6 +44,19 @@ namespace H5_DataPipeline.Assistants.CompanyRosters
             Console.WriteLine();
 
             ProcessCompanies(companiesTrackedInDatabase);
+
+            bool jobsAreDone = false;
+            while(!jobsAreDone)
+            {
+                if(refree.AllJobsAreDone())
+                {
+                    jobsAreDone = true;
+                }
+                else
+                {
+                    Thread.Sleep(250);   
+                }
+            }
 
             Console.WriteLine(); Console.WriteLine();
             Console.WriteLine("Finished updating Spartan Company Rosters at: {0}", DateTime.UtcNow);
@@ -68,10 +85,11 @@ namespace H5_DataPipeline.Assistants.CompanyRosters
 
             foreach (t_teams company in companies)
             {
-                counter++;
+               
                 Console.Write("\rProcessing {0} of {1}: {2}                ", counter, total, company.teamName);
 
-                ProcessCompany(company);
+                ProcessCompany(company, counter);
+                counter++;
             }
 
             if (total == 1)  //[NOCOMPANYFOUND is the one]
@@ -80,7 +98,7 @@ namespace H5_DataPipeline.Assistants.CompanyRosters
             }
         }
 
-        private async Task ProcessCompany(t_teams team)
+        private async Task ProcessCompany(t_teams team, int jobIndex)
         {            
             if(team.teamId == t_teams.GetNoWaypointCompanyFoundID())
             {
@@ -99,7 +117,8 @@ namespace H5_DataPipeline.Assistants.CompanyRosters
 
                 if (companyResult != null)
                 {
-                    CompanyRosterReadyForDatabaseWrite?.BeginInvoke(this, new CompanyRosterScannedEventArgs(team, companyResult), null, null);
+                    refree.RegisterJob(jobIndex);
+                    CompanyRosterReadyForDatabaseWrite?.BeginInvoke(this, new CompanyRosterScannedEventArgs(team, companyResult, refree, jobIndex), null, null);
                 }
             }
 

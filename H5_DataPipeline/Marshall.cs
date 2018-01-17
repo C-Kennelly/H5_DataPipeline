@@ -54,11 +54,7 @@ namespace H5_DataPipeline
             Setup();
 
             quartermaster.UpdateSpartanCompanyRosters();
-
-            //Ensure all events have been dealt with
-//            Thread.Sleep(20000);
-
-            //historian.RecordRecentGames();
+            historian.RecordRecentGames();
             //mortician.ScanMatchesForParticipants();
             //clanalyzer.AnalyzeClanBattles();
         }

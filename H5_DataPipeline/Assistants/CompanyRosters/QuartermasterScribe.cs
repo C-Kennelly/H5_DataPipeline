@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using H5_DataPipeline.Models;
 using HaloSharp.Model.Halo5.Stats;
+using H5_DataPipeline.Assistants.Shared;
 
 namespace H5_DataPipeline.Assistants.CompanyRosters
 {
@@ -13,20 +14,26 @@ namespace H5_DataPipeline.Assistants.CompanyRosters
     {
         private t_teams databaseRecord;
         private SpartanCompany companyAPIResult;
+        private Referee referee;
+        private int jobId;
 
         List<string> gamertagsToRemove;
         List<string> gamertagsToAdd;
 
-        public QuartermasterScribe(t_teams currentRecord, SpartanCompany apiResult)
+        public QuartermasterScribe(t_teams currentRecord, SpartanCompany apiResult, Referee eventReferee, int jobNumber)
         {
             databaseRecord = currentRecord;
             companyAPIResult = apiResult;
+            referee = eventReferee;
+            jobId = jobNumber;
         }
 
         public void ResolveDifferencesAndUpdateRosters()
         {
             ResolveDifferences();
             MakeUpdatesToRoster();
+
+            referee.MarkJobDone(jobId);
         }
 
         private void ResolveDifferences()
