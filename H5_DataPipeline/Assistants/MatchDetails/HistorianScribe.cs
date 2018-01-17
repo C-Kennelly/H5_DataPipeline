@@ -11,22 +11,19 @@ namespace H5_DataPipeline.Assistants.MatchDetails
     /// <summary>
     /// The scribe does the dirty work of the Historian, taking the query results and recording details, ranks, and scores in the database.
     /// </summary>
-    class HistorianScribe
+    public class HistorianScribe
     {
         private t_players playerSubjectOfMatchHistory;
         private List<PlayerMatch> matchHistoryToRecord;
 
-        public HistorianScribe()
-        {
-            //What settings does he need, or is he just holding processing logic?
-        }
-
-        public void RecordMatchHistoryForPlayer(List<PlayerMatch> matchHistory, t_players player)
+        public HistorianScribe(List<PlayerMatch> matchHistory, t_players player)
         {
             playerSubjectOfMatchHistory = player;
             matchHistoryToRecord = matchHistory;
+        }
 
-
+        public void RecordMatchHistoryForPlayer()
+        {
             foreach(PlayerMatch playerMatch in matchHistoryToRecord)
             {
                 t_h5matches match = new t_h5matches(playerMatch);

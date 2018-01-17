@@ -46,7 +46,6 @@ namespace H5_DataPipeline
             TimeSpan span = endTime.Subtract(startTime);
 
             Console.WriteLine("Cycle took {0} days, {1} hours, {2} minutes, and {3} seconds", span.Days, span.Hours, span.Minutes, span.Seconds);
-            Console.WriteLine("In other words, it took {0} minutes", span.TotalMinutes.ToString());
 
 
         }

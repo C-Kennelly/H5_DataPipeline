@@ -133,12 +133,13 @@ namespace H5_DataPipeline.Assistants.CompanyRosters
             {
                 t_players currentRecord = db.t_players.Find(gamertag);
 
-                if(currentRecord == null)
+                if (currentRecord == null)
                 {
                     db.t_players.Add(new t_players(gamertag));
 
                     db.SaveChanges();
                 }
+
             }
         }
 

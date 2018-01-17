@@ -99,6 +99,7 @@
     <Compile Include="Assistants\AnalyzeClanBattles\Clanalyzer.cs" />
     <Compile Include="Assistants\CompanyRosters\QuartermasterDelegates.cs" />
     <Compile Include="Assistants\MatchDetails\Historian.cs" />
+    <Compile Include="Assistants\MatchDetails\HistorianDelegates.cs" />
     <Compile Include="Marshall.cs" />
     <Compile Include="Assistants\MatchDetails\HistorianScribe.cs" />
     <Compile Include="Assistants\MatchParticipants\Mortician.cs" />

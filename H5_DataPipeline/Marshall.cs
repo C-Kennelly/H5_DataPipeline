@@ -6,6 +6,7 @@ using H5_DataPipeline.Assistants.AnalyzeClanBattles;
 using H5_DataPipeline.Shared;
 using H5_DataPipeline.Shared.Config;
 using HaloSharp;
+using System.Threading;
 
 namespace H5_DataPipeline
 {
@@ -53,6 +54,10 @@ namespace H5_DataPipeline
             Setup();
 
             quartermaster.UpdateSpartanCompanyRosters();
+
+            //Ensure all events have been dealt with
+//            Thread.Sleep(20000);
+
             //historian.RecordRecentGames();
             //mortician.ScanMatchesForParticipants();
             //clanalyzer.AnalyzeClanBattles();

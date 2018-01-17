@@ -21,10 +21,19 @@ namespace H5_DataPipeline.Assistants.MatchDetails
         SpartanClashSettings spartanClashSettings;
         IHaloSession haloSession;
 
+        public event PlayerMatchHistoryScannedHandler PlayerMatchHistoryReadyForDatabaseWrite;
+        public void OnPlayerMatchHistoryReadyForDatabaseWrite(object Sender, PlayerMatchHistoryScannedEventArgs e)
+        {
+            HistorianScribe scribe = new HistorianScribe(e.GetMatchHistoryToRecord(), e.GetPlayerSubjectOfMatchHistory());
+            scribe.RecordMatchHistoryForPlayer();
+        }
+
         public Historian(IHaloSession session, SpartanClashSettings settings)
         {
             haloSession = session;
             spartanClashSettings = settings;
+
+            PlayerMatchHistoryReadyForDatabaseWrite += OnPlayerMatchHistoryReadyForDatabaseWrite;
         }
 
         public void RecordRecentGames()
@@ -50,14 +59,15 @@ namespace H5_DataPipeline.Assistants.MatchDetails
                 string noCompanyFoundID = t_teams.GetNoWaypointCompanyFoundID();
 
                 //Get all teams in the database from the Waypoint source, excluding the special team for NoCompanyFound.
-                List<t_teams> teamsFromWaypoint = db.t_teams.Where(team =>
+                List<t_teams> trackedTeamsFromWaypoint = db.t_teams.Where(team =>
                         team.teamSource == waypointSourceName
+                        && team.trackingIndex > 0
                         && team.teamId != noCompanyFoundID)
                     .ToList();
 
-                List<t_players_to_teams> rosterEntriesFromWayoint = new List<t_players_to_teams>(teamsFromWaypoint.Count);
+                List<t_players_to_teams> rosterEntriesFromWayoint = new List<t_players_to_teams>(trackedTeamsFromWaypoint.Count);
 
-                foreach(t_teams team in teamsFromWaypoint)
+                foreach(t_teams team in trackedTeamsFromWaypoint)
                 {
                     List<t_players_to_teams> rosterEntriesForTeam = db.t_players_to_teams.Where(x => x.teamId == team.teamId).ToList();
                     if(rosterEntriesForTeam != null)
@@ -93,9 +103,9 @@ namespace H5_DataPipeline.Assistants.MatchDetails
             foreach (t_players player in players)
             {
                 counter++;
-                Console.Write("\rProcessing {0} of {1}: {2}                ",counter, total, player.gamertag);
+                Console.WriteLine("\rProcessing {0} of {1}: {2}                ",counter, total, player.gamertag);
 
-                ProcessPlayer(player).Wait();
+                ProcessPlayer(player);
             }
 
             if (total == 0)
@@ -107,8 +117,6 @@ namespace H5_DataPipeline.Assistants.MatchDetails
         private async Task ProcessPlayer(t_players player)
         {
             MatchCaller matchCaller = new MatchCaller();
-            HistorianScribe scribe = new HistorianScribe();
-
 
             List<PlayerMatch> recentH5MatchHistory = await matchCaller.GetH5MatchHistoryForPlayerAfterDate(
                             player.gamertag,
@@ -117,7 +125,7 @@ namespace H5_DataPipeline.Assistants.MatchDetails
                             haloSession
                         );
 
-            scribe.RecordMatchHistoryForPlayer(recentH5MatchHistory, player);
+            PlayerMatchHistoryReadyForDatabaseWrite?.BeginInvoke(this, new PlayerMatchHistoryScannedEventArgs(recentH5MatchHistory, player), null, null);
         }
 
         public DateTime GetDateToSearchFrom(t_players player, SpartanClashSettings spartanClashSettings)
