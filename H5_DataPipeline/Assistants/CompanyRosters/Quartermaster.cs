@@ -69,9 +69,9 @@ namespace H5_DataPipeline.Assistants.CompanyRosters
             foreach (t_teams company in companies)
             {
                 counter++;
-                Console.Write("\rProcessing {0} of {1}: {2}                ", counter, total, company.teamName);
+                //Console.Write("\rProcessing {0} of {1}: {2}                ", counter, total, company.teamName);
 
-                ProcessCompany(company).Wait();
+                ProcessCompany(company);
             }
 
             if (total == 1)  //[NOCOMPANYFOUND is the one]
@@ -99,8 +99,7 @@ namespace H5_DataPipeline.Assistants.CompanyRosters
 
                 if (companyResult != null)
                 {
-                    CompanyRosterScannedEventArgs companyRosterScannedEventArgs = new CompanyRosterScannedEventArgs(team, companyResult);
-                    CompanyRosterReadyForDatabaseWrite?.BeginInvoke(this, companyRosterScannedEventArgs, null, null);
+                    CompanyRosterReadyForDatabaseWrite?.BeginInvoke(this, new CompanyRosterScannedEventArgs(team, companyResult), null, null);
                 }
             }
 

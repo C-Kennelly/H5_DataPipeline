@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using System.Threading;
 using HaloSharp;
 using HaloSharp.Model.Halo5.Stats;
 using HaloSharp.Query.Halo5.Stats;
@@ -16,7 +16,13 @@ namespace H5_DataPipeline
 
         static void Main(string[] args)
         {
+            DateTime startTime = DateTime.Now;
+
             RunCycle();
+
+            PrintDurationSince(startTime);
+
+            Console.ReadLine();
         }
 
         public static void RunCycle()
@@ -30,7 +36,18 @@ namespace H5_DataPipeline
 
             Console.WriteLine();
             Console.WriteLine("Done!");
-            Console.ReadLine();
+        }
+
+        private static void PrintDurationSince(DateTime startTime)
+        {
+            DateTime endTime = DateTime.Now;
+
+
+            TimeSpan span = endTime.Subtract(startTime);
+
+            Console.WriteLine("Cycle took {0} days, {1} hours, {2} minutes, and {3} seconds", span.Days, span.Hours, span.Minutes, span.Seconds);
+            Console.WriteLine("In other words, it took {0} minutes", span.TotalMinutes.ToString());
+
 
         }
 
