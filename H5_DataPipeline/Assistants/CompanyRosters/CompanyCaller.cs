@@ -9,6 +9,7 @@ using HaloSharp.Model.Halo5.Stats;
 using HaloSharp.Query.Halo5.Stats;
 using HaloSharp.Extension;
 using HaloSharp.Exception;
+using H5_DataPipeline.Models;
 
 
 namespace H5_DataPipeline.Assistants.CompanyRosters
@@ -37,9 +38,19 @@ namespace H5_DataPipeline.Assistants.CompanyRosters
                     }
                     else if(e.HaloApiError.StatusCode == 404)
                     {
-                        Console.WriteLine("CompanyCaller: The Halo API threw an exception for company {0}, error {1} - {2}.  Stopping calls.", companyId, e.HaloApiError.StatusCode, e.HaloApiError.Message);
                         result = null;
-                        //TODO: Should remove this company with an event
+                        using (var db = new dev_spartanclashbackendEntities())
+                        {
+                            t_teams companyRecord = db.t_teams.Find(companyId);
+
+                            if(companyRecord != null)
+                            {
+                                Console.WriteLine("{0} received a 404 from the Halo API, changing tracking index to -1.", companyRecord.teamName);
+                                companyRecord.trackingIndex = -1;
+
+                                db.SaveChanges();
+                            }
+                        }
                     }
                     else
                     {

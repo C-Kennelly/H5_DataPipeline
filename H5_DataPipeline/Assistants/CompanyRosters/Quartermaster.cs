@@ -88,6 +88,10 @@ namespace H5_DataPipeline.Assistants.CompanyRosters
                 {
                     CompanyRosterReadyForDatabaseWrite?.BeginInvoke(this, new CompanyRosterScannedEventArgs(team, companyResult, referee, jobIndex), null, null);
                 }
+                else
+                {
+                    referee.MarkJobDone(jobIndex);
+                }
             }
         }
 
