@@ -29,6 +29,7 @@ namespace H5_DataPipeline.Models
         public string parentTeamId { get; set; }
         public string parentTeamName { get; set; }
         public string parentTeamSource { get; set; }
+        public System.DateTime beganTrackingDate { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<t_players_to_teams> t_players_to_teams { get; set; }

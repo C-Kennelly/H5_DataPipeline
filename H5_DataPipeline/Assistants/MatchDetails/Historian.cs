@@ -9,6 +9,7 @@ using H5_DataPipeline.Models;
 using H5_DataPipeline.Shared.Config;
 using HaloSharp.Model;
 using HaloSharp.Model.Halo5.Stats;
+using H5_DataPipeline.Assistants.Shared;
 
 
 namespace H5_DataPipeline.Assistants.MatchDetails
@@ -20,20 +21,17 @@ namespace H5_DataPipeline.Assistants.MatchDetails
     {
         SpartanClashSettings spartanClashSettings;
         IHaloSession haloSession;
-
-        public event PlayerMatchHistoryScannedHandler PlayerMatchHistoryReadyForDatabaseWrite;
-        public void OnPlayerMatchHistoryReadyForDatabaseWrite(object Sender, PlayerMatchHistoryScannedEventArgs e)
-        {
-            HistorianScribe scribe = new HistorianScribe(e.GetMatchHistoryToRecord(), e.GetPlayerSubjectOfMatchHistory());
-            scribe.RecordMatchHistoryForPlayer();
-        }
+        private Referee referee;
+        PlayerToMatchBag playerToMatchBag;
+        
 
         public Historian(IHaloSession session, SpartanClashSettings settings)
         {
             haloSession = session;
             spartanClashSettings = settings;
 
-            PlayerMatchHistoryReadyForDatabaseWrite += OnPlayerMatchHistoryReadyForDatabaseWrite;
+            referee = new Referee();
+            playerToMatchBag = new PlayerToMatchBag();
         }
 
         public void RecordRecentGames()
@@ -44,6 +42,9 @@ namespace H5_DataPipeline.Assistants.MatchDetails
             Console.WriteLine();
 
             ProcessPlayers(trackedWaypointPlayers);
+            referee.ForceWaitUntilAllJobsAreDone();
+
+            playerToMatchBag.WriteAllPlayerMatchHistoriesToDatabase();
 
             Console.WriteLine(); Console.WriteLine();
             Console.WriteLine("Finished updating player Match Histories at: {0}", DateTime.UtcNow);
@@ -102,10 +103,13 @@ namespace H5_DataPipeline.Assistants.MatchDetails
 
             foreach (t_players player in players)
             {
-                counter++;
-                Console.WriteLine("\rProcessing {0} of {1}: {2}                ",counter, total, player.gamertag);
+                
+                Console.Write("\rProcessing {0} of {1}: {2}                ",counter, total, player.gamertag);
 
-                ProcessPlayer(player);
+                referee.RegisterJob(counter);
+                ProcessPlayer(player, counter);
+
+                counter++;
             }
 
             if (total == 0)
@@ -114,33 +118,20 @@ namespace H5_DataPipeline.Assistants.MatchDetails
             }
         }
 
-        private async Task ProcessPlayer(t_players player)
+        private async Task ProcessPlayer(t_players player, int jobIndex)
         {
             MatchCaller matchCaller = new MatchCaller();
 
             List<PlayerMatch> recentH5MatchHistory = await matchCaller.GetH5MatchHistoryForPlayerAfterDate(
                             player.gamertag,
-                            GetDateToSearchFrom(player, spartanClashSettings),
+                            player.GetEarliestDateToScanMatches(),
                             spartanClashSettings.GetGameModes(),
                             haloSession
                         );
 
-            PlayerMatchHistoryReadyForDatabaseWrite?.BeginInvoke(this, new PlayerMatchHistoryScannedEventArgs(recentH5MatchHistory, player), null, null);
+            playerToMatchBag.AddPlayerMatchHistoryToBag(player, recentH5MatchHistory);
+            referee.MarkJobDone(jobIndex);
         }
-
-        public DateTime GetDateToSearchFrom(t_players player, SpartanClashSettings spartanClashSettings)
-        {
-            DateTime result = spartanClashSettings.LookForNoMatchesEarlierThan();
-            DateTime playerRecordScanDate = player.GetEarliestDateToScanMatches();
-
-            if (playerRecordScanDate > result)
-            {
-                result = playerRecordScanDate;
-            }
-
-            return result;
-        }
-
     }
 }
 

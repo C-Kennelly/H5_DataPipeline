@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 
 namespace H5_DataPipeline.Assistants.Shared
 {
@@ -15,24 +14,10 @@ namespace H5_DataPipeline.Assistants.Shared
             jobBook = new ConcurrentDictionary<int, bool>();
         }
 
-        public bool AllJobsAreDone()
-        {
-            bool result = false;
-
-            int unfinishedJobCounts = GetNumberOfUnfinishedJobs();
-            if(unfinishedJobCounts == 0)
-            {
-                result = true;
-            }
-
-            return result;
-        }
-
-        public int GetNumberOfUnfinishedJobs()
-        {
-            return jobBook.Values.Where(value => value == false).Count();
-        }
-
+        /// <summary>
+        /// Register a specific job with this Referee.
+        /// </summary>
+        /// <param name="jobNumber"></param>
         public void RegisterJob(int jobNumber)
         {
             bool retry = true;
@@ -47,6 +32,10 @@ namespace H5_DataPipeline.Assistants.Shared
             }
         }
 
+        /// <summary>
+        /// Tell the Referee that a specific job is complete.
+        /// </summary>
+        /// <param name="jobNumber"></param>
         public void MarkJobDone(int jobNumber)
         {
             bool retry = true;
@@ -61,8 +50,43 @@ namespace H5_DataPipeline.Assistants.Shared
             
         }
 
+        /// <summary>
+        /// The Referee will not return from this method until all tracked jobs are complete.
+        /// </summary>
+        public void ForceWaitUntilAllJobsAreDone()
+        {
+            bool jobsAreDone = false;
+            while (!jobsAreDone)
+            {
+                Console.Write("\rWaiting on {0} jobs to complete.                                  ",
+                                        GetNumberOfUnfinishedJobs());
+                if (AllJobsAreDone())
+                {
+                    jobsAreDone = true;
+                }
+                else
+                {
+                    Thread.Sleep(250);
+                }
+            }
+        }
 
+        private bool AllJobsAreDone()
+        {
+            bool result = false;
 
+            int unfinishedJobCounts = GetNumberOfUnfinishedJobs();
+            if (unfinishedJobCounts == 0)
+            {
+                result = true;
+            }
 
+            return result;
+        }
+
+        private int GetNumberOfUnfinishedJobs()
+        {
+            return jobBook.Values.Where(value => value == false).Count();
+        }
     }
 }

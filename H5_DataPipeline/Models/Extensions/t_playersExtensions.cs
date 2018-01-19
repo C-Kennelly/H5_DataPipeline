@@ -33,14 +33,40 @@ namespace H5_DataPipeline.Models
 
         public DateTime GetEarliestDateToScanMatches()
         {
-            if (dateLastMatchScan == null)
-            {
-                return firstDayOfHalo5;
-            }
-            else
+            if (dateLastMatchScan != null)
             {
                 return (DateTime)dateLastMatchScan;
             }
+            else 
+            {
+                return FindEarliestDateToScanBasedOnCompanyOrSiteConfigOptions();
+            }
+        }
+        
+        private DateTime FindEarliestDateToScanBasedOnCompanyOrSiteConfigOptions()
+        {
+            DateTime earliestDateToSearch = firstDayOfHalo5;
+
+            using (var db = new dev_spartanclashbackendEntities())
+            {
+                t_players_to_teams companyAssociationForGamertag = db.t_players_to_teams.Where(record => record.gamertag == gamertag).FirstOrDefault();
+
+                if (companyAssociationForGamertag != null)
+                {
+                    DateTime? companyFirstTrackingDate = companyAssociationForGamertag.membershipLastModifiedDate;
+
+                    if (companyFirstTrackingDate != null)
+                    {
+                        companyFirstTrackingDate = companyAssociationForGamertag.lastUpdated;
+                    }
+                }
+                else
+                {
+                    earliestDateToSearch = db.t_configoptions.Find("active").siteLaunchDate;
+                }
+            }
+
+            return earliestDateToSearch;
         }
 
         public bool MatchesReadyToBeSearched()

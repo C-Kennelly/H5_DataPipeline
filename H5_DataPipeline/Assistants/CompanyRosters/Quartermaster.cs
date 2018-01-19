@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using H5_DataPipeline.Assistants.Shared;
 using H5_DataPipeline.Models;
 using HaloSharp;
 using HaloSharp.Model.Halo5.Stats;
-using H5_DataPipeline.Assistants.Shared;
-using System.Threading;
 
 namespace H5_DataPipeline.Assistants.CompanyRosters
 {
@@ -17,7 +15,7 @@ namespace H5_DataPipeline.Assistants.CompanyRosters
     class Quartermaster
     {
         IHaloSession haloSession;
-        private Referee referee = new Referee();
+        private Referee referee;
         public event CompanyRosterScannedHandler CompanyRosterReadyForDatabaseWrite;
         
         public Quartermaster(IHaloSession session)
@@ -35,7 +33,7 @@ namespace H5_DataPipeline.Assistants.CompanyRosters
             Console.WriteLine();
 
             ProcessCompanies(companiesTrackedInDatabase);
-            WaitUntilAllJobsAreDone();
+            referee.ForceWaitUntilAllJobsAreDone();
             
 
             Console.WriteLine(); Console.WriteLine();
@@ -100,25 +98,5 @@ namespace H5_DataPipeline.Assistants.CompanyRosters
             QuartermasterScribe scribe = new QuartermasterScribe(e.GetCurrentTeamRecord(), e.GetCompanyAPIResult(), e.GetReferee(), e.GetJobID());
             scribe.ResolveDifferencesAndUpdateRosters();
         }
-
-
-        private void WaitUntilAllJobsAreDone()
-        {
-            bool jobsAreDone = false;
-            while (!jobsAreDone)
-            {
-                Console.Write("\rWaiting on {0} jobs to complete.                                  ",
-                                        referee.GetNumberOfUnfinishedJobs());
-                if (referee.AllJobsAreDone())
-                {
-                    jobsAreDone = true;
-                }
-                else
-                {
-                    Thread.Sleep(250);
-                }
-            }
-        }
-
     }
 }

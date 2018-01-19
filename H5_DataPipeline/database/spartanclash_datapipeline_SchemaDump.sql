@@ -26,12 +26,7 @@ CREATE TABLE IF NOT EXISTS `t_configoptions` (
   PRIMARY KEY (`configName`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Dumping data for table spartanclash_datapipeline.t_configoptions: ~0 rows (approximately)
-/*!40000 ALTER TABLE `t_configoptions` DISABLE KEYS */;
-INSERT INTO `t_configoptions` (`configName`, `siteLaunchDate`, `companyClanBattleThreshold`) VALUES
-	('active', '2018-01-16', 0.75);
-/*!40000 ALTER TABLE `t_configoptions` ENABLE KEYS */;
-
+-- Data exporting was unselected.
 -- Dumping structure for table spartanclash_datapipeline.t_h5matches
 DROP TABLE IF EXISTS `t_h5matches`;
 CREATE TABLE IF NOT EXISTS `t_h5matches` (
@@ -45,10 +40,7 @@ CREATE TABLE IF NOT EXISTS `t_h5matches` (
   PRIMARY KEY (`matchID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Dumping data for table spartanclash_datapipeline.t_h5matches: ~0 rows (approximately)
-/*!40000 ALTER TABLE `t_h5matches` DISABLE KEYS */;
-/*!40000 ALTER TABLE `t_h5matches` ENABLE KEYS */;
-
+-- Data exporting was unselected.
 -- Dumping structure for table spartanclash_datapipeline.t_h5matches_matchdetails
 DROP TABLE IF EXISTS `t_h5matches_matchdetails`;
 CREATE TABLE IF NOT EXISTS `t_h5matches_matchdetails` (
@@ -73,10 +65,7 @@ CREATE TABLE IF NOT EXISTS `t_h5matches_matchdetails` (
   CONSTRAINT `fk_matchID_h5matches_matchdetails` FOREIGN KEY (`matchId`) REFERENCES `t_h5matches` (`matchID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Dumping data for table spartanclash_datapipeline.t_h5matches_matchdetails: ~0 rows (approximately)
-/*!40000 ALTER TABLE `t_h5matches_matchdetails` DISABLE KEYS */;
-/*!40000 ALTER TABLE `t_h5matches_matchdetails` ENABLE KEYS */;
-
+-- Data exporting was unselected.
 -- Dumping structure for table spartanclash_datapipeline.t_h5matches_playersformatch
 DROP TABLE IF EXISTS `t_h5matches_playersformatch`;
 CREATE TABLE IF NOT EXISTS `t_h5matches_playersformatch` (
@@ -91,10 +80,7 @@ CREATE TABLE IF NOT EXISTS `t_h5matches_playersformatch` (
   CONSTRAINT `CONSTRAINT_2` CHECK (`team2_Players` is null or json_valid(`team2_Players`))
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Dumping data for table spartanclash_datapipeline.t_h5matches_playersformatch: ~0 rows (approximately)
-/*!40000 ALTER TABLE `t_h5matches_playersformatch` DISABLE KEYS */;
-/*!40000 ALTER TABLE `t_h5matches_playersformatch` ENABLE KEYS */;
-
+-- Data exporting was unselected.
 -- Dumping structure for table spartanclash_datapipeline.t_h5matches_ranksandscores
 DROP TABLE IF EXISTS `t_h5matches_ranksandscores`;
 CREATE TABLE IF NOT EXISTS `t_h5matches_ranksandscores` (
@@ -108,10 +94,7 @@ CREATE TABLE IF NOT EXISTS `t_h5matches_ranksandscores` (
   CONSTRAINT `fk_matchID_h5matches_ranksandscores` FOREIGN KEY (`matchId`) REFERENCES `t_h5matches` (`matchID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Dumping data for table spartanclash_datapipeline.t_h5matches_ranksandscores: ~0 rows (approximately)
-/*!40000 ALTER TABLE `t_h5matches_ranksandscores` DISABLE KEYS */;
-/*!40000 ALTER TABLE `t_h5matches_ranksandscores` ENABLE KEYS */;
-
+-- Data exporting was unselected.
 -- Dumping structure for table spartanclash_datapipeline.t_h5matches_teamsinvolved_halowaypointcompanies
 DROP TABLE IF EXISTS `t_h5matches_teamsinvolved_halowaypointcompanies`;
 CREATE TABLE IF NOT EXISTS `t_h5matches_teamsinvolved_halowaypointcompanies` (
@@ -127,10 +110,7 @@ CREATE TABLE IF NOT EXISTS `t_h5matches_teamsinvolved_halowaypointcompanies` (
   CONSTRAINT `fk_teamSourceWaypoint` FOREIGN KEY (`teamSource`) REFERENCES `t_teamsources` (`teamSource`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Dumping data for table spartanclash_datapipeline.t_h5matches_teamsinvolved_halowaypointcompanies: ~0 rows (approximately)
-/*!40000 ALTER TABLE `t_h5matches_teamsinvolved_halowaypointcompanies` DISABLE KEYS */;
-/*!40000 ALTER TABLE `t_h5matches_teamsinvolved_halowaypointcompanies` ENABLE KEYS */;
-
+-- Data exporting was unselected.
 -- Dumping structure for table spartanclash_datapipeline.t_h5matches_teamsinvolved_spartanclashfireteams
 DROP TABLE IF EXISTS `t_h5matches_teamsinvolved_spartanclashfireteams`;
 CREATE TABLE IF NOT EXISTS `t_h5matches_teamsinvolved_spartanclashfireteams` (
@@ -146,10 +126,7 @@ CREATE TABLE IF NOT EXISTS `t_h5matches_teamsinvolved_spartanclashfireteams` (
   CONSTRAINT `t_h5matches_teamsinvolved_spartanclashfireteams_ibfk_2` FOREIGN KEY (`teamSource`) REFERENCES `t_teamsources` (`teamSource`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC;
 
--- Dumping data for table spartanclash_datapipeline.t_h5matches_teamsinvolved_spartanclashfireteams: ~0 rows (approximately)
-/*!40000 ALTER TABLE `t_h5matches_teamsinvolved_spartanclashfireteams` DISABLE KEYS */;
-/*!40000 ALTER TABLE `t_h5matches_teamsinvolved_spartanclashfireteams` ENABLE KEYS */;
-
+-- Data exporting was unselected.
 -- Dumping structure for table spartanclash_datapipeline.t_players
 DROP TABLE IF EXISTS `t_players`;
 CREATE TABLE IF NOT EXISTS `t_players` (
@@ -162,10 +139,7 @@ CREATE TABLE IF NOT EXISTS `t_players` (
   PRIMARY KEY (`gamertag`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Dumping data for table spartanclash_datapipeline.t_players: ~0 rows (approximately)
-/*!40000 ALTER TABLE `t_players` DISABLE KEYS */;
-/*!40000 ALTER TABLE `t_players` ENABLE KEYS */;
-
+-- Data exporting was unselected.
 -- Dumping structure for table spartanclash_datapipeline.t_players_to_h5matches
 DROP TABLE IF EXISTS `t_players_to_h5matches`;
 CREATE TABLE IF NOT EXISTS `t_players_to_h5matches` (
@@ -179,10 +153,7 @@ CREATE TABLE IF NOT EXISTS `t_players_to_h5matches` (
   CONSTRAINT `fk_matchID_players_to_matches` FOREIGN KEY (`matchID`) REFERENCES `t_h5matches` (`matchID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Dumping data for table spartanclash_datapipeline.t_players_to_h5matches: ~0 rows (approximately)
-/*!40000 ALTER TABLE `t_players_to_h5matches` DISABLE KEYS */;
-/*!40000 ALTER TABLE `t_players_to_h5matches` ENABLE KEYS */;
-
+-- Data exporting was unselected.
 -- Dumping structure for table spartanclash_datapipeline.t_players_to_teams
 DROP TABLE IF EXISTS `t_players_to_teams`;
 CREATE TABLE IF NOT EXISTS `t_players_to_teams` (
@@ -199,16 +170,14 @@ CREATE TABLE IF NOT EXISTS `t_players_to_teams` (
   CONSTRAINT `fk_tplayerstoteams_t_teams` FOREIGN KEY (`teamId`) REFERENCES `t_teams` (`teamId`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Dumping data for table spartanclash_datapipeline.t_players_to_teams: ~0 rows (approximately)
-/*!40000 ALTER TABLE `t_players_to_teams` DISABLE KEYS */;
-/*!40000 ALTER TABLE `t_players_to_teams` ENABLE KEYS */;
-
+-- Data exporting was unselected.
 -- Dumping structure for table spartanclash_datapipeline.t_teams
 DROP TABLE IF EXISTS `t_teams`;
 CREATE TABLE IF NOT EXISTS `t_teams` (
   `teamId` varchar(128) NOT NULL,
   `teamName` varchar(128) NOT NULL,
   `teamSource` varchar(128) NOT NULL,
+  `beganTrackingDate` timestamp NOT NULL DEFAULT current_timestamp(),
   `trackingIndex` int(16) NOT NULL DEFAULT 1,
   `lastUpdated` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `rosterLastUdated` timestamp NULL DEFAULT NULL,
@@ -221,12 +190,7 @@ CREATE TABLE IF NOT EXISTS `t_teams` (
   CONSTRAINT `fk_teamsource_teams` FOREIGN KEY (`teamSource`) REFERENCES `t_teamsources` (`teamSource`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Dumping data for table spartanclash_datapipeline.t_teams: ~0 rows (approximately)
-/*!40000 ALTER TABLE `t_teams` DISABLE KEYS */;
-INSERT INTO `t_teams` (`teamId`, `teamName`, `teamSource`, `trackingIndex`, `lastUpdated`, `rosterLastUdated`, `parentTeamId`, `parentTeamName`, `parentTeamSource`) VALUES
-	('0', '[NOCOMPANYFOUND]', 'Halo Waypoint', 0, '2018-01-16 22:20:25', NULL, NULL, NULL, NULL);
-/*!40000 ALTER TABLE `t_teams` ENABLE KEYS */;
-
+-- Data exporting was unselected.
 -- Dumping structure for table spartanclash_datapipeline.t_teamsources
 DROP TABLE IF EXISTS `t_teamsources`;
 CREATE TABLE IF NOT EXISTS `t_teamsources` (
@@ -237,12 +201,7 @@ CREATE TABLE IF NOT EXISTS `t_teamsources` (
   PRIMARY KEY (`teamSource`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Dumping data for table spartanclash_datapipeline.t_teamsources: ~0 rows (approximately)
-/*!40000 ALTER TABLE `t_teamsources` DISABLE KEYS */;
-INSERT INTO `t_teamsources` (`teamSource`, `sourceURL`, `teamCommonName`, `beganTrackingOnDate`) VALUES
-	('Halo Waypoint', 'www.halowaypoint.com', 'Spartan Company', '2018-01-16 22:20:24');
-/*!40000 ALTER TABLE `t_teamsources` ENABLE KEYS */;
-
+-- Data exporting was unselected.
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

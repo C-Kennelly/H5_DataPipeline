@@ -21,6 +21,7 @@ namespace H5_DataPipeline.Models
                 teamId = GetNoWaypointCompanyFoundID(),
                 teamName = GetNoWaypointCompanyFoundString(),
                 teamSource = t_teamsources.GetWaypointSourceName(),
+                beganTrackingDate = DateTime.UtcNow,
                 lastUpdated = DateTime.UtcNow,
                 parentTeamId = null,
                 parentTeamName = null,

@@ -13,10 +13,11 @@ namespace H5_DataPipeline.Assistants.MatchDetails
     /// </summary>
     public class HistorianScribe
     {
-        private t_players playerSubjectOfMatchHistory;
         private List<PlayerMatch> matchHistoryToRecord;
+        private t_players playerSubjectOfMatchHistory;
 
-        public HistorianScribe(List<PlayerMatch> matchHistory, t_players player)
+
+        public HistorianScribe(t_players player, List<PlayerMatch> matchHistory)
         {
             //TODO - HELPER HAS MAKE ASSOCIATION FUNCTION - NEED TO DRY THAT OUT
             playerSubjectOfMatchHistory = player;

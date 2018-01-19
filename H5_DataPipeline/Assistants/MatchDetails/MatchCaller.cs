@@ -26,9 +26,10 @@ namespace H5_DataPipeline.Assistants.MatchDetails
 
             while (matchesRemaining)
             {
-                while (retry)
+                while(retry)
                 {
                     retry = false;
+
                     try
                     {
                         MatchSet<PlayerMatch> matchSet = await session.Query(new GetMatchHistory(tag)
@@ -37,16 +38,16 @@ namespace H5_DataPipeline.Assistants.MatchDetails
 
                         if (matchSet != null) { allMatches.AddRange(matchSet.Results); }
 
-                        Console.Write("\rFound {0} matches so far", allMatches.Count);
+                        //Console.Write("\rFound {0} matches so far", allMatches.Count);
 
                         matchesRemaining = CheckIfMatchesRemaining(matchSet, earliestMatchDate);
-                    
+                
                     }
                     catch (HaloApiException e)
                     {
                         if(e.HaloApiError.Message.Contains("Rate limit"))
                         {
-                            Console.WriteLine("MatchCaller: The Halo API threw an exception for gamertag {0}, error {1} - {2}.  Stopping calls.", tag, e.HaloApiError.StatusCode, e.HaloApiError.Message);
+                            Console.WriteLine("MatchCaller: Rate Limit Hit");
                             retry = true;
                         }
                         else
@@ -57,8 +58,9 @@ namespace H5_DataPipeline.Assistants.MatchDetails
                         //TODO -> Handle errors here... removing 404's?  Common class for handling API errors?
                     }
                 }
+
             }
-               
+
             //Console.WriteLine();
             return allMatches;
         }
