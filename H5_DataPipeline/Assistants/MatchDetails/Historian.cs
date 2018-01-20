@@ -21,12 +21,15 @@ namespace H5_DataPipeline.Assistants.MatchDetails
     {
         SpartanClashSettings spartanClashSettings;
         IHaloSession haloSession;
+        Referee referee;
         
 
         public Historian(IHaloSession session, SpartanClashSettings settings)
         {
             haloSession = session;
             spartanClashSettings = settings;
+
+            referee = new Referee();
         }
 
         public void RecordRecentGames()
@@ -97,7 +100,7 @@ namespace H5_DataPipeline.Assistants.MatchDetails
             {
                Console.Write("\rProcessing {0} of {1}: {2}                ",counter, total, player.gamertag);
 
-                ProcessPlayer(player).Wait();
+                ProcessPlayer(player);
 
                 counter++;
             }
@@ -116,6 +119,7 @@ namespace H5_DataPipeline.Assistants.MatchDetails
 
             HistorianScribe scribe = new HistorianScribe(player, recentH5MatchHistory);
             scribe.RecordMatchHistoryForPlayer();
+            
         }
     }
 }
