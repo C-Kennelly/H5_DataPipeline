@@ -40,6 +40,7 @@ namespace H5_DataPipeline.Assistants.MatchDetails
             Console.WriteLine();
 
             ProcessPlayers(trackedWaypointPlayers);
+            referee.WaitUntilAllJobsAreDone();
 
             Console.WriteLine(); Console.WriteLine();
             Console.WriteLine("Finished updating player Match Histories at: {0}", DateTime.UtcNow);
@@ -100,13 +101,14 @@ namespace H5_DataPipeline.Assistants.MatchDetails
             {
                Console.Write("\rProcessing {0} of {1}: {2}                ",counter, total, player.gamertag);
 
-                ProcessPlayer(player);
+                referee.WaitToRegisterJob(counter);
+                ProcessPlayer(player, counter);
 
                 counter++;
             }
         }
 
-        private async Task ProcessPlayer(t_players player)
+        private async Task ProcessPlayer(t_players player, int jobIndex)
         {
             MatchCaller matchCaller = new MatchCaller();
 
@@ -119,6 +121,7 @@ namespace H5_DataPipeline.Assistants.MatchDetails
 
             HistorianScribe scribe = new HistorianScribe(player, recentH5MatchHistory);
             scribe.RecordMatchHistoryForPlayer();
+            referee.WaitToMarkJobDone(jobIndex);
             
         }
     }

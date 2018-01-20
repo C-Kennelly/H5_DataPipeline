@@ -40,7 +40,7 @@ namespace H5_DataPipeline.Assistants.MatchDetails
                     matchesRemaining = false;
                 }
 
-                Console.Write("\rFound {0} matches so far for {1}", allMatches.Count, tag);
+                //Console.Write("\rFound {0} matches so far for {1}", allMatches.Count, tag);
             }
 
             return allMatches;
