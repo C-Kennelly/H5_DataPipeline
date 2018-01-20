@@ -33,7 +33,7 @@ namespace H5_DataPipeline.Assistants.CompanyRosters
             Console.WriteLine();
 
             ProcessCompanies(companiesTrackedInDatabase);
-            referee.ForceWaitUntilAllJobsAreDone();
+            referee.WaitUntilAllJobsAreDone();
             
 
             Console.WriteLine(); Console.WriteLine();
@@ -64,7 +64,7 @@ namespace H5_DataPipeline.Assistants.CompanyRosters
             {
                 Console.Write("\rProcessing {0} of {1}: {2}                ", counter, total, company.teamName);
 
-                referee.RegisterJob(counter);
+                referee.WaitToRegisterJob(counter);
                 ProcessCompany(company, counter);
 
                 counter++;
@@ -88,7 +88,7 @@ namespace H5_DataPipeline.Assistants.CompanyRosters
                 }
                 else
                 {
-                    referee.MarkJobDone(jobIndex);
+                    referee.WaitToMarkJobDone(jobIndex);
                 }
             }
         }

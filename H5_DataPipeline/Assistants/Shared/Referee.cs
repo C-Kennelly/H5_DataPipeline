@@ -18,7 +18,7 @@ namespace H5_DataPipeline.Assistants.Shared
         /// Register a specific job with this Referee.
         /// </summary>
         /// <param name="jobNumber"></param>
-        public void RegisterJob(int jobNumber)
+        public void WaitToRegisterJob(int jobNumber)
         {
             bool retry = true;
 
@@ -36,7 +36,7 @@ namespace H5_DataPipeline.Assistants.Shared
         /// Tell the Referee that a specific job is complete.
         /// </summary>
         /// <param name="jobNumber"></param>
-        public void MarkJobDone(int jobNumber)
+        public void WaitToMarkJobDone(int jobNumber)
         {
             bool retry = true;
             while (retry)
@@ -53,7 +53,7 @@ namespace H5_DataPipeline.Assistants.Shared
         /// <summary>
         /// The Referee will not return from this method until all tracked jobs are complete.
         /// </summary>
-        public void ForceWaitUntilAllJobsAreDone()
+        public void WaitUntilAllJobsAreDone()
         {
             bool jobsAreDone = false;
             while (!jobsAreDone)
@@ -66,7 +66,7 @@ namespace H5_DataPipeline.Assistants.Shared
                 }
                 else
                 {
-                    Thread.Sleep(250);
+                    Thread.Sleep(5000);
                 }
             }
         }

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
-using H5_DataPipeline.Models;
 using HaloSharp;
 using HaloSharp.Model;
 using HaloSharp.Model.Common;
@@ -48,6 +48,7 @@ namespace H5_DataPipeline.Assistants.MatchDetails
                         if(e.HaloApiError.Message.Contains("Rate limit"))
                         {
                             Console.WriteLine("MatchCaller: Rate Limit Hit");
+                            Thread.Sleep(250);
                             retry = true;
                         }
                         else

@@ -53,11 +53,22 @@ namespace H5_DataPipeline.Models
 
                 if (companyAssociationForGamertag != null)
                 {
-                    DateTime? companyFirstTrackingDate = companyAssociationForGamertag.membershipLastModifiedDate;
+                    DateTime? memberTrackingDate = companyAssociationForGamertag.membershipLastModifiedDate;
 
-                    if (companyFirstTrackingDate != null)
+                    if (memberTrackingDate == null)
                     {
-                        companyFirstTrackingDate = companyAssociationForGamertag.lastUpdated;
+                        memberTrackingDate = companyAssociationForGamertag.lastUpdated;
+                    }
+
+                    DateTime companyBeganTrackingDate = companyAssociationForGamertag.t_teams.beganTrackingDate;
+
+                    if(companyBeganTrackingDate > memberTrackingDate)
+                    {
+                        earliestDateToSearch = companyBeganTrackingDate;
+                    }
+                    else
+                    {
+                        earliestDateToSearch = (DateTime)memberTrackingDate;
                     }
                 }
                 else
@@ -65,6 +76,8 @@ namespace H5_DataPipeline.Models
                     earliestDateToSearch = db.t_configoptions.Find("active").siteLaunchDate;
                 }
             }
+
+
 
             return earliestDateToSearch;
         }

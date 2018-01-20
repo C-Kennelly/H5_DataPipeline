@@ -150,7 +150,7 @@ namespace H5_DataPipeline.Assistants.CompanyRosters
 
         private void SignalThatWriteHasCompleted(int jobNumber)
         {
-            referee.MarkJobDone(jobNumber);
+            referee.WaitToMarkJobDone(jobNumber);
         }
 
 

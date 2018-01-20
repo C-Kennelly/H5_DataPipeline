@@ -42,7 +42,7 @@ namespace H5_DataPipeline.Assistants.MatchDetails
             Console.WriteLine();
 
             ProcessPlayers(trackedWaypointPlayers);
-            referee.ForceWaitUntilAllJobsAreDone();
+            referee.WaitUntilAllJobsAreDone();
 
             playerToMatchBag.WriteAllPlayerMatchHistoriesToDatabase();
 
@@ -104,9 +104,13 @@ namespace H5_DataPipeline.Assistants.MatchDetails
             foreach (t_players player in players)
             {
                 
+                if(counter % 50 == 0)
+                {
+                    referee.WaitUntilAllJobsAreDone();
+                }
                 Console.Write("\rProcessing {0} of {1}: {2}                ",counter, total, player.gamertag);
 
-                referee.RegisterJob(counter);
+                referee.WaitToRegisterJob(counter);
                 ProcessPlayer(player, counter);
 
                 counter++;
@@ -129,8 +133,8 @@ namespace H5_DataPipeline.Assistants.MatchDetails
                             haloSession
                         );
 
-            playerToMatchBag.AddPlayerMatchHistoryToBag(player, recentH5MatchHistory);
-            referee.MarkJobDone(jobIndex);
+            playerToMatchBag.WaitToAddPlayerMatchHistoryToBag(player, recentH5MatchHistory);
+            referee.WaitToMarkJobDone(jobIndex);
         }
     }
 }

@@ -19,7 +19,7 @@ namespace H5_DataPipeline.Assistants.MatchDetails
             matchBag = new ConcurrentDictionary<t_players, List<PlayerMatch>>();
         }
 
-        public void AddPlayerMatchHistoryToBag(t_players player, List<PlayerMatch> matchHistory)
+        public void WaitToAddPlayerMatchHistoryToBag(t_players player, List<PlayerMatch> matchHistory)
         {
             bool retry = true;
 
@@ -35,7 +35,34 @@ namespace H5_DataPipeline.Assistants.MatchDetails
 
         public void WriteAllPlayerMatchHistoriesToDatabase()
         {
-            throw new NotImplementedException();
+            foreach(t_players player in matchBag.Keys)
+            {
+                List<PlayerMatch> matchHistory = WaitForMatchHistory(player);
+                if(matchHistory != null)
+                {
+                    HistorianScribe scribe = new HistorianScribe(player, matchHistory);
+                    scribe.RecordMatchHistoryForPlayer();
+                }
+            }
         }
+
+        private List<PlayerMatch> WaitForMatchHistory(t_players key)
+        {
+            List<PlayerMatch> matchHistoryValue = null;
+            bool retry = true;
+
+            while (retry)
+            {
+                bool result = matchBag.TryGetValue(key, out matchHistoryValue);
+                if (result == true)
+                {
+                    retry = false;
+                }
+            }
+
+            return matchHistoryValue;
+        }
+
+
     }
 }
