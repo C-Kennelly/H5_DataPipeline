@@ -100,7 +100,6 @@
     <Compile Include="Assistants\CompanyRosters\QuartermasterDelegates.cs" />
     <Compile Include="Assistants\MatchDetails\Historian.cs" />
     <Compile Include="Assistants\MatchDetails\HistorianDelegates.cs" />
-    <Compile Include="Assistants\MatchDetails\PlayerToMatchBag.cs" />
     <Compile Include="Assistants\Shared\Referee.cs" />
     <Compile Include="Marshall.cs" />
     <Compile Include="Assistants\MatchDetails\HistorianScribe.cs" />

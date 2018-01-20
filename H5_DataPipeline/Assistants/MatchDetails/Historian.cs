@@ -21,17 +21,12 @@ namespace H5_DataPipeline.Assistants.MatchDetails
     {
         SpartanClashSettings spartanClashSettings;
         IHaloSession haloSession;
-        private Referee referee;
-        PlayerToMatchBag playerToMatchBag;
         
 
         public Historian(IHaloSession session, SpartanClashSettings settings)
         {
             haloSession = session;
             spartanClashSettings = settings;
-
-            referee = new Referee();
-            playerToMatchBag = new PlayerToMatchBag();
         }
 
         public void RecordRecentGames()
@@ -42,9 +37,6 @@ namespace H5_DataPipeline.Assistants.MatchDetails
             Console.WriteLine();
 
             ProcessPlayers(trackedWaypointPlayers);
-            referee.WaitUntilAllJobsAreDone();
-
-            playerToMatchBag.WriteAllPlayerMatchHistoriesToDatabase();
 
             Console.WriteLine(); Console.WriteLine();
             Console.WriteLine("Finished updating player Match Histories at: {0}", DateTime.UtcNow);
@@ -103,26 +95,15 @@ namespace H5_DataPipeline.Assistants.MatchDetails
 
             foreach (t_players player in players)
             {
-                
-                if(counter % 50 == 0)
-                {
-                    referee.WaitUntilAllJobsAreDone(silent: true);
-                }
-                Console.Write("\rProcessing {0} of {1}: {2}                ",counter, total, player.gamertag);
+               Console.Write("\rProcessing {0} of {1}: {2}                ",counter, total, player.gamertag);
 
-                referee.WaitToRegisterJob(counter);
-                ProcessPlayer(player, counter);
+                ProcessPlayer(player).Wait();
 
                 counter++;
             }
-
-            if (total == 0)
-            {
-                Console.Write("No players for Historian to process.");
-            }
         }
 
-        private async Task ProcessPlayer(t_players player, int jobIndex)
+        private async Task ProcessPlayer(t_players player)
         {
             MatchCaller matchCaller = new MatchCaller();
 
@@ -133,8 +114,8 @@ namespace H5_DataPipeline.Assistants.MatchDetails
                             haloSession
                         );
 
-            playerToMatchBag.WaitToAddPlayerMatchHistoryToBag(player, recentH5MatchHistory);
-            referee.WaitToMarkJobDone(jobIndex);
+            HistorianScribe scribe = new HistorianScribe(player, recentH5MatchHistory);
+            scribe.RecordMatchHistoryForPlayer();
         }
     }
 }

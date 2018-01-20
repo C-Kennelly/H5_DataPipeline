@@ -45,32 +45,5 @@ namespace H5_DataPipeline.Assistants.Shared
             }
         }
 
-
-
-        //This exists in HistorianScribe;
-        public static void MakeNewMatchAssociationIfNotExists(t_players player, t_h5matches match)
-        {
-            using (var db = new dev_spartanclashbackendEntities())
-            {
-                t_players_to_h5matches currentRecord = db.t_players_to_h5matches.FirstOrDefault(record => record.gamertag == player.gamertag && record.matchID == match.matchID);
-
-                if (currentRecord == null)
-                {
-                    db.t_players_to_h5matches.Add(new t_players_to_h5matches(player.gamertag, match.matchID));
-                    db.SaveChanges();
-                }
-
-            }
-        }
-
-        //public bool IsNewCompany(string companyName)
-        //{
-        //
-        //}
-        //
-        //public void HandleNewCompany(string companyName)
-        //{
-        //
-        //}
     }
 }

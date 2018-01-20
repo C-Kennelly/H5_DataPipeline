@@ -65,7 +65,10 @@ namespace H5_DataPipeline.Assistants.CompanyRosters
                 Console.Write("\rProcessing {0} of {1}: {2}                ", counter, total, company.teamName);
 
                 referee.WaitToRegisterJob(counter);
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+                               // Continuing exectuion of the current method is intended behavior - we are relying on HaloSharp's RateGate to limit async execution here.
                 ProcessCompany(company, counter);
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
 
                 counter++;
             }
