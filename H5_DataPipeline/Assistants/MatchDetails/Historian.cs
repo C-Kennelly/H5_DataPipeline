@@ -106,7 +106,7 @@ namespace H5_DataPipeline.Assistants.MatchDetails
                 
                 if(counter % 50 == 0)
                 {
-                    referee.WaitUntilAllJobsAreDone();
+                    referee.WaitUntilAllJobsAreDone(silent: true);
                 }
                 Console.Write("\rProcessing {0} of {1}: {2}                ",counter, total, player.gamertag);
 

@@ -53,13 +53,17 @@ namespace H5_DataPipeline.Assistants.Shared
         /// <summary>
         /// The Referee will not return from this method until all tracked jobs are complete.
         /// </summary>
-        public void WaitUntilAllJobsAreDone()
+        public void WaitUntilAllJobsAreDone(bool silent = false)
         {
             bool jobsAreDone = false;
             while (!jobsAreDone)
             {
-                Console.Write("\rWaiting on {0} jobs to complete.                                  ",
-                                        GetNumberOfUnfinishedJobs());
+                if(!silent)
+                {
+                    Console.Write("\rWaiting on {0} jobs to complete.                                  ",
+                                            GetNumberOfUnfinishedJobs());
+                }
+
                 if (AllJobsAreDone())
                 {
                     jobsAreDone = true;
