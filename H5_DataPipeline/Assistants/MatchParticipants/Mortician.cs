@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using HaloSharp;
 using H5_DataPipeline.Models;
+using H5_DataPipeline.Shared.Config;
+using H5_DataPipeline.Assistants.Shared;
 
 namespace H5_DataPipeline.Assistants.MatchParticipants
 {
@@ -14,34 +16,45 @@ namespace H5_DataPipeline.Assistants.MatchParticipants
     class Mortician
     {
         IHaloSession haloSession;
+        SpartanClashSettings spartanClashSettings;
+        Referee referee;
 
+        public event MatchPlayersReadyToSaveToDatabaseHandler MatchPlayersReadyToSaveToDatabase;
 
-        public Mortician(IHaloSession session)
+        public Mortician(IHaloSession session, SpartanClashSettings settings)
         {
             haloSession = session;
+            spartanClashSettings = settings;
+            referee = new Referee();
+
+            MatchPlayersReadyToSaveToDatabase += OnMatchPlayersReadyToSaveToDatabase;
         }
 
 
         public void ScanMatchesForParticipants()
         {
-            List<t_h5matches> matchesWithoutParticipatnsRecorded = GetMatchesWithoutParticipants();
-
             Console.WriteLine("Updating Match Participants at: {0}", DateTime.UtcNow);
             Console.WriteLine();
 
+
+            List<t_h5matches> matchesWithoutParticipatnsRecorded = GetMatchesSinceSiteLaunchWithoutParticipants();
             ProcessMatches(matchesWithoutParticipatnsRecorded);
+            referee.WaitUntilAllJobsAreDone();
 
             Console.WriteLine(); Console.WriteLine();
             Console.WriteLine("Finished updating Match Participants at: {0}", DateTime.UtcNow);
         }
 
-        private List<t_h5matches> GetMatchesWithoutParticipants()
+        private List<t_h5matches> GetMatchesSinceSiteLaunchWithoutParticipants()
         {
+            DateTime earliestTrackedMatchDate = spartanClashSettings.EarliestTrackedMatchDate();
+
             using (var db = new dev_spartanclashbackendEntities())
             {
                 return db.t_h5matches.Where(match =>
-                  match.t_h5matches_playersformatch == null  
-                ).ToList();
+                  match.t_h5matches_playersformatch == null
+                  && match.t_h5matches_matchdetails.MatchCompleteDate > earliestTrackedMatchDate
+                ).Take(25).ToList();
             }
         }
 
@@ -52,9 +65,12 @@ namespace H5_DataPipeline.Assistants.MatchParticipants
 
             foreach (t_h5matches match in matches)
             {
-                counter++;
                 Console.Write("\rProcessing {0} of {1}: {2}                ", counter, total, match.matchID);
-                ProcessMatch(match).Wait();
+
+                referee.WaitToRegisterJob(counter);
+                ProcessMatch(match, counter);
+
+                counter++;
             }
 
             if(total == 0)
@@ -63,7 +79,7 @@ namespace H5_DataPipeline.Assistants.MatchParticipants
             }
         }
 
-        private async Task ProcessMatch(t_h5matches matchToQuery)
+        private async Task ProcessMatch(t_h5matches matchToQuery, int jobNumber)
         {
             PlayerFinder playerFinder = new PlayerFinder();
             
@@ -71,66 +87,21 @@ namespace H5_DataPipeline.Assistants.MatchParticipants
 
             if(playersForMatch != null)
             {
-                SavePlayersForMatch(playersForMatch, matchToQuery);
+                MatchPlayersReadyToSaveToDatabase?.BeginInvoke(this, new MatchPlayersReadyToSaveToDatabaseEventArgs(playersForMatch, matchToQuery, referee, jobNumber), null, null);
             }
             else
             {
-                //TODO - remove match or create record indicating bad results
+                referee.WaitToMarkJobDone(jobNumber);
             }
         }
 
-        private void SavePlayersForMatch(t_h5matches_playersformatch playersRecord, t_h5matches parentRecord)
+        protected virtual void OnMatchPlayersReadyToSaveToDatabase(object Sender, MatchPlayersReadyToSaveToDatabaseEventArgs e)
         {
-            using (var db = new dev_spartanclashbackendEntities())
-            {
-                t_h5matches_playersformatch currentRecord = db.t_h5matches_playersformatch.FirstOrDefault(record => 
-                                                                record.matchID == playersRecord.matchID
-                                                            );
-                try
-                {
-                    if (currentRecord == null)
-                    {
-                        db.t_h5matches_playersformatch.Add(playersRecord);
-                        db.SaveChanges();
-                    }
-                    else
-                    {
-                        Console.WriteLine("Record was null");
-                        //Record exists, don't touch it.
-                    }
-
-                }
-                catch(Exception e)
-                {
-                    Console.WriteLine(e.Message);
-                }
-
-
-
-            }
-
-            UpdatePlayersForMatchDatesScanned(parentRecord);
-
+            MorticianScribe scribe = new MorticianScribe(e.GetPlayersForMatchRecord(), e.GetParentMatchRecord(), e.GetReferee(), e.GetJobID());
+            scribe.SavePlayersForMatch();
         }
 
-        private void UpdatePlayersForMatchDatesScanned(t_h5matches match)
-        {
-            using (var db = new dev_spartanclashbackendEntities())
-            {
-                t_h5matches currentRecord = db.t_h5matches.Find(match.matchID);
 
-                if(currentRecord != null)
-                {
-                    currentRecord.datePlayersScan = DateTime.UtcNow;
-
-                    db.SaveChanges();
-                }
-                else
-                {
-                    throw new NotImplementedException("Impossibility condition reached - couldn't find parent 'h5matches' record for matchID: " + match.matchID);
-                }
-            }
-        }
 
     }
 }

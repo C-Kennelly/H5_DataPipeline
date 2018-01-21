@@ -29,7 +29,7 @@ namespace H5_DataPipeline.Shared.Config
             return gameModes;
         }
 
-        public DateTime LookForNoMatchesEarlierThan()
+        public DateTime EarliestTrackedMatchDate()
         {
             DateTime earliestDate = new DateTime(2018, 1, 1);
 

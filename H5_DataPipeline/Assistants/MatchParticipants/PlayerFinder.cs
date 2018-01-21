@@ -17,25 +17,6 @@ namespace H5_DataPipeline.Assistants.MatchParticipants
 {
     public class PlayerFinder
     {
-        private int? GetGameModeForMatch(t_h5matches matchToFind)
-        {
-            t_h5matches_matchdetails matchDetails;
-
-            using (var db = new dev_spartanclashbackendEntities())
-            {
-                matchDetails = db.t_h5matches_matchdetails.Find(matchToFind.matchID);
-            }
-
-            if(matchDetails != null)
-            {
-                return matchDetails.GameMode;
-            }
-            else
-            {
-                throw new NotImplementedException("Don't know the game mode, can't find the players!");
-            }
-        }
-
         public async Task<t_h5matches_playersformatch> GetPlayersForMatch(t_h5matches match, IHaloSession session)
         {
             t_h5matches_playersformatch result = null;
@@ -83,6 +64,24 @@ namespace H5_DataPipeline.Assistants.MatchParticipants
 
         }
 
+        private int? GetGameModeForMatch(t_h5matches matchToFind)
+        {
+            t_h5matches_matchdetails matchDetails;
+
+            using (var db = new dev_spartanclashbackendEntities())
+            {
+                matchDetails = db.t_h5matches_matchdetails.Find(matchToFind.matchID);
+            }
+
+            if (matchDetails != null)
+            {
+                return matchDetails.GameMode;
+            }
+            else
+            {
+                throw new NotImplementedException("Don't know the game mode, can't find the players!");
+            }
+        }
 
         private async Task<ArenaMatch> GetArenaMatchCarnageReport(string matchID, IHaloSession session)
         {

@@ -42,7 +42,7 @@ namespace H5_DataPipeline
         {
             quartermaster = new Quartermaster(haloSession);
             historian = new Historian(haloSession, spartanClashSettings);
-            mortician = new Mortician(haloSession);
+            mortician = new Mortician(haloSession, spartanClashSettings);
             clanalyzer = new Clanalyzer(haloSession, spartanClashSettings);
         }
 
@@ -55,7 +55,7 @@ namespace H5_DataPipeline
 
             quartermaster.UpdateSpartanCompanyRosters();
             historian.RecordRecentGames();
-            //mortician.ScanMatchesForParticipants();
+            mortician.ScanMatchesForParticipants();
             //clanalyzer.AnalyzeClanBattles();
         }
 

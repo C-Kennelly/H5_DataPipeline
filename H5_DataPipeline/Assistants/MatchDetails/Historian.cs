@@ -42,13 +42,13 @@ namespace H5_DataPipeline.Assistants.MatchDetails
 
         public void RecordRecentGames()
         {
-            List<t_players> trackedWaypointPlayers = GetTrackedPlayersFromWaypoint();
-
             Console.WriteLine("Updating player Match Histories at: {0}", DateTime.UtcNow);
             Console.WriteLine();
 
+            List<t_players> trackedWaypointPlayers = GetTrackedPlayersFromWaypoint();
             ProcessPlayers(trackedWaypointPlayers);
             referee.WaitUntilAllJobsAreDone();
+
 
             Console.WriteLine(); Console.WriteLine();
             Console.WriteLine("Finished updating player Match Histories at: {0}", DateTime.UtcNow);
@@ -96,11 +96,6 @@ namespace H5_DataPipeline.Assistants.MatchDetails
                     }
                 });
 
-                //foreach (t_players_to_teams rosterEntries in rosterEntriesFromWayoint)
-                //{
-                //    playersOnWaypointTeams.Add(db.t_players.Find(rosterEntries.gamertag));
-                //}
-
                 return playersOnWaypointTeams;
             }
         }
@@ -112,7 +107,7 @@ namespace H5_DataPipeline.Assistants.MatchDetails
 
             foreach (t_players player in players)
             {
-               Console.Write("\rProcessing {0} of {1}: {2}                ",counter, total, player.gamertag);
+                Console.Write("\rProcessing {0} of {1}: {2}                ",counter, total, player.gamertag);
 
                 referee.WaitToRegisterJob(counter);
                 ProcessPlayer(player, counter);
