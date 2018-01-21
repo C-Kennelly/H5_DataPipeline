@@ -22,12 +22,20 @@ namespace H5_DataPipeline.Assistants.MatchDetails
         SpartanClashSettings spartanClashSettings;
         IHaloSession haloSession;
         Referee referee;
-        
 
-        public Historian(IHaloSession session, SpartanClashSettings settings)
+
+//        public event PlayerMatchHistoryScannedHandler PlayerMatchHistoryReadyForDatabaseWrite;
+//        public void OnPlayerMatchHistoryReadyForDatabaseWrite(object Sender, PlayerMatchHistoryScannedEventArgs e)
+//        {
+//            HistorianScribe scribe = new HistorianScribe(e.GetPlayerSubjectOfMatchHistory(), e.GetMatchHistoryToRecord(), referee, e.GetJobIndex());
+//            scribe.RecordMatchHistoryForPlayer();
+//        }
+
+    public Historian(IHaloSession session, SpartanClashSettings settings)
         {
             haloSession = session;
             spartanClashSettings = settings;
+//            PlayerMatchHistoryReadyForDatabaseWrite += OnPlayerMatchHistoryReadyForDatabaseWrite;
 
             referee = new Referee();
         }
@@ -124,6 +132,9 @@ namespace H5_DataPipeline.Assistants.MatchDetails
                             haloSession
                         );
 
+
+            //PlayerMatchHistoryReadyForDatabaseWrite?.BeginInvoke(this, new PlayerMatchHistoryScannedEventArgs(recentH5MatchHistory, player, jobIndex), null, null);
+            
             HistorianScribe scribe = new HistorianScribe(player, recentH5MatchHistory);
             scribe.RecordMatchHistoryForPlayer();
             referee.WaitToMarkJobDone(jobIndex);
