@@ -13,10 +13,12 @@
 
 
 -- Dumping database structure for spartanclash_datapipeline
+DROP DATABASE IF EXISTS `spartanclash_datapipeline`;
 CREATE DATABASE IF NOT EXISTS `spartanclash_datapipeline` /*!40100 DEFAULT CHARACTER SET latin1 */;
 USE `spartanclash_datapipeline`;
 
 -- Dumping structure for table spartanclash_datapipeline.t_configoptions
+DROP TABLE IF EXISTS `t_configoptions`;
 CREATE TABLE IF NOT EXISTS `t_configoptions` (
   `configName` varchar(16) NOT NULL DEFAULT 'active',
   `siteLaunchDate` date NOT NULL DEFAULT '2018-01-01',
@@ -25,10 +27,10 @@ CREATE TABLE IF NOT EXISTS `t_configoptions` (
   PRIMARY KEY (`configName`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Dumping data for table spartanclash_datapipeline.t_configoptions: ~0 rows (approximately)
+-- Dumping data for table spartanclash_datapipeline.t_configoptions: ~1 rows (approximately)
 /*!40000 ALTER TABLE `t_configoptions` DISABLE KEYS */;
 INSERT INTO `t_configoptions` (`configName`, `siteLaunchDate`, `companyClanBattleThreshold`, `matchHistoryReQueryDays`) VALUES
-	('active', '2018-01-01', 1, 0.75);
+	('active', '2018-01-01', 0.75, 1);
 /*!40000 ALTER TABLE `t_configoptions` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

@@ -20,9 +20,10 @@ USE `spartanclash_datapipeline`;
 -- Dumping structure for table spartanclash_datapipeline.t_configoptions
 DROP TABLE IF EXISTS `t_configoptions`;
 CREATE TABLE IF NOT EXISTS `t_configoptions` (
-  `configName` varchar(16) NOT NULL,
-  `siteLaunchDate` date NOT NULL,
-  `companyClanBattleThreshold` double NOT NULL DEFAULT 0.75,
+  `configName` varchar(16) NOT NULL DEFAULT 'active',
+  `siteLaunchDate` date NOT NULL DEFAULT '2018-01-01',
+  `companyClanBattleThreshold` double NOT NULL DEFAULT 1,
+  `matchHistoryReQueryDays` double NOT NULL DEFAULT 1,
   PRIMARY KEY (`configName`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
