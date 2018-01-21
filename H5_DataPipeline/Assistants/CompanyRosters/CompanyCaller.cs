@@ -30,13 +30,14 @@ namespace H5_DataPipeline.Assistants.CompanyRosters
                     var query = new GetSpartanCompany(new Guid(companyId));
                     result = await session.Query(query);
                 }
-                catch (HaloApiException e)
+                catch (HaloApiException haloAPIException)
                 {
-                    if (e.HaloApiError.Message.Contains("Rate limit"))
+                    if (haloAPIException.HaloApiError.StatusCode == 429)
                     {
                         retry = true;
+                        await Task.Delay(50);
                     }
-                    else if(e.HaloApiError.StatusCode == 404)
+                    else if(haloAPIException.HaloApiError.StatusCode == 404)
                     {
                         result = null;
                         using (var db = new dev_spartanclashbackendEntities())
@@ -54,7 +55,7 @@ namespace H5_DataPipeline.Assistants.CompanyRosters
                     }
                     else
                     {
-                        Console.WriteLine("CompanyCaller: The Halo API threw an exception for company {0}, error {1} - {2}.  Stopping calls.", companyId, e.HaloApiError.StatusCode, e.HaloApiError.Message);
+                        Console.WriteLine("CompanyCaller: The Halo API threw an exception for company {0}, error {1} - {2}.  Stopping calls.", companyId, haloAPIException.HaloApiError.StatusCode, haloAPIException.HaloApiError.Message);
                         result = null;
                         //TODO -> Handle errors here... removing 404's?  Common class for handling API errors?
                     }

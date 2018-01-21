@@ -54,7 +54,7 @@ namespace H5_DataPipeline.Assistants.MatchParticipants
                 return db.t_h5matches.Where(match =>
                   match.t_h5matches_playersformatch == null
                   && match.t_h5matches_matchdetails.MatchCompleteDate > earliestTrackedMatchDate
-                ).Take(25).ToList();
+                ).ToList();
             }
         }
 

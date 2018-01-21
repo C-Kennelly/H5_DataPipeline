@@ -1,17 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using H5_DataPipeline.Models;
 using HaloSharp;
+using HaloSharp.Exception;
+using HaloSharp.Extension;
+using HaloSharp.Model;
 using HaloSharp.Model.Halo5.Stats.CarnageReport;
 using HaloSharp.Query.Halo5.Stats.CarnageReport;
-using HaloSharp.Model.Halo5.Stats.CarnageReport.Common;
-using HaloSharp.Extension;
-using HaloSharp.Exception;
-using HaloSharp.Model;
-using System.Threading;
 
 namespace H5_DataPipeline.Assistants.MatchParticipants
 {
@@ -101,11 +96,14 @@ namespace H5_DataPipeline.Assistants.MatchParticipants
                 {
                     if (haloAPIException.HaloApiError.StatusCode == 429)
                     {
-
+                        Console.WriteLine("PlayerFinder: Rate Limit Hit");
                         resultFound = false;
                         await Task.Delay(50);
                     }
-                    Console.WriteLine("The Halo API threw an exception for match {0}, status code: {1}.  Stopping calls.", matchID, haloAPIException.HaloApiError.StatusCode);
+                    else
+                    {
+                        Console.WriteLine("The Halo API threw an exception for match {0}, status code: {1}.  Stopping calls.", matchID, haloAPIException.HaloApiError.StatusCode);
+                    }
                 }
             }
             return arenaCarnageReport;
@@ -130,11 +128,14 @@ namespace H5_DataPipeline.Assistants.MatchParticipants
                 {
                     if (haloAPIException.HaloApiError.StatusCode == 429)
                     {
+                        Console.WriteLine("PlayerFinder: Rate Limit Hit");
                         resultFound = false;
                         await Task.Delay(50);
-
                     }
-                    Console.WriteLine("The Halo API threw an exception for match {0}, status code: {1}.  Stopping calls.", matchID, haloAPIException.HaloApiError.StatusCode);
+                    else
+                    {
+                        Console.WriteLine("The Halo API threw an exception for match {0}, status code: {1}.  Stopping calls.", matchID, haloAPIException.HaloApiError.StatusCode);
+                    }
                 }
 
             }
@@ -159,11 +160,14 @@ namespace H5_DataPipeline.Assistants.MatchParticipants
                 {
                     if (haloAPIException.HaloApiError.StatusCode == 429)
                     {
+                        Console.WriteLine("PlayerFinder: Rate Limit Hit");
                         resultFound = false;
                         await Task.Delay(50);
-
                     }
-                    Console.WriteLine("The Halo API threw an exception for match {0}, status code: {1}.  Stopping calls.", matchID, haloAPIException.HaloApiError.StatusCode);
+                    else
+                    {
+                        Console.WriteLine("The Halo API threw an exception for match {0}, status code: {1}.  Stopping calls.", matchID, haloAPIException.HaloApiError.StatusCode);
+                    }
                 }
 
             }
