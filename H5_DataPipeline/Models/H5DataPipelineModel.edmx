@@ -12,6 +12,7 @@
           <Property Name="configName" Type="varchar" MaxLength="16" Nullable="false" />
           <Property Name="siteLaunchDate" Type="date" Nullable="false" />
           <Property Name="companyClanBattleThreshold" Type="double" Nullable="false" />
+          <Property Name="matchHistoryReQueryDays" Type="double" Nullable="false" />
         </EntityType>
         <EntityType Name="t_h5matches">
           <Key>
@@ -445,6 +446,7 @@
           <Property Name="configName" Type="String" Nullable="false" MaxLength="16" FixedLength="false" Unicode="false" />
           <Property Name="siteLaunchDate" Type="DateTime" Nullable="false" />
           <Property Name="companyClanBattleThreshold" Type="Double" Nullable="false" />
+          <Property Name="matchHistoryReQueryDays" Type="Double" Nullable="false" />
         </EntityType>
         <EntityType Name="t_h5matches">
           <Key>
@@ -776,6 +778,7 @@
           <EntitySetMapping Name="t_configoptions">
             <EntityTypeMapping TypeName="dev_spartanclashbackendModel.t_configoptions">
               <MappingFragment StoreEntitySet="t_configoptions">
+                <ScalarProperty Name="matchHistoryReQueryDays" ColumnName="matchHistoryReQueryDays" />
                 <ScalarProperty Name="companyClanBattleThreshold" ColumnName="companyClanBattleThreshold" />
                 <ScalarProperty Name="siteLaunchDate" ColumnName="siteLaunchDate" />
                 <ScalarProperty Name="configName" ColumnName="configName" />

@@ -70,7 +70,7 @@ namespace H5_DataPipeline.Assistants.Shared
                 }
                 else
                 {
-                    Thread.Sleep(5000);
+                    Thread.Sleep(250);
                 }
             }
         }

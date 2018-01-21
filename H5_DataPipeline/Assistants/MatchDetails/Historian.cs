@@ -55,11 +55,16 @@ namespace H5_DataPipeline.Assistants.MatchDetails
                 string waypointSourceName = t_teamsources.GetWaypointSourceName();
                 string noCompanyFoundID = t_teams.GetNoWaypointCompanyFoundID();
 
-                //Get all teams in the database from the Waypoint source, excluding the special team for NoCompanyFound.
+
+                double reQueryDays = spartanClashSettings.GetMatchHistoryReQueryDays();
+                DateTime reQueryThresholdDate = DateTime.UtcNow.AddDays(-1 * reQueryDays);
+
+                //Get all tracked teams in the database from the Waypoint source, excluding the special team for NoCompanyFound.
                 List<t_teams> trackedTeamsFromWaypoint = db.t_teams.Where(team =>
-                        team.teamSource == waypointSourceName
-                        && team.trackingIndex > 0
-                        && team.teamId != noCompanyFoundID)
+                        team.trackingIndex > 0
+                        && team.teamId != noCompanyFoundID
+                        && team.teamSource == waypointSourceName
+                        && team.lastUpdated < reQueryThresholdDate)
                     .ToList();
 
                 List<t_players_to_teams> rosterEntriesFromWayoint = new List<t_players_to_teams>(trackedTeamsFromWaypoint.Count);

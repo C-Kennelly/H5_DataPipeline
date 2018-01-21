@@ -62,5 +62,23 @@ namespace H5_DataPipeline.Shared.Config
 
             return threshold;
         }
+
+        public double GetMatchHistoryReQueryDays()
+        {
+            double matchHistoryReQueryDays = 0.5;
+
+            using (var db = new dev_spartanclashbackendEntities())
+            {
+                double dbValue = db.t_configoptions.Find("active").matchHistoryReQueryDays;
+#pragma warning disable CS0472 // The result of the expression is always the same since a value of this type is never equal to 'null'
+                if (dbValue != null) {
+#pragma warning restore CS0472 // The result of the expression is always the same since a value of this type is never equal to 'null'
+
+                    matchHistoryReQueryDays = dbValue;
+                }
+            }
+
+            return matchHistoryReQueryDays;
+        }
     }
 }

@@ -34,7 +34,7 @@ namespace H5_DataPipeline
         private void SetupHaloSharpComponents()
         {
             HaloClientFactory haloClientFactory = new HaloClientFactory();
-            HaloClient haloClient = haloClientFactory.GetProdClient();
+            HaloClient haloClient = haloClientFactory.GetDevClient();
             haloSession = haloClient.StartSession();
         }
 
@@ -53,7 +53,7 @@ namespace H5_DataPipeline
         {
             Setup();
 
-            //quartermaster.UpdateSpartanCompanyRosters();
+            quartermaster.UpdateSpartanCompanyRosters();
             historian.RecordRecentGames();
             //mortician.ScanMatchesForParticipants();
             //clanalyzer.AnalyzeClanBattles();
