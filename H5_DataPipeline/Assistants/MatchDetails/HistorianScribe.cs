@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using H5_DataPipeline.Models;
 using HaloSharp.Model.Halo5.Stats;
+using H5_DataPipeline.Assistants.Shared;
 
 namespace H5_DataPipeline.Assistants.MatchDetails
 {
@@ -16,81 +17,78 @@ namespace H5_DataPipeline.Assistants.MatchDetails
         private List<PlayerMatch> matchHistoryToRecord;
         private t_players playerSubjectOfMatchHistory;
 
+//        private Referee referee;
+//        private int jobNumber;
 
-        public HistorianScribe(t_players player, List<PlayerMatch> matchHistory)
+
+        public HistorianScribe(t_players player, List<PlayerMatch> matchHistory)//, Referee callingReferee, int jobIndex)
         {
-            //TODO - HELPER HAS MAKE ASSOCIATION FUNCTION - NEED TO DRY THAT OUT
             playerSubjectOfMatchHistory = player;
             matchHistoryToRecord = matchHistory;
+
+//            referee = callingReferee;
+//            jobNumber = jobIndex;
         }
 
         public void RecordMatchHistoryForPlayer()
         {
-            foreach(PlayerMatch playerMatch in matchHistoryToRecord)
+            using(var db = new dev_spartanclashbackendEntities())
             {
-                t_h5matches match = new t_h5matches(playerMatch);
+                foreach (PlayerMatch playerMatch in matchHistoryToRecord)
+                {
+                    t_h5matches match = new t_h5matches(playerMatch);
 
-                RecordMatchesAndAssociations(match);
-                StoreMatchDetails(playerMatch, match);
-                StoreRanksAndScores(playerMatch, match);
+                    RecordMatchesAndAssociations(match, db);
+                    StoreMatchDetails(playerMatch, match, db);
+                    StoreRanksAndScores(playerMatch, match, db);
+                }
+
+                db.SaveChanges();
+                UpdatePlayerMatchHistoryScanned(db);
             }
-
-            UpdatePlayerMatchHistoryScanned();
+            //            referee.WaitToMarkJobDone(jobNumber);
         }
 
-        private void RecordMatchesAndAssociations(t_h5matches match)
+        private void RecordMatchesAndAssociations(t_h5matches match, dev_spartanclashbackendEntities db)
         {
             //add if not exists
-            using (var db = new dev_spartanclashbackendEntities())
-            {
-                t_h5matches currentRecord = db.t_h5matches.Find(match.matchID);
+            t_h5matches currentRecord = db.t_h5matches.Find(match.matchID);
 
-                if(currentRecord == null)
-                {
-                    db.t_h5matches.Add(match);
-                    db.SaveChanges();
-                }
+            if(currentRecord == null)
+            {
+                db.t_h5matches.Add(match);
             }
 
-            EnsureAssociationExistsWithCurrentPlayer(match);
+            EnsureAssociationExistsWithCurrentPlayer(match, db);
         }
 
-        private void EnsureAssociationExistsWithCurrentPlayer(t_h5matches match)
+        private void EnsureAssociationExistsWithCurrentPlayer(t_h5matches match, dev_spartanclashbackendEntities db)
         {
-            using (var db = new dev_spartanclashbackendEntities())
-            {
+
                 t_players_to_h5matches currentRecord = db.t_players_to_h5matches.FirstOrDefault(record => record.gamertag == playerSubjectOfMatchHistory.gamertag && record.matchID == match.matchID);
 
                 if (currentRecord == null)
                 {
                     db.t_players_to_h5matches.Add(new t_players_to_h5matches(playerSubjectOfMatchHistory.gamertag, match.matchID));
-                    db.SaveChanges();
                 }
 
-            }
         }
 
-        private void StoreMatchDetails(PlayerMatch playerMatch, t_h5matches parentRecord)
+        private void StoreMatchDetails(PlayerMatch playerMatch, t_h5matches parentRecord, dev_spartanclashbackendEntities db)
         {
-            using (var db = new dev_spartanclashbackendEntities())
-            {
                 t_h5matches_matchdetails currentRecord = db.t_h5matches_matchdetails.FirstOrDefault(record => record.matchId == playerMatch.Id.MatchId.ToString());
 
                 if (currentRecord == null)
                 {
                     t_h5matches_matchdetails details = new t_h5matches_matchdetails(playerMatch);
                     db.t_h5matches_matchdetails.Add(details);
-                    db.SaveChanges();
                 }
 
-                UpdateMatchDetailsDatesScanned(parentRecord);
-            }
+                UpdateMatchDetailsDatesScanned(parentRecord, db);
         }
 
-        private void UpdateMatchDetailsDatesScanned(t_h5matches match)
+        private void UpdateMatchDetailsDatesScanned(t_h5matches match, dev_spartanclashbackendEntities db)
         {
-            using (var db = new dev_spartanclashbackendEntities())
-            {
                 t_h5matches currentRecord = db.t_h5matches.Find(match.matchID);
 
                 if (currentRecord != null)
@@ -103,14 +101,10 @@ namespace H5_DataPipeline.Assistants.MatchDetails
                 {
                     throw new NotImplementedException("Impossibility condition reached - couldn't find parent 'h5matches' record for matchID: " + match.matchID);
                 }
-            }
         }
 
-        private void StoreRanksAndScores(PlayerMatch playerMatch, t_h5matches parentRecord)
+        private void StoreRanksAndScores(PlayerMatch playerMatch, t_h5matches parentRecord, dev_spartanclashbackendEntities db)
         {
-            using (var db = new dev_spartanclashbackendEntities())
-            {
-
                 t_h5matches_ranksandscores currentRecord = db.t_h5matches_ranksandscores.FirstOrDefault(record => record.matchId == playerMatch.Id.MatchId.ToString());
 
                 if (currentRecord == null)
@@ -118,15 +112,11 @@ namespace H5_DataPipeline.Assistants.MatchDetails
                     db.t_h5matches_ranksandscores.Add(new t_h5matches_ranksandscores(playerMatch));
                     db.SaveChanges();
                 }
-            }
-
-            UpdateMatchResultsDatesScanned(parentRecord);
+            UpdateMatchResultsDatesScanned(parentRecord, db);
         }
 
-        private void UpdateMatchResultsDatesScanned(t_h5matches match)
+        private void UpdateMatchResultsDatesScanned(t_h5matches match, dev_spartanclashbackendEntities db)
         {
-            using (var db = new dev_spartanclashbackendEntities())
-            {
                 t_h5matches currentRecord = db.t_h5matches.Find(match.matchID);
 
                 if (currentRecord != null)
@@ -139,13 +129,10 @@ namespace H5_DataPipeline.Assistants.MatchDetails
                 {
                     throw new NotImplementedException("Impossibility condition reached - couldn't find parent 'h5matches' record for matchID: " + match.matchID);
                 }
-            }
         }
 
-        private void UpdatePlayerMatchHistoryScanned()
+        private void UpdatePlayerMatchHistoryScanned(dev_spartanclashbackendEntities db)
         {
-            using (var db = new dev_spartanclashbackendEntities())
-            {
                 t_players currentPlayerRecord = db.t_players.Find(playerSubjectOfMatchHistory.gamertag);
 
                 if (currentPlayerRecord != null)
@@ -158,7 +145,6 @@ namespace H5_DataPipeline.Assistants.MatchDetails
                 {
                     throw new NotImplementedException("Impossibility condition reached - couldn't find parent 'players' record for matchID: " + playerSubjectOfMatchHistory.gamertag);
                 }
-            }
         }
 
 
