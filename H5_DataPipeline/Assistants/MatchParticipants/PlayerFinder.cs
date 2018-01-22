@@ -7,12 +7,13 @@ using HaloSharp.Extension;
 using HaloSharp.Model;
 using HaloSharp.Model.Halo5.Stats.CarnageReport;
 using HaloSharp.Query.Halo5.Stats.CarnageReport;
+using H5_DataPipeline.Assistants.Shared;
 
 namespace H5_DataPipeline.Assistants.MatchParticipants
 {
     public class PlayerFinder
     {
-        public async Task<t_h5matches_playersformatch> GetPlayersForMatch(t_h5matches match, IHaloSession session)
+        public async Task<t_h5matches_playersformatch> GetPlayersForMatch(t_h5matches match, SpartanCompanyRoster roster, IHaloSession session)
         {
             t_h5matches_playersformatch result = null;
             int? gameMode = GetGameModeForMatch(match);
@@ -22,20 +23,20 @@ namespace H5_DataPipeline.Assistants.MatchParticipants
                 case ((int)Enumeration.Halo5.GameMode.Arena):
                 {
                     ArenaMatch carnageReport = await GetArenaMatchCarnageReport(match.matchID, session);
-                    result = new t_h5matches_playersformatch(match.matchID, carnageReport);
+                    result = new t_h5matches_playersformatch(match.matchID, carnageReport, roster);
                     break;
                 }
                 case ((int)Enumeration.Halo5.GameMode.Warzone):
                 {
                     WarzoneMatch carnageReport = await GetWarzoneMatchCarnageReport(match.matchID, session);
-                    result = new t_h5matches_playersformatch(match.matchID, carnageReport);
+                    result = new t_h5matches_playersformatch(match.matchID, carnageReport, roster);
                     break;
                 }
 
                 case ((int)Enumeration.Halo5.GameMode.Custom):
                 {
                     CustomMatch carnageReport = await GetCustomMatchCarnageReport(match.matchID, session);
-                    result = new t_h5matches_playersformatch(match.matchID, carnageReport);
+                    result = new t_h5matches_playersformatch(match.matchID, carnageReport, roster);
                     break;
                 }
                 case ((int)Enumeration.Halo5.GameMode.Campaign):

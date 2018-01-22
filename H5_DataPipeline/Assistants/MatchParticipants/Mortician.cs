@@ -15,9 +15,10 @@ namespace H5_DataPipeline.Assistants.MatchParticipants
     /// </summary>
     class Mortician
     {
-        IHaloSession haloSession;
-        SpartanClashSettings spartanClashSettings;
-        Referee referee;
+        private IHaloSession haloSession;
+        private SpartanClashSettings spartanClashSettings;
+        private Referee referee;
+        private SpartanCompanyRoster inMemoryRoster;
 
         public event MatchPlayersReadyToSaveToDatabaseHandler MatchPlayersReadyToSaveToDatabase;
 
@@ -26,6 +27,8 @@ namespace H5_DataPipeline.Assistants.MatchParticipants
             haloSession = session;
             spartanClashSettings = settings;
             referee = new Referee();
+            inMemoryRoster = new SpartanCompanyRoster();
+
 
             MatchPlayersReadyToSaveToDatabase += OnMatchPlayersReadyToSaveToDatabase;
         }
@@ -36,7 +39,7 @@ namespace H5_DataPipeline.Assistants.MatchParticipants
             Console.WriteLine("Updating Match Participants at: {0}", DateTime.UtcNow);
             Console.WriteLine();
 
-
+            inMemoryRoster.RefreshInMemoryRoster();
             List<t_h5matches> matchesWithoutParticipatnsRecorded = GetMatchesSinceSiteLaunchWithoutParticipants();
             ProcessMatches(matchesWithoutParticipatnsRecorded);
             referee.WaitUntilAllJobsAreDone();
@@ -67,6 +70,10 @@ namespace H5_DataPipeline.Assistants.MatchParticipants
             {
                 Console.Write("\rProcessing {0} of {1}: {2}                ", counter, total, match.matchID);
 
+                //if(counter % 100 == 0)
+                //{
+                //    referee.WaitUntilAllJobsAreDone();
+                //}
                 referee.WaitToRegisterJob(counter);
                 ProcessMatch(match, counter);
 
@@ -81,13 +88,12 @@ namespace H5_DataPipeline.Assistants.MatchParticipants
 
         private async Task ProcessMatch(t_h5matches matchToQuery, int jobNumber)
         {
-            PlayerFinder playerFinder = new PlayerFinder();
-            
-            t_h5matches_playersformatch playersForMatch = await playerFinder.GetPlayersForMatch(matchToQuery, haloSession);
+            PlayerFinder playerFinder = new PlayerFinder();   
+            t_h5matches_playersformatch playersForMatch = await playerFinder.GetPlayersForMatch(matchToQuery, inMemoryRoster, haloSession);
 
             if(playersForMatch != null)
             {
-                MatchPlayersReadyToSaveToDatabase?.BeginInvoke(this, new MatchPlayersReadyToSaveToDatabaseEventArgs(playersForMatch, matchToQuery, referee, jobNumber), null, null);
+                MatchPlayersReadyToSaveToDatabase?.BeginInvoke(this, new MatchPlayersReadyToSaveToDatabaseEventArgs(playersForMatch, matchToQuery, inMemoryRoster, referee, jobNumber), null, null);
             }
             else
             {
@@ -97,11 +103,8 @@ namespace H5_DataPipeline.Assistants.MatchParticipants
 
         protected virtual void OnMatchPlayersReadyToSaveToDatabase(object Sender, MatchPlayersReadyToSaveToDatabaseEventArgs e)
         {
-            MorticianScribe scribe = new MorticianScribe(e.GetPlayersForMatchRecord(), e.GetParentMatchRecord(), e.GetReferee(), e.GetJobID());
+            MorticianScribe scribe = new MorticianScribe(e.GetPlayersForMatchRecord(), e.GetParentMatchRecord(), e.GetSpartanCompanyRoster(), e.GetReferee(), e.GetJobID());
             scribe.SavePlayersForMatch();
         }
-
-
-
     }
 }

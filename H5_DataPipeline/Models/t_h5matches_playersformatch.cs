@@ -15,8 +15,8 @@ namespace H5_DataPipeline.Models
     public partial class t_h5matches_playersformatch
     {
         public string matchID { get; set; }
-        public string team1_Players { get; set; }
         public string team2_Players { get; set; }
+        public string team1_Players { get; set; }
         public string other_Players { get; set; }
         public string DNF_Players { get; set; }
     

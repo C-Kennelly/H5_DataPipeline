@@ -97,12 +97,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assistants\AnalyzeClanBattles\Clanalyzer.cs" />
+    <Compile Include="Assistants\MatchParticipants\CustomTeamEntry.cs" />
+    <Compile Include="Assistants\MatchParticipants\MatchParticipantEntry.cs" />
     <Compile Include="Assistants\CompanyRosters\QuartermasterDelegates.cs" />
     <Compile Include="Assistants\MatchDetails\Historian.cs" />
     <Compile Include="Assistants\MatchDetails\HistorianDelegates.cs" />
     <Compile Include="Assistants\MatchParticipants\MorticianDelegate.cs" />
     <Compile Include="Assistants\MatchParticipants\MorticianScribe.cs" />
     <Compile Include="Assistants\Shared\Referee.cs" />
+    <Compile Include="Assistants\Shared\SpartanCompanyRoster.cs" />
     <Compile Include="Marshall.cs" />
     <Compile Include="Assistants\MatchDetails\HistorianScribe.cs" />
     <Compile Include="Assistants\MatchParticipants\Mortician.cs" />

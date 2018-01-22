@@ -33,11 +33,12 @@ namespace H5_DataPipeline.Assistants.AnalyzeClanBattles
 
         private void AnalyzeMatchesForHaloWaypointClanBattles()
         {
-            List<t_h5matches> untaggedMatches = GetMatchesWithoutHaloWaypointBattlesTagged();
+
 
             Console.WriteLine("Tagging Clan Battles at: {0}", DateTime.UtcNow);
             Console.WriteLine();
 
+            List<t_h5matches> untaggedMatches = GetMatchesWithoutHaloWaypointBattlesTagged();
             ProcessMatches(untaggedMatches);
 
             Console.WriteLine(); Console.WriteLine();
@@ -61,10 +62,11 @@ namespace H5_DataPipeline.Assistants.AnalyzeClanBattles
 
             foreach (t_h5matches match in matches)
             {
-                counter++;
                 Console.Write("\rProcessing {0} of {1}: {2}                ", counter, total, match.matchID);
 
                 ProcessMatch(match);
+
+                counter++;
             }
 
             if (total == 0)

@@ -10,6 +10,8 @@ using HaloSharp.Model;
 using HaloSharp.Model.Halo5.Stats.Common;
 using HaloSharp.Model.Halo5.Stats;
 using Newtonsoft.Json;
+using H5_DataPipeline.Assistants.MatchParticipants;
+using H5_DataPipeline.Assistants.Shared;
 
 namespace H5_DataPipeline.Models
 {
@@ -31,73 +33,76 @@ namespace H5_DataPipeline.Models
 
         public List<string> ToListOfGamertags()
         {
+
             List<string> result = new List<string>();
 
             if (team1_Players != null)
             {
-                List<string> workingList = JsonConvert.DeserializeObject<List<string>>(team1_Players);
-                foreach (string player in workingList)
+                List<MatchParticipantEntry> workingList = JsonConvert.DeserializeObject<List<MatchParticipantEntry>>(team1_Players);
+                foreach (MatchParticipantEntry entry in workingList)
                 {
-                    result.Add(player);
+                    result.Add(entry.gamertag);
                 }
             }
             if (team2_Players != null)
             {
-                List<string> workingList = JsonConvert.DeserializeObject<List<string>>(team2_Players);
-                foreach (string player in workingList)
+                List<MatchParticipantEntry> workingList = JsonConvert.DeserializeObject<List<MatchParticipantEntry>>(team1_Players);
+                foreach (MatchParticipantEntry entry in workingList)
                 {
-                    result.Add(player);
+                    result.Add(entry.gamertag);
                 }
             }
             if (other_Players != null)
             {
-                List<string> workingList = JsonConvert.DeserializeObject<List<string>>(other_Players);
-                foreach (string player in workingList)
+                List<MatchParticipantEntry> workingList = JsonConvert.DeserializeObject<List<MatchParticipantEntry>>(team1_Players);
+                foreach (MatchParticipantEntry entry in workingList)
                 {
-                    result.Add(player);
+                    result.Add(entry.gamertag);
                 }
             }
             if (DNF_Players != null)
             {
-                List<string> workingList = JsonConvert.DeserializeObject<List<string>>(DNF_Players);
-                foreach (string player in workingList)
+                List<MatchParticipantEntry> workingList = JsonConvert.DeserializeObject<List<MatchParticipantEntry>>(team1_Players);
+                foreach (MatchParticipantEntry entry in workingList)
                 {
-                    result.Add(player);
+                    result.Add(entry.gamertag);
                 }
             }
 
             return result;
         }
 
-        public t_h5matches_playersformatch(string id, ArenaMatch carnageReport)
+        public t_h5matches_playersformatch(string id, ArenaMatch carnageReport, SpartanCompanyRoster roster)
         {
             matchID = id;
 
-            List<string> team1Players = new List<string>();
-            List<string> team2Players = new List<string>();
-            List<string> otherTeamPlayers = new List<string>();
-            List<string> DNFPlayers = new List<string>();
+            List<MatchParticipantEntry> team1Players = new List<MatchParticipantEntry>();
+            List<MatchParticipantEntry> team2Players = new List<MatchParticipantEntry>();
+            List<MatchParticipantEntry> otherTeamPlayers = new List<MatchParticipantEntry>();
+            List<MatchParticipantEntry> DNFPlayers = new List<MatchParticipantEntry>();
             
 
             foreach (ArenaMatchPlayerStat playerStat in carnageReport.PlayerStats)
             {
+                string companyIDForTag = roster.GetSpartanCompanyIdFromMemory(playerStat.Player.Gamertag);
+
                 if (playerStat.DNF)
                 {
-                    DNFPlayers.Add(playerStat.Player.Gamertag);
+                    DNFPlayers.Add(new MatchParticipantEntry(playerStat.Player.Gamertag, companyIDForTag));
                 }
                 else
                 {
                     if (playerStat.TeamId == 0) //Red Team
                     {
-                        team1Players.Add(playerStat.Player.Gamertag);
+                        team1Players.Add(new MatchParticipantEntry(playerStat.Player.Gamertag, companyIDForTag));
                     }
                     else if (playerStat.TeamId == 1) //Blue Team
                     {
-                        team2Players.Add(playerStat.Player.Gamertag);
+                        team2Players.Add(new MatchParticipantEntry(playerStat.Player.Gamertag, companyIDForTag));
                     }
                     else  //other team or FFA
                     {
-                        otherTeamPlayers.Add(playerStat.Player.Gamertag);
+                        otherTeamPlayers.Add(new MatchParticipantEntry(playerStat.Player.Gamertag, companyIDForTag));
                     }
                 }
             }
@@ -109,35 +114,37 @@ namespace H5_DataPipeline.Models
 
         }
 
-        public t_h5matches_playersformatch(string id, WarzoneMatch carnageReport)
+        public t_h5matches_playersformatch(string id, WarzoneMatch carnageReport, SpartanCompanyRoster roster)
         {
             matchID = id;
 
-            List<string> team1Players = new List<string>();
-            List<string> team2Players = new List<string>();
-            List<string> otherTeamPlayers = new List<string>();
-            List<string> DNFPlayers = new List<string>();
+            List<MatchParticipantEntry> team1Players = new List<MatchParticipantEntry>();
+            List<MatchParticipantEntry> team2Players = new List<MatchParticipantEntry>();
+            List<MatchParticipantEntry> otherTeamPlayers = new List<MatchParticipantEntry>();
+            List<MatchParticipantEntry> DNFPlayers = new List<MatchParticipantEntry>();
 
 
             foreach (WarzonePlayerStat playerStat in carnageReport.PlayerStats)
             {
+                string companyIDForTag = roster.GetSpartanCompanyIdFromMemory(playerStat.Player.Gamertag);
+
                 if (playerStat.DNF)
                 {
-                    DNFPlayers.Add(playerStat.Player.Gamertag);
+                    DNFPlayers.Add(new MatchParticipantEntry(playerStat.Player.Gamertag, companyIDForTag));
                 }
                 else
                 {
                     if (playerStat.TeamId == 0) //Red Team
                     {
-                        team1Players.Add(playerStat.Player.Gamertag);
+                        team1Players.Add(new MatchParticipantEntry(playerStat.Player.Gamertag, companyIDForTag));
                     }
                     else if (playerStat.TeamId == 1) //Blue Team
                     {
-                        team2Players.Add(playerStat.Player.Gamertag);
+                        team2Players.Add(new MatchParticipantEntry(playerStat.Player.Gamertag, companyIDForTag));
                     }
                     else  //other team or FFA
                     {
-                        otherTeamPlayers.Add(playerStat.Player.Gamertag);
+                        otherTeamPlayers.Add(new MatchParticipantEntry(playerStat.Player.Gamertag, companyIDForTag));
                     }
                 }
             }
@@ -148,35 +155,37 @@ namespace H5_DataPipeline.Models
             DNF_Players = JsonConvert.SerializeObject(DNFPlayers);
         }
 
-        public t_h5matches_playersformatch(string id, CustomMatch carnageReport)
+        public t_h5matches_playersformatch(string id, CustomMatch carnageReport, SpartanCompanyRoster roster)
         {
             matchID = id;
 
-            List<string> team1Players = new List<string>();
-            List<string> team2Players = new List<string>();
-            List<string> otherTeamPlayers = new List<string>();
-            List<string> DNFPlayers = new List<string>();
+            List<MatchParticipantEntry> team1Players = new List<MatchParticipantEntry>();
+            List<MatchParticipantEntry> team2Players = new List<MatchParticipantEntry>();
+            List<MatchParticipantEntry> otherTeamPlayers = new List<MatchParticipantEntry>();
+            List<MatchParticipantEntry> DNFPlayers = new List<MatchParticipantEntry>();
 
 
             foreach (CustomMatchPlayerStat playerStat in carnageReport.PlayerStats)
             {
+                string companyIDForTag = roster.GetSpartanCompanyIdFromMemory(playerStat.Player.Gamertag);
+
                 if (playerStat.DNF)
                 {
-                    DNFPlayers.Add(playerStat.Player.Gamertag);
+                    DNFPlayers.Add(new MatchParticipantEntry(playerStat.Player.Gamertag, companyIDForTag));
                 }
                 else
                 {
                     if (playerStat.TeamId == 0) //Red Team
                     {
-                        team1Players.Add(playerStat.Player.Gamertag);
+                        team1Players.Add(new MatchParticipantEntry(playerStat.Player.Gamertag, companyIDForTag));
                     }
                     else if (playerStat.TeamId == 1) //Blue Team
                     {
-                        team2Players.Add(playerStat.Player.Gamertag);
+                        team2Players.Add(new MatchParticipantEntry(playerStat.Player.Gamertag, companyIDForTag));
                     }
                     else  //other team or FFA
                     {
-                        otherTeamPlayers.Add(playerStat.Player.Gamertag);
+                        otherTeamPlayers.Add(new MatchParticipantEntry(playerStat.Player.Gamertag, companyIDForTag));
                     }
                 }
             }
@@ -186,7 +195,6 @@ namespace H5_DataPipeline.Models
             other_Players = JsonConvert.SerializeObject(otherTeamPlayers);
             DNF_Players = JsonConvert.SerializeObject(DNFPlayers);
         }
-    }
 
-    
+    }
 }
