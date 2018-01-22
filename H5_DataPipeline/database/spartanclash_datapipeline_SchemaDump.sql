@@ -24,6 +24,7 @@ CREATE TABLE IF NOT EXISTS `t_configoptions` (
   `siteLaunchDate` date NOT NULL DEFAULT '2018-01-01',
   `companyClanBattleThreshold` double NOT NULL DEFAULT 1,
   `matchHistoryReQueryDays` double NOT NULL DEFAULT 1,
+  `DNFNeededForLoss` int(1) NOT NULL DEFAULT 1,
   PRIMARY KEY (`configName`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -103,8 +104,8 @@ CREATE TABLE IF NOT EXISTS `t_h5matches_teamsinvolved_halowaypointcompanies` (
   `teamSource` varchar(128) DEFAULT 'Halo Waypoint',
   `team1_Primary` varchar(128) DEFAULT NULL,
   `team2_Primary` varchar(128) DEFAULT NULL,
-  `team1_Secondary` varchar(128) DEFAULT NULL COMMENT 'Accomodates Warzone',
-  `team2_Secondary` varchar(128) DEFAULT NULL COMMENT 'Accomodates Warzone',
+  `team1_DNFCount` int(11) NOT NULL DEFAULT 0,
+  `team2_DNFCount` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`matchID`),
   KEY `fk_teamSourceWaypoint` (`teamSource`),
   CONSTRAINT `fk_matchID_h5matches_teamsinvolved` FOREIGN KEY (`matchID`) REFERENCES `t_h5matches` (`matchID`) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -119,8 +120,8 @@ CREATE TABLE IF NOT EXISTS `t_h5matches_teamsinvolved_spartanclashfireteams` (
   `teamSource` varchar(128) DEFAULT 'Spartan Clash',
   `team1_Primary` varchar(128) DEFAULT NULL,
   `team2_Primary` varchar(128) DEFAULT NULL,
-  `team1_Secondary` varchar(128) DEFAULT NULL COMMENT 'Accomodates Warzone',
-  `team2_Secondary` varchar(128) DEFAULT NULL COMMENT 'Accomodates Warzone',
+  `team1_DNFCount` int(11) NOT NULL DEFAULT 0,
+  `team2_DNFCount` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`matchID`),
   KEY `fk_teamSourceWaypoint` (`teamSource`),
   CONSTRAINT `t_h5matches_teamsinvolved_spartanclashfireteams_ibfk_1` FOREIGN KEY (`matchID`) REFERENCES `t_h5matches` (`matchID`) ON DELETE CASCADE ON UPDATE CASCADE,
