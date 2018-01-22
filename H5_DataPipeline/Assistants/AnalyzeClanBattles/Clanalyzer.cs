@@ -27,8 +27,6 @@ namespace H5_DataPipeline.Assistants.AnalyzeClanBattles
         public void AnalyzeClanBattles()
         {
             AnalyzeMatchesForHaloWaypointClanBattles();
-            //AnalyzeMatchesForSpartanClashClanBattles();
-            //This could go faster if it analyzed all teams together, but calling out that we are only searching for clan battles right now.
         }
 
         private void AnalyzeMatchesForHaloWaypointClanBattles()
@@ -47,11 +45,14 @@ namespace H5_DataPipeline.Assistants.AnalyzeClanBattles
 
         private List<t_h5matches> GetMatchesWithoutHaloWaypointBattlesTagged()
         {
+            DateTime earliestTrackedMatchDate = spartanClashSettings.EarliestTrackedMatchDate();
+
             using (var db = new dev_spartanclashbackendEntities())
             {
                 return db.t_h5matches.Where(match =>
-                    match.t_h5matches_teamsinvolved_halowaypointcompanies == null)
-                .ToList();
+                    match.t_h5matches_teamsinvolved_halowaypointcompanies == null
+                    && match.t_h5matches_matchdetails.MatchCompleteDate > earliestTrackedMatchDate
+                ).ToList();
             }
         }
 
