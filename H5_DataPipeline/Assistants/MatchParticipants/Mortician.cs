@@ -70,10 +70,6 @@ namespace H5_DataPipeline.Assistants.MatchParticipants
             {
                 Console.Write("\rProcessing {0} of {1}: {2}                ", counter, total, match.matchID);
 
-                //if(counter % 100 == 0)
-                //{
-                //    referee.WaitUntilAllJobsAreDone();
-                //}
                 referee.WaitToRegisterJob(counter);
                 ProcessMatch(match, counter);
 
