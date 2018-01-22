@@ -13,7 +13,6 @@
 
 
 -- Dumping database structure for spartanclash_datapipeline
-DROP DATABASE IF EXISTS `spartanclash_datapipeline`;
 CREATE DATABASE IF NOT EXISTS `spartanclash_datapipeline` /*!40100 DEFAULT CHARACTER SET latin1 */;
 USE `spartanclash_datapipeline`;
 
