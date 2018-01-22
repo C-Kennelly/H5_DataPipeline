@@ -95,7 +95,7 @@ namespace H5_DataPipeline.Assistants.MatchParticipants
                 }
                 catch (HaloApiException haloAPIException)
                 {
-                    if (haloAPIException.HaloApiError.StatusCode == 429)
+                    if (haloAPIException.HaloApiError.Message.Contains("Rate limit"))
                     {
                         Console.WriteLine("PlayerFinder: Rate Limit Hit");
                         resultFound = false;
@@ -127,7 +127,7 @@ namespace H5_DataPipeline.Assistants.MatchParticipants
                 }
                 catch (HaloApiException haloAPIException)
                 {
-                    if (haloAPIException.HaloApiError.StatusCode == 429)
+                    if (haloAPIException.HaloApiError.Message.Contains("Rate limit"))
                     {
                         Console.WriteLine("PlayerFinder: Rate Limit Hit");
                         resultFound = false;
@@ -159,7 +159,7 @@ namespace H5_DataPipeline.Assistants.MatchParticipants
                 }
                 catch (HaloApiException haloAPIException)
                 {
-                    if (haloAPIException.HaloApiError.StatusCode == 429)
+                    if (haloAPIException.HaloApiError.Message.Contains("Rate limit"))
                     {
                         Console.WriteLine("PlayerFinder: Rate Limit Hit");
                         resultFound = false;

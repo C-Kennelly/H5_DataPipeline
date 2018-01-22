@@ -32,7 +32,7 @@ namespace H5_DataPipeline.Assistants.CompanyRosters
                 }
                 catch (HaloApiException haloAPIException)
                 {
-                    if (haloAPIException.HaloApiError.StatusCode == 429)
+                    if (haloAPIException.HaloApiError.Message.Contains("Rate limit"))
                     {
                         retry = true;
                         await Task.Delay(50);

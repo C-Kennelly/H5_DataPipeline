@@ -65,7 +65,7 @@ namespace H5_DataPipeline.Assistants.MatchDetails
                 }
                 catch (HaloApiException haloAPIException)
                 {
-                    if (haloAPIException.HaloApiError.StatusCode == 429)                
+                    if (haloAPIException.HaloApiError.Message.Contains("Rate limit"))                
                     {
                         Console.WriteLine("MatchCaller: Rate Limit Hit");
                         await Task.Delay(50);
