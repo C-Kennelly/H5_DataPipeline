@@ -34,7 +34,7 @@ namespace H5_DataPipeline
         private void SetupHaloSharpComponents()
         {
             HaloClientFactory haloClientFactory = new HaloClientFactory();
-            HaloClient haloClient = haloClientFactory.GetProdClient();
+            HaloClient haloClient = haloClientFactory.GetDevClient();
             haloSession = haloClient.StartSession();
         }
 
