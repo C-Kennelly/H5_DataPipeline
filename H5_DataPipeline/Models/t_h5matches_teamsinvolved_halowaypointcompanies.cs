@@ -18,8 +18,8 @@ namespace H5_DataPipeline.Models
         public string teamSource { get; set; }
         public string team1_Primary { get; set; }
         public string team2_Primary { get; set; }
-        public string team1_Secondary { get; set; }
-        public string team2_Secondary { get; set; }
+        public int team1_DNFCount { get; set; }
+        public int team2_DNFCount { get; set; }
     
         public virtual t_h5matches t_h5matches { get; set; }
         public virtual t_teamsources t_teamsources { get; set; }

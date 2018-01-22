@@ -8,8 +8,8 @@
         <EntityTypeShape EntityType="dev_spartanclashbackendModel.t_configoptions" Width="1.5" PointX="0.75" PointY="0.75" />
         <EntityTypeShape EntityType="dev_spartanclashbackendModel.t_h5matches" Width="1.5" PointX="0.75" PointY="10" />
         <EntityTypeShape EntityType="dev_spartanclashbackendModel.t_h5matches_matchdetails" Width="1.5" PointX="3" PointY="9.75" />
-        <EntityTypeShape EntityType="dev_spartanclashbackendModel.t_h5matches_playersformatch" Width="1.5" PointX="3" PointY="21.125" />
-        <EntityTypeShape EntityType="dev_spartanclashbackendModel.t_h5matches_ranksandscores" Width="1.5" PointX="3" PointY="24" />
+        <EntityTypeShape EntityType="dev_spartanclashbackendModel.t_h5matches_playersformatch" Width="1.5" PointX="3" PointY="24.125" />
+        <EntityTypeShape EntityType="dev_spartanclashbackendModel.t_h5matches_ranksandscores" Width="1.5" PointX="3" PointY="21.125" />
         <EntityTypeShape EntityType="dev_spartanclashbackendModel.t_h5matches_teamsinvolved_halowaypointcompanies" Width="1.5" PointX="6" PointY="10.5" />
         <EntityTypeShape EntityType="dev_spartanclashbackendModel.t_h5matches_teamsinvolved_spartanclashfireteams" Width="1.5" PointX="3" PointY="6.5" />
         <EntityTypeShape EntityType="dev_spartanclashbackendModel.t_players" Width="1.5" PointX="3.75" PointY="2.5" />

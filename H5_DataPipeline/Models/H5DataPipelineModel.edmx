@@ -13,6 +13,7 @@
           <Property Name="siteLaunchDate" Type="date" Nullable="false" />
           <Property Name="companyClanBattleThreshold" Type="double" Nullable="false" />
           <Property Name="matchHistoryReQueryDays" Type="double" Nullable="false" />
+          <Property Name="DNFNeededForLoss" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="t_h5matches">
           <Key>
@@ -77,8 +78,8 @@
           <Property Name="teamSource" Type="varchar" MaxLength="128" />
           <Property Name="team1_Primary" Type="varchar" MaxLength="128" />
           <Property Name="team2_Primary" Type="varchar" MaxLength="128" />
-          <Property Name="team1_Secondary" Type="varchar" MaxLength="128" />
-          <Property Name="team2_Secondary" Type="varchar" MaxLength="128" />
+          <Property Name="team1_DNFCount" Type="int" Nullable="false" />
+          <Property Name="team2_DNFCount" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="t_h5matches_teamsinvolved_spartanclashfireteams">
           <Key>
@@ -88,8 +89,8 @@
           <Property Name="teamSource" Type="varchar" MaxLength="128" />
           <Property Name="team1_Primary" Type="varchar" MaxLength="128" />
           <Property Name="team2_Primary" Type="varchar" MaxLength="128" />
-          <Property Name="team1_Secondary" Type="varchar" MaxLength="128" />
-          <Property Name="team2_Secondary" Type="varchar" MaxLength="128" />
+          <Property Name="team1_DNFCount" Type="int" Nullable="false" />
+          <Property Name="team2_DNFCount" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="t_players">
           <Key>
@@ -447,6 +448,7 @@
           <Property Name="siteLaunchDate" Type="DateTime" Nullable="false" />
           <Property Name="companyClanBattleThreshold" Type="Double" Nullable="false" />
           <Property Name="matchHistoryReQueryDays" Type="Double" Nullable="false" />
+          <Property Name="DNFNeededForLoss" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="t_h5matches">
           <Key>
@@ -520,8 +522,8 @@
           <Property Name="teamSource" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
           <Property Name="team1_Primary" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
           <Property Name="team2_Primary" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
-          <Property Name="team1_Secondary" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
-          <Property Name="team2_Secondary" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="team1_DNFCount" Type="Int32" Nullable="false" />
+          <Property Name="team2_DNFCount" Type="Int32" Nullable="false" />
           <NavigationProperty Name="t_h5matches" Relationship="dev_spartanclashbackendModel.fk_matchID_h5matches_teamsinvolved" FromRole="t_h5matches_teamsinvolved_halowaypointcompanies" ToRole="t_h5matches" />
           <NavigationProperty Name="t_teamsources" Relationship="dev_spartanclashbackendModel.fk_teamSourceWaypoint" FromRole="t_h5matches_teamsinvolved_halowaypointcompanies" ToRole="t_teamsources" />
         </EntityType>
@@ -533,8 +535,8 @@
           <Property Name="teamSource" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
           <Property Name="team1_Primary" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
           <Property Name="team2_Primary" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
-          <Property Name="team1_Secondary" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
-          <Property Name="team2_Secondary" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="team1_DNFCount" Type="Int32" Nullable="false" />
+          <Property Name="team2_DNFCount" Type="Int32" Nullable="false" />
           <NavigationProperty Name="t_h5matches" Relationship="dev_spartanclashbackendModel.t_h5matches_teamsinvolved_spartanclashfireteams_ibfk_1" FromRole="t_h5matches_teamsinvolved_spartanclashfireteams" ToRole="t_h5matches" />
           <NavigationProperty Name="t_teamsources" Relationship="dev_spartanclashbackendModel.t_h5matches_teamsinvolved_spartanclashfireteams_ibfk_2" FromRole="t_h5matches_teamsinvolved_spartanclashfireteams" ToRole="t_teamsources" />
         </EntityType>
@@ -778,6 +780,7 @@
           <EntitySetMapping Name="t_configoptions">
             <EntityTypeMapping TypeName="dev_spartanclashbackendModel.t_configoptions">
               <MappingFragment StoreEntitySet="t_configoptions">
+                <ScalarProperty Name="DNFNeededForLoss" ColumnName="DNFNeededForLoss" />
                 <ScalarProperty Name="matchHistoryReQueryDays" ColumnName="matchHistoryReQueryDays" />
                 <ScalarProperty Name="companyClanBattleThreshold" ColumnName="companyClanBattleThreshold" />
                 <ScalarProperty Name="siteLaunchDate" ColumnName="siteLaunchDate" />
@@ -847,8 +850,8 @@
           <EntitySetMapping Name="t_h5matches_teamsinvolved_halowaypointcompanies">
             <EntityTypeMapping TypeName="dev_spartanclashbackendModel.t_h5matches_teamsinvolved_halowaypointcompanies">
               <MappingFragment StoreEntitySet="t_h5matches_teamsinvolved_halowaypointcompanies">
-                <ScalarProperty Name="team2_Secondary" ColumnName="team2_Secondary" />
-                <ScalarProperty Name="team1_Secondary" ColumnName="team1_Secondary" />
+                <ScalarProperty Name="team2_DNFCount" ColumnName="team2_DNFCount" />
+                <ScalarProperty Name="team1_DNFCount" ColumnName="team1_DNFCount" />
                 <ScalarProperty Name="team2_Primary" ColumnName="team2_Primary" />
                 <ScalarProperty Name="team1_Primary" ColumnName="team1_Primary" />
                 <ScalarProperty Name="teamSource" ColumnName="teamSource" />
@@ -859,8 +862,8 @@
           <EntitySetMapping Name="t_h5matches_teamsinvolved_spartanclashfireteams">
             <EntityTypeMapping TypeName="dev_spartanclashbackendModel.t_h5matches_teamsinvolved_spartanclashfireteams">
               <MappingFragment StoreEntitySet="t_h5matches_teamsinvolved_spartanclashfireteams">
-                <ScalarProperty Name="team2_Secondary" ColumnName="team2_Secondary" />
-                <ScalarProperty Name="team1_Secondary" ColumnName="team1_Secondary" />
+                <ScalarProperty Name="team2_DNFCount" ColumnName="team2_DNFCount" />
+                <ScalarProperty Name="team1_DNFCount" ColumnName="team1_DNFCount" />
                 <ScalarProperty Name="team2_Primary" ColumnName="team2_Primary" />
                 <ScalarProperty Name="team1_Primary" ColumnName="team1_Primary" />
                 <ScalarProperty Name="teamSource" ColumnName="teamSource" />

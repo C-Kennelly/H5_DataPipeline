@@ -23,10 +23,6 @@ namespace H5_DataPipeline.Models
             teamSource = teamSource = t_teamsources.GetWaypointSourceName();
             team1_Primary = null;
             team2_Primary = null;
-
-            //TODO - delete these from model
-            team1_Secondary = null;
-            team2_Secondary = null;
         }
 
         public t_h5matches_teamsinvolved_halowaypointcompanies(t_h5matches_playersformatch playersForMatchRecord, SpartanClashSettings settings)
@@ -37,7 +33,6 @@ namespace H5_DataPipeline.Models
             CalculateTeam1ClanParticipation(playersForMatchRecord, settings);
             CalculateTeam2ClanParticipation(playersForMatchRecord, settings);
 
-            //TODO - add these to model
             team1_DNFCount = CalculateSpartanCompanyDNFPresence(team1_Primary, playersForMatchRecord);
             team2_DNFCount = CalculateSpartanCompanyDNFPresence(team2_Primary, playersForMatchRecord);
         }
