@@ -72,8 +72,7 @@ namespace H5_DataPipeline.Assistants.MatchDetails
                         team.trackingIndex > 0
                         && team.teamId != noCompanyFoundID
                         && team.teamSource == waypointSourceName
-                        && team.lastUpdated < reQueryThresholdDate)
-                    .ToList();
+                ).ToList();
 
                 List<t_players_to_teams> rosterEntriesFromWayoint = new List<t_players_to_teams>(trackedTeamsFromWaypoint.Count);
 
@@ -92,7 +91,11 @@ namespace H5_DataPipeline.Assistants.MatchDetails
                 {
                     using(var dbp = new dev_spartanclashbackendEntities())
                     {
-                        playersOnWaypointTeams.Add(dbp.t_players.Find(rosterEntry.gamertag));
+                        t_players player = dbp.t_players.Find(rosterEntry.gamertag);
+                        if(player.dateLastMatchScan == null || player.dateLastMatchScan < reQueryThresholdDate)
+                        {
+                            playersOnWaypointTeams.Add(player);
+                        }
                     }
                 });
 
