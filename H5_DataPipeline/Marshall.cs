@@ -56,7 +56,7 @@ namespace H5_DataPipeline
             quartermaster.UpdateSpartanCompanyRosters();
             historian.RecordRecentGames();
             mortician.ScanMatchesForParticipants();
-            //clanalyzer.AnalyzeClanBattles();
+            clanalyzer.AnalyzeClanBattles();
         }
 
         private void Setup()

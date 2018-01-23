@@ -9,6 +9,11 @@ namespace H5_DataPipeline.Assistants.MatchParticipants
         public string spartanCompanyId;
         public List<CustomTeamEntry> customTeams;
 
+        public MatchParticipantEntry()
+        {
+
+        }
+
         public MatchParticipantEntry(string gt, string company)
         {
             gamertag = gt;

@@ -7,6 +7,11 @@ namespace H5_DataPipeline.Assistants.MatchParticipants
         public string teamId;
         public string teamType;
 
+        public CustomTeamEntry()
+        {
+
+        }
+
         public CustomTeamEntry(string teamName, string teamTypeName)
         {
             teamId = teamName;
