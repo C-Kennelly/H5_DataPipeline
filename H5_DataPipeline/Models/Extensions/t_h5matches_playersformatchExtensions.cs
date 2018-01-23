@@ -40,12 +40,6 @@ namespace H5_DataPipeline.Models
                 Helper.CreatePlayerIfNotExists(playerStat.Player.Gamertag);
                 string companyIDForTag = roster.GetSpartanCompanyIdFromMemory(playerStat.Player.Gamertag);
 
-                //if (companyIDForTag == "")
-                //{
-                //    companyIDForTag = QueryForCompanyIDAndUpdateDatabaseAndRoster(playerStat.Player.Gamertag, roster, session);
-                //}
-
-
                 if (playerStat.DNF)
                 {
                     DNFPlayers.Add(new MatchParticipantEntry(playerStat.Player.Gamertag, companyIDForTag));
@@ -90,12 +84,6 @@ namespace H5_DataPipeline.Models
                 Helper.CreatePlayerIfNotExists(playerStat.Player.Gamertag);
                 string companyIDForTag = roster.GetSpartanCompanyIdFromMemory(playerStat.Player.Gamertag);
 
-                //if (companyIDForTag == "")
-                //{
-                //    companyIDForTag = QueryForCompanyIDAndUpdateDatabaseAndRoster(playerStat.Player.Gamertag, roster, session);
-                //}
-
-
                 if (playerStat.DNF)
                 {
                     DNFPlayers.Add(new MatchParticipantEntry(playerStat.Player.Gamertag, companyIDForTag));
@@ -137,11 +125,6 @@ namespace H5_DataPipeline.Models
             {
                 Helper.CreatePlayerIfNotExists(playerStat.Player.Gamertag);
                 string companyIDForTag = roster.GetSpartanCompanyIdFromMemory(playerStat.Player.Gamertag);
-
-                //if(companyIDForTag == "")
-                //{
-                //    companyIDForTag = QueryForCompanyIDAndUpdateDatabaseAndRoster(playerStat.Player.Gamertag, roster, session);
-                //}
 
                 if (playerStat.DNF)
                 {
