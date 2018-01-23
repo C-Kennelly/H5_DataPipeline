@@ -4,11 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using H5_DataPipeline.Models;
-using HaloSharp.Model.Halo5.Stats;
-using HaloSharp.Model.Halo5.Stats.Common;
-using HaloSharp.Model;
-using HaloSharp;
-using System.Collections.Concurrent;
 
 namespace H5_DataPipeline.Assistants.Shared
 {
@@ -18,6 +13,50 @@ namespace H5_DataPipeline.Assistants.Shared
     /// </summary>
     static class Helper
     {
+
+        public static bool CreateUntrackedTeamIfNotExist(string teamID, string teamName, string teamSource, bool silent = true)
+        {
+            bool result = false;
+
+            using (var db = new dev_spartanclashbackendEntities())
+            {
+                t_teams currentRecord = db.t_teams.Find(teamID);
+
+                if (currentRecord == null)
+                {
+                    if (SourceIsValid(teamSource))
+                    {
+
+                        db.t_teams.Add(new t_teams(teamID, teamName, teamSource));
+                        db.SaveChanges();
+                        result = true;
+                        if (!silent)
+                        {
+                            Console.WriteLine("Now tracking {0}", teamName);
+                        }
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        private static bool SourceIsValid(string teamSource)
+        {
+            bool isValid = false;
+            using (var db = new dev_spartanclashbackendEntities())
+            {
+                t_teamsources sourceRecord = db.t_teamsources.Find(teamSource);
+
+                if(sourceRecord != null)
+                {
+                    isValid = true;
+                }
+            }
+
+            return isValid;
+        }
+
 
         public static void RegisterNewPlayersIfNotExist(List<string> playersToRegister, bool silent = true)
         {

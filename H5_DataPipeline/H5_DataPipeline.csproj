@@ -104,6 +104,8 @@
     <Compile Include="Assistants\MatchDetails\HistorianDelegates.cs" />
     <Compile Include="Assistants\MatchParticipants\MorticianDelegate.cs" />
     <Compile Include="Assistants\MatchParticipants\MorticianScribe.cs" />
+    <Compile Include="Assistants\MatchParticipants\PlayerFinder.cs" />
+    <Compile Include="Assistants\PlayerDiscovery\Discoverer.cs" />
     <Compile Include="Assistants\Shared\Referee.cs" />
     <Compile Include="Assistants\Shared\SpartanCompanyRoster.cs" />
     <Compile Include="Marshall.cs" />
@@ -124,7 +126,7 @@
     </Compile>
     <Compile Include="Models\Extensions\t_players_to_h5matchesExtension.cs" />
     <Compile Include="Models\Extensions\t_players_to_teamsExtensions.cs" />
-    <Compile Include="Assistants\MatchParticipants\PlayerFinder.cs" />
+    <Compile Include="Assistants\MatchParticipants\ParticipantFinder.cs" />
     <Compile Include="Assistants\Shared\HaloClientFactory.cs" />
     <Compile Include="Models\H5DataPipelineModel.Context.cs">
       <AutoGen>True</AutoGen>

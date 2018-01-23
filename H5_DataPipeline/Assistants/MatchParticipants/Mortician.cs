@@ -57,7 +57,7 @@ namespace H5_DataPipeline.Assistants.MatchParticipants
                 return db.t_h5matches.Where(match =>
                   match.t_h5matches_playersformatch == null
                   && match.t_h5matches_matchdetails.MatchCompleteDate > earliestTrackedMatchDate
-                ).ToList();
+                ).Take(1).ToList();
             }
         }
 
@@ -84,7 +84,7 @@ namespace H5_DataPipeline.Assistants.MatchParticipants
 
         private async Task ProcessMatch(t_h5matches matchToQuery, int jobNumber)
         {
-            PlayerFinder playerFinder = new PlayerFinder();   
+            ParticipantFinder playerFinder = new ParticipantFinder();   
             t_h5matches_playersformatch playersForMatch = await playerFinder.GetPlayersForMatch(matchToQuery, inMemoryRoster, haloSession);
 
             if(playersForMatch != null)

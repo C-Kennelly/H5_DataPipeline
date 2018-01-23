@@ -17,6 +17,11 @@ namespace H5_DataPipeline.Assistants.Shared
             spartanCompanyRoster = new Dictionary<string, string>();
         }
 
+        public void AddEntry(string gamertag, string teamId)
+        {
+            spartanCompanyRoster.Add(gamertag, teamId);
+        }
+
         public void RefreshInMemoryRoster()
         {
             List<t_players_to_teams> dbRecords = new List<t_players_to_teams>();

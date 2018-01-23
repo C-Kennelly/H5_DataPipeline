@@ -14,6 +14,19 @@ namespace H5_DataPipeline.Models
 
         }
 
+        public t_players_to_teams(Guid companyId, string tag)
+        {
+            gamertag = tag;
+            teamId = companyId.ToString();
+            
+            //We are relying on a quartmaster pass to correct this.
+            role = 0;
+
+            lastUpdated = DateTime.UtcNow;
+            joinedDate = null;
+            membershipLastModifiedDate = null;
+        }
+
         public t_players_to_teams(Guid companyId, Member rosterEntry)
         {
             gamertag = rosterEntry.Identity.Gamertag;

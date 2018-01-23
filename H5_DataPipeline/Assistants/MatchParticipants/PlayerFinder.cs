@@ -1,180 +1,108 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
-using H5_DataPipeline.Models;
 using HaloSharp;
-using HaloSharp.Exception;
 using HaloSharp.Extension;
-using HaloSharp.Model;
-using HaloSharp.Model.Halo5.Stats.CarnageReport;
-using HaloSharp.Query.Halo5.Stats.CarnageReport;
-using H5_DataPipeline.Assistants.Shared;
+using HaloSharp.Exception;
+using HaloSharp.Model.Halo5.Profile;
+using HaloSharp.Query.Halo5.Profile;
+using H5_DataPipeline.Models;
+using H5_DataPipeline.Shared;
 
 namespace H5_DataPipeline.Assistants.MatchParticipants
 {
-    public class PlayerFinder
+    class PlayerFinder
     {
-        public async Task<t_h5matches_playersformatch> GetPlayersForMatch(t_h5matches match, SpartanCompanyRoster roster, IHaloSession session)
+        private string gamertag;
+        private IHaloSession session;
+
+        private PlayerAppearance playerAppearanceResult;
+
+        public PlayerFinder()
         {
-            t_h5matches_playersformatch result = null;
-            int? gameMode = GetGameModeForMatch(match);
+
+        }
+
+        public PlayerFinder(string tag, IHaloSession haloSession)
+        {
+            gamertag = tag;
+            session = haloSession;
+        }
+
+        /// <summary>
+        /// Returns the spartan company ID from the Halo API.
+        /// If no ID is found, returns the default Waypoint value from the config.
+        /// </summary>
+        /// <param name="gamertag"></param>
+        /// <param name="session"></param>
+        /// <returns></returns>
+        public PlayerAppearance QuerySpartanCompanyInfo()
+        {
+            Task queryPlayerAppearanceTask = QueryPlayerAppearanceTask();
+
+            queryPlayerAppearanceTask.Wait();
             
-            switch(gameMode)
+            return playerAppearanceResult;
+        }
+
+        private async Task QueryPlayerAppearanceTask()
+        {
+            playerAppearanceResult = await QueryPlayerAppearance();
+        }
+
+        private async Task<PlayerAppearance> QueryPlayerAppearance()
+        {
+            PlayerAppearance result = null;
+            bool retry = true;
+
+            while (retry)
             {
-                case ((int)Enumeration.Halo5.GameMode.Arena):
+                retry = false;
+                try
                 {
-                    ArenaMatch carnageReport = await GetArenaMatchCarnageReport(match.matchID, session);
-                    result = new t_h5matches_playersformatch(match.matchID, carnageReport, roster);
-                    break;
+                    var query = new GetPlayerAppearance(gamertag);
+                    result = await session.Query(query);
                 }
-                case ((int)Enumeration.Halo5.GameMode.Warzone):
+                catch (HaloApiException haloAPIException)
                 {
-                    WarzoneMatch carnageReport = await GetWarzoneMatchCarnageReport(match.matchID, session);
-                    result = new t_h5matches_playersformatch(match.matchID, carnageReport, roster);
-                    break;
+                    if (haloAPIException.HaloApiError.Message.Contains("Rate limit"))
+                    {
+                        retry = true;
+                        await Task.Delay(50);
+                    }
+                    else if (haloAPIException.HaloApiError.StatusCode == 404)
+                    {
+                        result = null;
+                        using (var db = new dev_spartanclashbackendEntities())
+                        {
+                            t_teams companyRecord = db.t_teams.Find(gamertag);
+
+                            if (companyRecord != null)
+                            {
+                                Console.WriteLine("{0} received a 404 from the Halo API, changing tracking index to -1.", companyRecord.teamName);
+                                companyRecord.trackingIndex = -1;
+
+                                db.SaveChanges();
+                            }
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("CompanyCaller: The Halo API threw an exception for company {0}, error {1} - {2}.  Stopping calls.", gamertag, haloAPIException.HaloApiError.StatusCode, haloAPIException.HaloApiError.Message);
+                        result = null;
+                        //TODO -> Handle errors here... removing 404's?  Common class for handling API errors?
+                    }
+
+
+
                 }
 
-                case ((int)Enumeration.Halo5.GameMode.Custom):
-                {
-                    CustomMatch carnageReport = await GetCustomMatchCarnageReport(match.matchID, session);
-                    result = new t_h5matches_playersformatch(match.matchID, carnageReport, roster);
-                    break;
-                }
-                case ((int)Enumeration.Halo5.GameMode.Campaign):
-                {
-                    result = null;
-                    break;
-                }
-                case ((int)Enumeration.Halo5.GameMode.Error): 
-                {
-                    result = null;
-                    break;
-                }
-                default:
-                {
-                    result = null;
-                    break;
-                }
             }
 
             return result;
-
-        }
-
-        private int? GetGameModeForMatch(t_h5matches matchToFind)
-        {
-            t_h5matches_matchdetails matchDetails;
-
-            using (var db = new dev_spartanclashbackendEntities())
-            {
-                matchDetails = db.t_h5matches_matchdetails.Find(matchToFind.matchID);
-            }
-
-            if (matchDetails != null)
-            {
-                return matchDetails.GameMode;
-            }
-            else
-            {
-                throw new NotImplementedException("Don't know the game mode, can't find the players!");
-            }
-        }
-
-        private async Task<ArenaMatch> GetArenaMatchCarnageReport(string matchID, IHaloSession session)
-        {
-            ArenaMatch arenaCarnageReport = null;
-
-            bool resultFound = false;
-
-            while(resultFound == false)
-            {
-                resultFound = true;
-                try
-                {
-                    
-                    arenaCarnageReport = await session.Query(new GetArenaMatchDetails(new Guid(matchID)));
-                }
-                catch (HaloApiException haloAPIException)
-                {
-                    if (haloAPIException.HaloApiError.Message.Contains("Rate limit"))
-                    {
-                        Console.WriteLine("PlayerFinder: Rate Limit Hit");
-                        resultFound = false;
-                        await Task.Delay(50);
-                    }
-                    else
-                    {
-                        Console.WriteLine("The Halo API threw an exception for match {0}, status code: {1}.  Stopping calls.", matchID, haloAPIException.HaloApiError.StatusCode);
-                    }
-                }
-            }
-            return arenaCarnageReport;
-
-               
-        }
-
-        private async Task<WarzoneMatch> GetWarzoneMatchCarnageReport(string matchID, IHaloSession session)
-        {
-            WarzoneMatch warzoneCarnageReport = null;
-
-            bool resultFound = false;
-
-            while (resultFound == false)
-            {
-                resultFound = true;
-                try
-                {
-                    warzoneCarnageReport = await session.Query(new GetWarzoneMatchDetails(new Guid(matchID)));
-                }
-                catch (HaloApiException haloAPIException)
-                {
-                    if (haloAPIException.HaloApiError.Message.Contains("Rate limit"))
-                    {
-                        Console.WriteLine("PlayerFinder: Rate Limit Hit");
-                        resultFound = false;
-                        await Task.Delay(50);
-                    }
-                    else
-                    {
-                        Console.WriteLine("The Halo API threw an exception for match {0}, status code: {1}.  Stopping calls.", matchID, haloAPIException.HaloApiError.StatusCode);
-                    }
-                }
-
-            }
-            return warzoneCarnageReport;
-               
-        }
-
-        private async Task<CustomMatch> GetCustomMatchCarnageReport(string matchID, IHaloSession session)
-        {
-            CustomMatch customCarnageReport = null;
-            
-            bool resultFound = false;
-
-            while(resultFound == false)
-            {
-                resultFound = true;
-                try
-                {
-                    customCarnageReport = await session.Query(new GetCustomMatchDetails(new Guid(matchID)));
-                }
-                catch (HaloApiException haloAPIException)
-                {
-                    if (haloAPIException.HaloApiError.Message.Contains("Rate limit"))
-                    {
-                        Console.WriteLine("PlayerFinder: Rate Limit Hit");
-                        resultFound = false;
-                        await Task.Delay(50);
-                    }
-                    else
-                    {
-                        Console.WriteLine("The Halo API threw an exception for match {0}, status code: {1}.  Stopping calls.", matchID, haloAPIException.HaloApiError.StatusCode);
-                    }
-                }
-
-            }
-
-            return customCarnageReport;
-               
         }
     }
+
 }
