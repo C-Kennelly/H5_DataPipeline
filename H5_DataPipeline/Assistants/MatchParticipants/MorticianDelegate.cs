@@ -11,11 +11,11 @@ namespace H5_DataPipeline.Assistants.MatchParticipants
 
         private t_h5matches_playersformatch playersForMatchRecord;
         private t_h5matches parentMatchRecord;
-        private SpartanCompanyRoster roster;
+        private inMemoryTeamRoster roster;
         private Referee referee;
         private int jobId;
 
-        public MatchPlayersReadyToSaveToDatabaseEventArgs(t_h5matches_playersformatch playersRecord, t_h5matches matchRecord, SpartanCompanyRoster inMemoryRoster, Referee callingReferee, int jobNumber)
+        public MatchPlayersReadyToSaveToDatabaseEventArgs(t_h5matches_playersformatch playersRecord, t_h5matches matchRecord, inMemoryTeamRoster inMemoryRoster, Referee callingReferee, int jobNumber)
         {
             playersForMatchRecord = playersRecord;
             parentMatchRecord = matchRecord;
@@ -34,7 +34,7 @@ namespace H5_DataPipeline.Assistants.MatchParticipants
             return parentMatchRecord;
         }
 
-        public SpartanCompanyRoster GetSpartanCompanyRoster()
+        public inMemoryTeamRoster GetSpartanCompanyRoster()
         {
             return roster;
         }

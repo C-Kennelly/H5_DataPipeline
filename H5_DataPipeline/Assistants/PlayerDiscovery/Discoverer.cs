@@ -14,7 +14,7 @@ namespace H5_DataPipeline.Assistants.PlayerDiscovery
     class Discoverer
     {
         //returns the ID right now, but is supposed to add the gamertag/company association to the database and roster
-        public string QueryForCompanyIDAndUpdateDatabaseAndRoster(string gamertag, SpartanCompanyRoster roster, IHaloSession session)
+        public string QueryForCompanyIDAndUpdateDatabaseAndRoster(string gamertag, inMemoryTeamRoster roster, IHaloSession session)
         {
             
             string result = t_teams.GetNoWaypointCompanyFoundID();
@@ -38,7 +38,7 @@ namespace H5_DataPipeline.Assistants.PlayerDiscovery
             return result;
         }
 
-        private void UpdateDatabaseAndRoster(string gamertag, string companyID, string teamName, SpartanCompanyRoster roster)
+        private void UpdateDatabaseAndRoster(string gamertag, string companyID, string teamName, inMemoryTeamRoster roster)
         {
             t_players_to_teams newRecord = UpdateDatabase(gamertag, companyID, teamName);
 
@@ -78,7 +78,7 @@ namespace H5_DataPipeline.Assistants.PlayerDiscovery
             return result;
         }
 
-        private void UpdateRoster(string gamertag, string companyID, SpartanCompanyRoster roster)
+        private void UpdateRoster(string gamertag, string companyID, inMemoryTeamRoster roster)
         {
             roster.AddEntry(gamertag, companyID);
         }

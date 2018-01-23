@@ -8,18 +8,18 @@ using H5_DataPipeline.Models;
 
 namespace H5_DataPipeline.Assistants.Shared
 {
-    public class SpartanCompanyRoster
+    public class inMemoryTeamRoster
     {
-        Dictionary<string, string> spartanCompanyRoster;
+        private Dictionary<string, string> teamRoster;
 
-        public SpartanCompanyRoster()
+        public inMemoryTeamRoster()
         {
-            spartanCompanyRoster = new Dictionary<string, string>();
+            teamRoster = new Dictionary<string, string>();
         }
 
         public void AddEntry(string gamertag, string teamId)
         {
-            spartanCompanyRoster.Add(gamertag, teamId);
+            teamRoster.Add(gamertag, teamId);
         }
 
         public void RefreshInMemoryRoster()
@@ -34,7 +34,7 @@ namespace H5_DataPipeline.Assistants.Shared
 
             foreach (t_players_to_teams record in dbRecords)
             {
-                spartanCompanyRoster.Add(record.gamertag, record.teamId);
+                teamRoster.Add(record.gamertag, record.teamId);
             }
         }
 
@@ -44,13 +44,13 @@ namespace H5_DataPipeline.Assistants.Shared
         /// </summary>
         /// <param name="gamertag"></param>
         /// <returns></returns>
-        public string GetSpartanCompanyIdFromMemory(string gamertag)
+        public string GetTeamIDFromGamertag(string gamertag)
         {
             string teamId = "";
 
             string inMemoryValue = "";
 
-            bool foundTag = spartanCompanyRoster.TryGetValue(gamertag, out inMemoryValue);
+            bool foundTag = teamRoster.TryGetValue(gamertag, out inMemoryValue);
     
             if (foundTag && inMemoryValue != null)
             {
@@ -60,7 +60,7 @@ namespace H5_DataPipeline.Assistants.Shared
             return teamId;
         }
 
+
+
     }
-
-
 }

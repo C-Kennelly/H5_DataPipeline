@@ -25,7 +25,7 @@ namespace H5_DataPipeline.Models
             DNF_Players = null;  //TODO update model with check for JSON
         }
 
-        public t_h5matches_playersformatch(string id, ArenaMatch carnageReport, SpartanCompanyRoster roster, IHaloSession session)
+        public t_h5matches_playersformatch(string id, ArenaMatch carnageReport, inMemoryTeamRoster roster, IHaloSession session)
         {
             matchID = id;
 
@@ -38,7 +38,7 @@ namespace H5_DataPipeline.Models
             foreach (ArenaMatchPlayerStat playerStat in carnageReport.PlayerStats)
             {
                 Helper.CreatePlayerIfNotExists(playerStat.Player.Gamertag);
-                string companyIDForTag = roster.GetSpartanCompanyIdFromMemory(playerStat.Player.Gamertag);
+                string companyIDForTag = roster.GetTeamIDFromGamertag(playerStat.Player.Gamertag);
 
                 if (playerStat.DNF)
                 {
@@ -69,7 +69,7 @@ namespace H5_DataPipeline.Models
 
         }
 
-        public t_h5matches_playersformatch(string id, WarzoneMatch carnageReport, SpartanCompanyRoster roster, IHaloSession session)
+        public t_h5matches_playersformatch(string id, WarzoneMatch carnageReport, inMemoryTeamRoster roster, IHaloSession session)
         {
             matchID = id;
 
@@ -82,7 +82,7 @@ namespace H5_DataPipeline.Models
             foreach (WarzonePlayerStat playerStat in carnageReport.PlayerStats)
             {
                 Helper.CreatePlayerIfNotExists(playerStat.Player.Gamertag);
-                string companyIDForTag = roster.GetSpartanCompanyIdFromMemory(playerStat.Player.Gamertag);
+                string companyIDForTag = roster.GetTeamIDFromGamertag(playerStat.Player.Gamertag);
 
                 if (playerStat.DNF)
                 {
@@ -111,7 +111,7 @@ namespace H5_DataPipeline.Models
             DNF_Players = JsonConvert.SerializeObject(DNFPlayers);
         }
 
-        public t_h5matches_playersformatch(string id, CustomMatch carnageReport, SpartanCompanyRoster roster, IHaloSession session)
+        public t_h5matches_playersformatch(string id, CustomMatch carnageReport, inMemoryTeamRoster roster, IHaloSession session)
         {
             matchID = id;
 
@@ -124,7 +124,7 @@ namespace H5_DataPipeline.Models
             foreach (CustomMatchPlayerStat playerStat in carnageReport.PlayerStats)
             {
                 Helper.CreatePlayerIfNotExists(playerStat.Player.Gamertag);
-                string companyIDForTag = roster.GetSpartanCompanyIdFromMemory(playerStat.Player.Gamertag);
+                string companyIDForTag = roster.GetTeamIDFromGamertag(playerStat.Player.Gamertag);
 
                 if (playerStat.DNF)
                 {

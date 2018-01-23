@@ -13,7 +13,7 @@ namespace H5_DataPipeline.Assistants.MatchParticipants
 {
     public class ParticipantFinder
     {
-        public async Task<t_h5matches_playersformatch> GetPlayersForMatch(t_h5matches match, SpartanCompanyRoster roster, IHaloSession session)
+        public async Task<t_h5matches_playersformatch> GetPlayersForMatch(t_h5matches match, inMemoryTeamRoster roster, IHaloSession session)
         {
             t_h5matches_playersformatch result = null;
             int? gameMode = GetGameModeForMatch(match);

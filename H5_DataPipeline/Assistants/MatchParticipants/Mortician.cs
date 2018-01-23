@@ -18,7 +18,7 @@ namespace H5_DataPipeline.Assistants.MatchParticipants
         private IHaloSession haloSession;
         private SpartanClashSettings spartanClashSettings;
         private Referee referee;
-        private SpartanCompanyRoster inMemoryRoster;
+        private inMemoryTeamRoster inMemoryRoster;
 
         public event MatchPlayersReadyToSaveToDatabaseHandler MatchPlayersReadyToSaveToDatabase;
 
@@ -27,7 +27,7 @@ namespace H5_DataPipeline.Assistants.MatchParticipants
             haloSession = session;
             spartanClashSettings = settings;
             referee = new Referee();
-            inMemoryRoster = new SpartanCompanyRoster();
+            inMemoryRoster = new inMemoryTeamRoster();
 
 
             MatchPlayersReadyToSaveToDatabase += OnMatchPlayersReadyToSaveToDatabase;
