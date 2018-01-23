@@ -25,7 +25,5 @@ namespace H5_DataPipeline.Models
 
             membershipLastModifiedDate = (DateTime)rosterEntry.LastModifiedDate.ISO8601Date;
         }
-
-
     }
 }

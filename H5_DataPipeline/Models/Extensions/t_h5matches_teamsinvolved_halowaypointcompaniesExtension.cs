@@ -41,6 +41,8 @@ namespace H5_DataPipeline.Models
         {
             List<MatchParticipantEntry> team1ParticipantEntries = JsonConvert.DeserializeObject<List<MatchParticipantEntry>>(playersForMatch.team1_Players);
 
+            //FillInAssociations(team1ParticipantEntries)
+
             List<string> candidateCompanyIDs = GenerateCandidateCompanyIDs(team1ParticipantEntries);
 
             team1_Primary = CalculatePrimaryTeamParticipationFromCandidates(candidateCompanyIDs, team1ParticipantEntries.Count, settings);
@@ -105,11 +107,13 @@ namespace H5_DataPipeline.Models
                 return -1;
             }
 
-            List<MatchParticipantEntry> team1ParticipantEntries = JsonConvert.DeserializeObject<List<MatchParticipantEntry>>(playersForMatch.DNF_Players);
+            List<MatchParticipantEntry> DNFParticipantEntries = JsonConvert.DeserializeObject<List<MatchParticipantEntry>>(playersForMatch.DNF_Players);
+
+
 
             int dnfCounter = 0;
 
-            foreach (MatchParticipantEntry entry in team1ParticipantEntries)
+            foreach (MatchParticipantEntry entry in DNFParticipantEntries)
             {
                 if (entry.spartanCompanyId == clanID)
                 {

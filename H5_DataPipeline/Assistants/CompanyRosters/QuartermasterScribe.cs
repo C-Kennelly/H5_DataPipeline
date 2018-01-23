@@ -110,12 +110,12 @@ namespace H5_DataPipeline.Assistants.CompanyRosters
 
         private void AddRosterEntriesForPlayers(List<string> gamertags)
         {
+            Helper.RegisterNewPlayersIfNotExist(gamertags);
+
             using (var db = new dev_spartanclashbackendEntities())
             {
                 foreach (string gamertag in gamertags)
                 {
-                    CreatePlayerIfNotExists(gamertag);
-
                     t_players_to_teams rosterEntry = db.t_players_to_teams.FirstOrDefault(entry => entry.gamertag == gamertag);
 
                     if (rosterEntry != null)
@@ -130,23 +130,6 @@ namespace H5_DataPipeline.Assistants.CompanyRosters
                 db.SaveChanges();
             }
         }
-
-        private void CreatePlayerIfNotExists(string gamertag)
-        {
-            using (var db = new dev_spartanclashbackendEntities())
-            {
-                t_players currentRecord = db.t_players.Find(gamertag);
-
-                if (currentRecord == null)
-                {
-                    db.t_players.Add(new t_players(gamertag));
-
-                    db.SaveChanges();
-                }
-
-            }
-        }
-
 
         private void SignalThatWriteHasCompleted(int jobNumber)
         {

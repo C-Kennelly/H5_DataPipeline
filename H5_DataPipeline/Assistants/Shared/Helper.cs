@@ -12,28 +12,58 @@ using System.Collections.Concurrent;
 
 namespace H5_DataPipeline.Assistants.Shared
 {
+
     /// <summary>
     /// The helper has functions that haven't been placed anywhere yet.
     /// </summary>
     static class Helper
     {
-        public static async Task RegisterNewPlayers(List<string> playersToRegister)
+
+        public static void RegisterNewPlayersIfNotExist(List<string> playersToRegister, bool silent = true)
+        {
+            foreach(string player in playersToRegister)
+            {
+                CreatePlayerIfNotExists(player, silent);
+            }
+        }
+
+        public static void CreatePlayerIfNotExists(string gamertag, bool silent = true)
+        {
+            using (var db = new dev_spartanclashbackendEntities())
+            {
+                t_players currentRecord = db.t_players.Find(gamertag);
+
+                if (currentRecord == null)
+                {
+                    db.t_players.Add(new t_players(gamertag));
+
+                    db.SaveChanges();
+                    if(!silent)
+                    {
+                        Console.WriteLine("Now tracking {0}", gamertag);
+                    }
+                }
+            }
+        }
+
+
+        public static async Task RegisterNewPlayersIfNotExistAsync(List<string> playersToRegister)
         {
             List<Task> saveRecordTasks = new List<Task>(playersToRegister.Count);
 
             foreach(string player in playersToRegister)
             {
-                saveRecordTasks.Add(RegisterAPlayer(player));
+                saveRecordTasks.Add(CreatePlayerIfNotExistsAsync(player));
             }
 
             await Task.WhenAll(saveRecordTasks.ToArray());
         }
 
-        private static async Task RegisterAPlayer(string gamertag)
+        private static async Task CreatePlayerIfNotExistsAsync(string gamertag)
         {
             using (var db = new dev_spartanclashbackendEntities())
             {
-                t_players currentRecord = db.t_players.FirstOrDefault(x => x.gamertag == gamertag);
+                t_players currentRecord = db.t_players.Find(gamertag);
 
                 if (currentRecord == null)
                 {
