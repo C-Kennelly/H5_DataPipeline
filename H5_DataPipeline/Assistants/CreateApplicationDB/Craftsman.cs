@@ -31,7 +31,6 @@ namespace H5_DataPipeline.Assistants.CreateApplicationDB
 
             List<t_clashdevset> clashDevSetMatches = BuildClashDevSetMatches(clanBattles, detailsForMatches);
 
-            Console.WriteLine("Pushing inserts to database.");
             ProcessUpdates(clashDevSetMatches, playersForMatches);
         }
 
@@ -92,7 +91,7 @@ namespace H5_DataPipeline.Assistants.CreateApplicationDB
 
         private List<t_clashdevset> BuildClashDevSetMatches(List<t_h5matches_teamsinvolved_halowaypointcompanies> clanBattles, List<t_h5matches_matchdetails> clanBattleDetails)
         {
-            Console.WriteLine("Build new database records...");
+            Console.WriteLine("Creating sample records for {0} battles...", clanBattles.Count);
 
             List<t_clashdevset> clashDevSetMatches = new List<t_clashdevset>(clanBattleDetails.Count);
 

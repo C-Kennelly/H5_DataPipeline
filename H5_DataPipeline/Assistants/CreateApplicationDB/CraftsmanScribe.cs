@@ -24,8 +24,13 @@ namespace H5_DataPipeline.Assistants.CreateApplicationDB
 
         public void AddRecordsToApplicationDatabase()
         {
+            Console.WriteLine("Scanning for new map metadata.");
             AddNewMetaDataRecords();
+
+            Console.WriteLine("Inserting match records.");
             InsertClashDevSet();
+
+            Console.WriteLine("Inserting participants for matches.");
             InsertMatchParticipants();
         }
 
@@ -37,7 +42,6 @@ namespace H5_DataPipeline.Assistants.CreateApplicationDB
 
         private void InsertClashDevSet()
         {
-            Console.WriteLine("Making clashdevset inserts");
             using (var spartanClashDB = new clashdbEntities())
             {
                 foreach (t_clashdevset match in clanBattleMatches)
@@ -64,7 +68,6 @@ namespace H5_DataPipeline.Assistants.CreateApplicationDB
 
         private void InsertMatchParticipants()
         {
-            Console.WriteLine("Making match participant inserts");
             using (var spartanClashDB = new clashdbEntities())
             {
                 foreach (t_h5matches_playersformatch match in clanBattleParticipants)
