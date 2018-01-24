@@ -65,7 +65,7 @@ DROP TABLE IF EXISTS `t_companies`;
 CREATE TABLE IF NOT EXISTS `t_companies` (
   `companyId` varchar(128) NOT NULL,
   `companyName` varchar(128) NOT NULL,
-  `rank` int(64) NOT NULL DEFAULT -1,
+  `waypointLeaderBoardRank` int(64) NOT NULL DEFAULT -1,
   `wins` int(64) DEFAULT NULL,
   `losses` int(64) DEFAULT NULL,
   `total_matches` int(128) DEFAULT NULL,
@@ -83,8 +83,8 @@ CREATE TABLE IF NOT EXISTS `t_company2matches` (
   `companyId` varchar(128) NOT NULL,
   PRIMARY KEY (`matchId`,`companyId`),
   KEY `fk_company` (`companyId`),
-  CONSTRAINT `fk_MatchId` FOREIGN KEY (`matchId`) REFERENCES `t_clashdevset` (`MatchId`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `fk_company` FOREIGN KEY (`companyId`) REFERENCES `t_companies` (`companyID`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `fk_MatchId` FOREIGN KEY (`matchId`) REFERENCES `t_clashdevset` (`matchId`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_company` FOREIGN KEY (`companyId`) REFERENCES `t_companies` (`companyId`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- Data exporting was unselected.
@@ -108,7 +108,7 @@ CREATE TABLE IF NOT EXISTS `t_matchparticipants` (
   `other_Players` varchar(4096) DEFAULT NULL,
   `DNF_Players` varchar(4096) DEFAULT NULL,
   PRIMARY KEY (`matchId`),
-  CONSTRAINT `fk_to_clashset` FOREIGN KEY (`matchId`) REFERENCES `t_clashdevset` (`MatchId`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_to_clashset` FOREIGN KEY (`matchId`) REFERENCES `t_clashdevset` (`matchId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `CONSTRAINT_1` CHECK (`team1_Players` is null or json_valid(`team1_Players`)),
   CONSTRAINT `CONSTRAINT_2` CHECK (`team2_Players` is null or json_valid(`team2_Players`))
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;

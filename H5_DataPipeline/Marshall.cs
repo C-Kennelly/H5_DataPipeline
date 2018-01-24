@@ -4,7 +4,7 @@ using H5_DataPipeline.Assistants.MatchDetails;
 using H5_DataPipeline.Assistants.MatchParticipants;
 using H5_DataPipeline.Assistants.AnalyzeClanBattles;
 using H5_DataPipeline.Assistants.CreateApplicationDB;
-using H5_DataPipeline.Assistants.GenerateLeaderboards;
+using H5_DataPipeline.Assistants.CreateApplicationDB.GenerateLeaderboards;
 using H5_DataPipeline.Shared;
 using H5_DataPipeline.Shared.Config;
 using HaloSharp;
@@ -24,7 +24,6 @@ namespace H5_DataPipeline
         Mortician mortician;
         Clanalyzer clanalyzer;
         Craftsman craftsman;
-        Herald herald;
 
         SpartanClashSettings spartanClashSettings;
 
@@ -49,7 +48,6 @@ namespace H5_DataPipeline
             mortician = new Mortician(haloSession, spartanClashSettings);
             clanalyzer = new Clanalyzer(haloSession, spartanClashSettings);
             craftsman = new Craftsman(haloSession);
-            herald = new Herald();
             
         }
 
@@ -80,8 +78,7 @@ namespace H5_DataPipeline
 
         private void Load()
         {
-            craftsman.UpdateApplicationDatabase();
-            herald.CalculateLeaderboards();
+            craftsman.LoadApplicationDatabase();
         }
 
         private void Setup()

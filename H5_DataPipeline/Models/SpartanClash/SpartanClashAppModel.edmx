@@ -49,7 +49,7 @@
           </Key>
           <Property Name="companyId" Type="varchar" MaxLength="128" Nullable="false" />
           <Property Name="companyName" Type="varchar" MaxLength="128" Nullable="false" />
-          <Property Name="rank" Type="int" Nullable="false" />
+          <Property Name="waypointLeaderBoardRank" Type="int" Nullable="false" />
           <Property Name="wins" Type="int" />
           <Property Name="losses" Type="int" />
           <Property Name="total_matches" Type="int" />
@@ -209,7 +209,7 @@
           </Key>
           <Property Name="companyId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="false" />
           <Property Name="companyName" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="false" />
-          <Property Name="rank" Type="Int32" Nullable="false" />
+          <Property Name="waypointLeaderBoardRank" Type="Int32" Nullable="false" />
           <Property Name="wins" Type="Int32" />
           <Property Name="losses" Type="Int32" />
           <Property Name="total_matches" Type="Int32" />
@@ -308,7 +308,7 @@
                 <ScalarProperty Name="total_matches" ColumnName="total_matches" />
                 <ScalarProperty Name="losses" ColumnName="losses" />
                 <ScalarProperty Name="wins" ColumnName="wins" />
-                <ScalarProperty Name="rank" ColumnName="rank" />
+                <ScalarProperty Name="waypointLeaderBoardRank" ColumnName="waypointLeaderBoardRank" />
                 <ScalarProperty Name="companyName" ColumnName="companyName" />
                 <ScalarProperty Name="companyId" ColumnName="companyId" />
               </MappingFragment>

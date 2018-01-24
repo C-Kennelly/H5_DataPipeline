@@ -22,7 +22,7 @@ namespace H5_DataPipeline.Models.SpartanClash
     
         public string companyId { get; set; }
         public string companyName { get; set; }
-        public int rank { get; set; }
+        public int waypointLeaderBoardRank { get; set; }
         public Nullable<int> wins { get; set; }
         public Nullable<int> losses { get; set; }
         public Nullable<int> total_matches { get; set; }

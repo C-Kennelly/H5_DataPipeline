@@ -100,9 +100,11 @@
     <Compile Include="Assistants\CreateApplicationDB\Craftsman.cs" />
     <Compile Include="Assistants\CreateApplicationDB\CraftsmanScribe.cs" />
     <Compile Include="Assistants\CreateApplicationDB\MetadataGetter.cs" />
-    <Compile Include="Assistants\GenerateLeaderboards\CompanyFiller.cs" />
-    <Compile Include="Assistants\GenerateLeaderboards\Herald.cs" />
-    <Compile Include="Assistants\GenerateLeaderboards\RelationshipMapper.cs" />
+    <Compile Include="Assistants\CreateApplicationDB\GenerateLeaderboards\WaypointLeaderBoarderBuilder.cs" />
+    <Compile Include="Assistants\CreateApplicationDB\GenerateLeaderboards\CompanyFiller.cs" />
+    <Compile Include="Assistants\CreateApplicationDB\GenerateLeaderboards\Herald.cs" />
+    <Compile Include="Assistants\CreateApplicationDB\GenerateLeaderboards\RelationshipMapper.cs" />
+    <Compile Include="Assistants\CreateApplicationDB\GenerateLeaderboards\ServiceRecordBuilder.cs" />
     <Compile Include="Assistants\MatchParticipants\CustomTeamEntry.cs" />
     <Compile Include="Assistants\MatchParticipants\MatchParticipantEntry.cs" />
     <Compile Include="Assistants\CompanyRosters\QuartermasterDelegates.cs" />
@@ -255,7 +257,7 @@
     <Content Include="database\datapipeline\SeedConfigOptions.sql" />
     <Content Include="database\datapipeline\SeedPilotTeams.sql" />
     <Content Include="database\datapipeline\spartanclash_datapipeline_SchemaDump.sql" />
-    <Content Include="database\spartanClashAppDB\clasbDB_Schema.sql" />
+    <Content Include="database\spartanClashAppDB\clashbDB_Schema.sql" />
     <Content Include="Models\DataPipeline\H5DataPipelineModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>H5DataPipelineModel.edmx</DependentUpon>

@@ -4,7 +4,7 @@ using System.Linq;
 using H5_DataPipeline.Models.SpartanClash;
 using H5_DataPipeline.Models.DataPipeline;
 
-namespace H5_DataPipeline.Assistants.GenerateLeaderboards
+namespace H5_DataPipeline.Assistants.CreateApplicationDB.GenerateLeaderboards
 {
     public class CompanyFiller
     {

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using H5_DataPipeline.Models.SpartanClash;
 
-namespace H5_DataPipeline.Assistants.GenerateLeaderboards
+namespace H5_DataPipeline.Assistants.CreateApplicationDB.GenerateLeaderboards
 {
     public class RelationshipMapper
     {

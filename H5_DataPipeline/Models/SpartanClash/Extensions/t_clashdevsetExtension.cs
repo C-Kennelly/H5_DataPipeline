@@ -8,7 +8,7 @@ namespace H5_DataPipeline.Models.SpartanClash
         private int leaderboardDefaultStatus = 0;
         private int leaderboardDefaultRank = -1;
 
-        public t_clashdevset(t_h5matches_teamsinvolved_halowaypointcompanies teamsInvolved, t_h5matches_matchdetails matchDetails)
+        public t_clashdevset(t_h5matches_teamsinvolved_halowaypointcompanies teamsInvolved, t_h5matches_matchdetails matchDetails, t_h5matches_ranksandscores matchRanksAndScores)
         {
             GameBaseVariantID = matchDetails.GameBaseVariantID;
             GameMode = matchDetails.GameMode;
@@ -33,11 +33,30 @@ namespace H5_DataPipeline.Models.SpartanClash
             Team2_Company = teamsInvolved.team2_Primary;
             Team2_DNFCount = teamsInvolved.team2_DNFCount;
 
-            Team1_Rank = leaderboardDefaultRank;
-            Team1_Score = null;
-            Team2_Score = null;
+            Team1_Rank = matchRanksAndScores.team1_Rank;
+            Team2_Rank = matchRanksAndScores.team2_Rank;
+            Team1_Score = matchRanksAndScores.team1_Score;
+            Team2_Score = matchRanksAndScores.team2_Score;
             Status = leaderboardDefaultStatus;
 
         }
+
+        public bool IsAWinFor(t_companies company)
+        {
+
+            if (company.companyId == Team1_Company || company.companyId == Team1_Company)
+            {
+                //Company is on team 1 
+                if (Team1_Rank == 1) { return true; }
+                else { return false; }
+            }
+            else
+            {
+                //Company is on team 2 
+                if (Team1_Rank == 2) { return true; }
+                else { return false; }
+            }
+        }
+
     }
 }
