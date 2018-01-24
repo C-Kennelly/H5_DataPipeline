@@ -26,11 +26,11 @@
           <Property Name="MatchDuration" Type="text" />
           <Property Name="IsTeamGame" Type="binary" MaxLength="50" />
           <Property Name="SeasonID" Type="text" />
-          <Property Name="Team1_Company1" Type="text" />
+          <Property Name="Team1_Company" Type="text" />
           <Property Name="Team1_Rank" Type="int" Nullable="false" />
           <Property Name="Team1_Score" Type="uint" />
           <Property Name="Team1_DNFCount" Type="int" />
-          <Property Name="Team2_Company1" Type="text" />
+          <Property Name="Team2_Company" Type="text" />
           <Property Name="Team2_Rank" Type="int" Nullable="false" />
           <Property Name="Team2_Score" Type="uint" />
           <Property Name="Team2_DNFCount" Type="int" />
@@ -179,11 +179,11 @@
           <Property Name="MatchDuration" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
           <Property Name="IsTeamGame" Type="Binary" MaxLength="Max" FixedLength="false" />
           <Property Name="SeasonID" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
-          <Property Name="Team1_Company1" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="Team1_Company" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
           <Property Name="Team1_Rank" Type="Int32" Nullable="false" />
           <Property Name="Team1_Score" Type="Int64" />
           <Property Name="Team1_DNFCount" Type="Int32" />
-          <Property Name="Team2_Company1" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="Team2_Company" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
           <Property Name="Team2_Rank" Type="Int32" Nullable="false" />
           <Property Name="Team2_Score" Type="Int64" />
           <Property Name="Team2_DNFCount" Type="Int32" />
@@ -248,7 +248,7 @@
           <End Type="clashdbModel.t_companies" Role="t_companies" Multiplicity="*" />
           <End Type="clashdbModel.t_clashdevset" Role="t_clashdevset" Multiplicity="*" />
         </Association>
-      </Schema>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -261,11 +261,11 @@
                 <ScalarProperty Name="Team2_DNFCount" ColumnName="Team2_DNFCount" />
                 <ScalarProperty Name="Team2_Score" ColumnName="Team2_Score" />
                 <ScalarProperty Name="Team2_Rank" ColumnName="Team2_Rank" />
-                <ScalarProperty Name="Team2_Company1" ColumnName="Team2_Company1" />
+                <ScalarProperty Name="Team2_Company" ColumnName="Team2_Company" />
                 <ScalarProperty Name="Team1_DNFCount" ColumnName="Team1_DNFCount" />
                 <ScalarProperty Name="Team1_Score" ColumnName="Team1_Score" />
                 <ScalarProperty Name="Team1_Rank" ColumnName="Team1_Rank" />
-                <ScalarProperty Name="Team1_Company1" ColumnName="Team1_Company1" />
+                <ScalarProperty Name="Team1_Company" ColumnName="Team1_Company" />
                 <ScalarProperty Name="SeasonID" ColumnName="SeasonID" />
                 <ScalarProperty Name="IsTeamGame" ColumnName="IsTeamGame" />
                 <ScalarProperty Name="MatchDuration" ColumnName="MatchDuration" />

@@ -3,6 +3,7 @@ using H5_DataPipeline.Assistants.CompanyRosters;
 using H5_DataPipeline.Assistants.MatchDetails;
 using H5_DataPipeline.Assistants.MatchParticipants;
 using H5_DataPipeline.Assistants.AnalyzeClanBattles;
+using H5_DataPipeline.Assistants.CreateApplicationDB;
 using H5_DataPipeline.Shared;
 using H5_DataPipeline.Shared.Config;
 using HaloSharp;
@@ -21,6 +22,7 @@ namespace H5_DataPipeline
         Historian historian;
         Mortician mortician;
         Clanalyzer clanalyzer;
+        Craftsman craftsman;
 
         SpartanClashSettings spartanClashSettings;
 
@@ -44,6 +46,8 @@ namespace H5_DataPipeline
             historian = new Historian(haloSession, spartanClashSettings);
             mortician = new Mortician(haloSession, spartanClashSettings);
             clanalyzer = new Clanalyzer(haloSession, spartanClashSettings);
+            craftsman = new Craftsman(haloSession);
+            
         }
 
 
@@ -54,9 +58,10 @@ namespace H5_DataPipeline
             Setup();
 
             quartermaster.UpdateSpartanCompanyRosters();
-            historian.RecordRecentGames();
-            mortician.ScanMatchesForParticipants();
+            //historian.RecordRecentGames();
+            //mortician.ScanMatchesForParticipants();
             clanalyzer.AnalyzeClanBattles();
+            craftsman.UpdateApplicationDatabase();
         }
 
         private void Setup()

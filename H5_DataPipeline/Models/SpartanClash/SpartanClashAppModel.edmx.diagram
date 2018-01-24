@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="8704f63cb6e746cab172e021e147f17c" Name="Diagram1">
+      <Diagram DiagramId="8704f63cb6e746cab172e021e147f17c" Name="Diagram1" ZoomLevel="64">
         <EntityTypeShape EntityType="clashdbModel.t_clashdevset" Width="1.5" PointX="3" PointY="1.125" />
         <EntityTypeShape EntityType="clashdbModel.t_clashmetadata" Width="1.5" PointX="5.75" PointY="0.75" />
         <EntityTypeShape EntityType="clashdbModel.t_companies" Width="1.5" PointX="0.75" PointY="3.125" />

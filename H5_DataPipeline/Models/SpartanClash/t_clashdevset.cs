@@ -37,11 +37,11 @@ namespace H5_DataPipeline.Models.SpartanClash
         public string MatchDuration { get; set; }
         public byte[] IsTeamGame { get; set; }
         public string SeasonID { get; set; }
-        public string Team1_Company1 { get; set; }
+        public string Team1_Company { get; set; }
         public int Team1_Rank { get; set; }
         public Nullable<long> Team1_Score { get; set; }
         public Nullable<int> Team1_DNFCount { get; set; }
-        public string Team2_Company1 { get; set; }
+        public string Team2_Company { get; set; }
         public int Team2_Rank { get; set; }
         public Nullable<long> Team2_Score { get; set; }
         public Nullable<int> Team2_DNFCount { get; set; }

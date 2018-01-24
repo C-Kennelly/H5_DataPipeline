@@ -49,13 +49,13 @@ namespace H5_DataPipeline.Assistants.CreateApplicationDB
                             db.t_mapmetadata.Add(newRecord);
                             db.SaveChanges();
                         }
-                        catch
+                        catch(Exception e)
                         {
-                            //Console.WriteLine("Database write failed.");
+                            Console.WriteLine(e.Message);
                         }
 
 
-                        Console.WriteLine("Finished Metadat");
+                        Console.WriteLine("Finished adding metadata for {0}", newRecord.printableName);
                     }
                 }
             }

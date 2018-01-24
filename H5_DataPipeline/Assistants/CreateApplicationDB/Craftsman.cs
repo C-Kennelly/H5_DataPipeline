@@ -5,88 +5,113 @@ using System.Text;
 using System.Threading.Tasks;
 using H5_DataPipeline.Models.DataPipeline;
 using H5_DataPipeline.Models.SpartanClash;
+using HaloSharp;
 
 namespace H5_DataPipeline.Assistants.CreateApplicationDB
 {
-    /*
-    class Craftsman
+
+    public class Craftsman
     {
-        private static async void DoTheThing()
+        private IHaloSession session;
+
+        public Craftsman(IHaloSession haloSession)
         {
-            Task t = MetadataGetter.UpdateMetaDataTables();
-            t.Wait();
-
-            PullRawMatchesDBInputs(out List<t_players_for_match> warzoneWarlordsPlayersForMatches, out List<t_matches_for_player> warzoneWarlordsMatchesForPlayer);
-            BuildClashDevSetMatches(out List<t_clashdevset> clashDevSetMatches, ref warzoneWarlordsPlayersForMatches, ref warzoneWarlordsMatchesForPlayer);
-            WriteClashDevSetToDatabase(clashDevSetMatches);
-
+            session = haloSession;
         }
 
-        private static void PullRawMatchesDBInputs(out List<t_h5matches_playersformatch> playersForMatchList, out List<t_h5matches_matchdetails> matchesForPlayerList)
-        {
-            Console.WriteLine("Pulling inputs from RawMatchesDB");
-            using (var db = new dev_spartanclashbackendEntities())
-            {
-                playersForMatchList = db.t_h5matches_playersformatch.ToList();
 
-                matchesForPlayerList = new List<t_h5matches_matchdetails>(playersForMatchList.Count);
-                foreach (t_h5matches_playersformatch match in playersForMatchList)
+        //TODO - this should pass in a context so we can swap the database with code.  For now, need to use config file.
+        public void UpdateApplicationDatabase()
+        {
+            List<t_h5matches_teamsinvolved_halowaypointcompanies> clanBattles = GetAllTaggedWaypointClanBattles();
+            List<string> clanBattleMatchIDs = clanBattles.Select(battle => battle.matchID).ToList();
+
+            List<t_h5matches_matchdetails> detailsForMatches = PullMatchDetailsForClanBattles( clanBattleMatchIDs);
+            List<t_h5matches_playersformatch> playersForMatches = PullMatchParticipantsForClanBattles(clanBattleMatchIDs);
+
+            List<t_clashdevset> clashDevSetMatches = BuildClashDevSetMatches(clanBattles, detailsForMatches);
+
+            Console.WriteLine("Pushing inserts to database.");
+            ProcessUpdates(clashDevSetMatches, playersForMatches);
+        }
+
+        private List<t_h5matches_teamsinvolved_halowaypointcompanies> GetAllTaggedWaypointClanBattles()
+        {
+            List<t_h5matches_teamsinvolved_halowaypointcompanies> clanBattles = new List<t_h5matches_teamsinvolved_halowaypointcompanies>();
+            using (var pipelineDB = new dev_spartanclashbackendEntities())
+            {
+                List<t_h5matches_teamsinvolved_halowaypointcompanies> dbValues = pipelineDB.t_h5matches_teamsinvolved_halowaypointcompanies
+                                                        .Where(battle => battle.team1_Primary != "0" || battle.team2_Primary != "0")
+                                                        .ToList();
+                if(dbValues != null)
                 {
-                    matchesForPlayerList.Add(db.t_matches_for_player.Find(match.MatchId));
+                    clanBattles = dbValues;
                 }
-
-                Console.WriteLine("Found {0} Warzone Warlords matches and grabbed {1} from the pool of total matches", playersForMatchList.Count, matchesForPlayerList.Count);
-
-            }
-        }
-
-        private static void BuildClashDevSetMatches(out List<t_clashdevset> clashDevSetMatches, ref List<t_players_for_match> warzoneWarlordsPlayersForMatches, ref List<t_matches_for_player> warzoneWarlordsMatchesForPlayer)
-        {
-            Console.WriteLine("Build clashdevset matches from the inputs");
-
-            clashDevSetMatches = new List<t_clashdevset>(warzoneWarlordsPlayersForMatches.Count);
-            foreach (t_players_for_match playerMatch in warzoneWarlordsPlayersForMatches)
-            {
-                t_matches_for_player matchDetails = warzoneWarlordsMatchesForPlayer.Find(x => x.MatchId == playerMatch.MatchId);
-
-                clashDevSetMatches.Add(new t_clashdevset(matchDetails, playerMatch));
-
-
             }
 
+            return clanBattles;
         }
 
-        private static void WriteClashDevSetToDatabase(List<t_clashdevset> clashDevSetMatches)
+        private List<t_h5matches_matchdetails> PullMatchDetailsForClanBattles(List<string> clanBattleMatchIDs)
         {
-            Console.WriteLine("Making clashdevset inserts");
-
-            using (var db = new clashdbEntities())
+            List<t_h5matches_matchdetails> clanBattleDetails = new List<t_h5matches_matchdetails>(clanBattleMatchIDs.Count);
+            using (var pipelineDB = new dev_spartanclashbackendEntities())
             {
-                foreach (t_clashdevset match in clashDevSetMatches)
+                foreach(string matchID in clanBattleMatchIDs)
                 {
-                    var query = db.t_clashdevset.Find(match.MatchId);
-
-                    try
+                    t_h5matches_matchdetails match = pipelineDB.t_h5matches_matchdetails.Find(matchID);
+                    if(match != null)
                     {
-                        if (query == null)
-                        {
-                            db.t_clashdevset.Add(match);
-                        }
-                    }
-                    catch
-                    {
-                        Console.WriteLine("Had problems adding match {0}", match.MatchId);
+                        clanBattleDetails.Add(match);
                     }
                 }
 
-                db.SaveChanges();
             }
 
+            return clanBattleDetails;
+        }
+
+        private List<t_h5matches_playersformatch> PullMatchParticipantsForClanBattles(List<string> clanBattleMatchIDs)
+        {
+            List<t_h5matches_playersformatch> clanBattleParticipants = new List<t_h5matches_playersformatch>(clanBattleMatchIDs.Count);
+            using (var pipelineDB = new dev_spartanclashbackendEntities())
+            {
+                foreach (string matchID in clanBattleMatchIDs)
+                {
+                    t_h5matches_playersformatch match = pipelineDB.t_h5matches_playersformatch.Find(matchID);
+                    if (match != null)
+                    {
+                        clanBattleParticipants.Add(match);
+                    }
+                }
+
+            }
+
+            return clanBattleParticipants;
+        }
+
+        private List<t_clashdevset> BuildClashDevSetMatches(List<t_h5matches_teamsinvolved_halowaypointcompanies> clanBattles, List<t_h5matches_matchdetails> clanBattleDetails)
+        {
+            Console.WriteLine("Build new database records...");
+
+            List<t_clashdevset> clashDevSetMatches = new List<t_clashdevset>(clanBattleDetails.Count);
+
+            foreach (t_h5matches_teamsinvolved_halowaypointcompanies clanBattle in clanBattles)
+            {
+                t_h5matches_matchdetails matchDetails = clanBattleDetails.Find(battle => battle.matchId == clanBattle.matchID);
+
+                clashDevSetMatches.Add(new t_clashdevset(clanBattle, matchDetails));
+            }
+
+            return clashDevSetMatches;
 
         }
-        
 
+        private void ProcessUpdates(List<t_clashdevset> clashDevSetMatches, List<t_h5matches_playersformatch> matchParticipants)
+        {
+            CraftsmanScribe scribe = new CraftsmanScribe(clashDevSetMatches, matchParticipants, session);
+            scribe.AddRecordsToApplicationDatabase();
+        }
 
     }
-    */
 }
