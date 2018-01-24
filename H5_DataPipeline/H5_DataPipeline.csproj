@@ -201,7 +201,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="database\spartanClashAppDB\" />
     <Folder Include="infrastructure\" />
     <Folder Include="SQL Files\" />
   </ItemGroup>
@@ -210,6 +209,7 @@
     <Content Include="database\datapipeline\SeedConfigOptions.sql" />
     <Content Include="database\datapipeline\SeedPilotTeams.sql" />
     <Content Include="database\datapipeline\spartanclash_datapipeline_SchemaDump.sql" />
+    <Content Include="database\spartanClashAppDB\clasbDB_Schema.sql" />
     <Content Include="Models\H5DataPipelineModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>H5DataPipelineModel.edmx</DependentUpon>

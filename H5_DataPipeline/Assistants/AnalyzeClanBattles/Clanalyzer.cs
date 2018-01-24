@@ -31,8 +31,6 @@ namespace H5_DataPipeline.Assistants.AnalyzeClanBattles
 
         private void AnalyzeMatchesForHaloWaypointClanBattles()
         {
-
-
             Console.WriteLine("Tagging Clan Battles at: {0}", DateTime.UtcNow);
             Console.WriteLine();
 
@@ -106,8 +104,7 @@ namespace H5_DataPipeline.Assistants.AnalyzeClanBattles
             }
             else
             {
-                Console.WriteLine("Detected Mortician failure during Clan Battle Tagging {0}", matchToQuery.matchID);
-                //TODO - handle record... it needed to be scanned so we probably had a failure.
+                Console.WriteLine("Couldn't find playersForMatch record during Clan Battle Tagging {0}", matchToQuery.matchID);
             }
 
             return result;
