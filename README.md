@@ -9,7 +9,7 @@ Periodically, I update a project blog on my [personal website](https://idle-cycl
 
 If you're more interested in where my development work is headed, I'm tracking this project in a [public backlog](https://www.pivotaltracker.com/n/projects/1776179).
 
-Finally, there's a frontend to this pipeline, located in the [Spartan Clash](https://github.com/C-Kennelly/SpartanClashCore repository.  Give that repo a shot if you'd like to learn more about the front end experience.
+Finally, there's a frontend to this pipeline, located in the [Spartan Clash](https://github.com/C-Kennelly/SpartanClashCore) repository.  Give that repo a shot if you'd like to learn more about the front end experience.
 
 # Setting Up A Dev Environment (Coming Soon!)
 This section will explain how to set up a local version of the data pipeline.
@@ -72,12 +72,12 @@ The match details are all in place, but it turns out we're not quite done.  Due 
 These values are stored as JSON fields inside the database, and names are paired with the team they were on when they completed the match, allowing for analysis later.
 
 # Transform #
-In the Transform stage, we have all the data that we need to perform calculations.  So now we need to massage the data into a usable format.  For the most part, that means doing the analysis we are interested in doing.
+In the Transform stage, we have all the data that we need to perform calculations.  So now we need to massage the data into a usable format.  For the most part, that means doing the aggregation.
 
 ### Meet the Clanalyzer, who tags battles that clans participated in ###
 Our next Assistant is the Clanalyzer, who looks through match participants and then tags the battles that were "clan battles."  The definition for this is set in the config tables, but it comes down to a match participation threshold... if one team was made up of x% players from one company, then they get to tag the match.  So if it is set at 0.75, then your team gets a clan battle if 3 out of 4 members were on your team, or 6 out of 8.
 
-Free for all is excluded from this system, of course.
+Free for all is excluded from this system, of course, as *every* match would be a clan battle.
 
 # Load #
 Finally, for the Load stage, we have the data ready to go.  It's time to get it into the applicatin database where it can be consumed.
@@ -87,7 +87,7 @@ Interestingly enough, due to the way I originally wrote this, we actually do a l
 The next Assistant assistant is the Craftsman, who is responsbile for crafting the application database.  He looks over the records tagged by the Clanalyzer and combines it with the Morticians findings to generate battle reports for the web app to consume.  In other words, he uploads the subset of matches that are clan battles to the application database and provides the auxillary information that is required to do them.
 
 ### Meet the Herald, who celebrates the best teams. ###
-The last Assistant actually works for the Craftsman.  The Herald continues the updates of the Application Database, but does some light processing.  First, he fills in the "Service Record" components - basically, for each company, how many wins and losses did you have?
+The last Assistant actually works for the Craftsman.  The Herald continues the updates of the Application Database but does some light processing, too.  First, he fills in the "Service Record" components - basically, for each company, how many wins and losses did you have?
 
 Then he rounds out the pipeline by calculating leaderboard rankings for the web app to display later.  Right now, this is a naive "Win/Loss" ratio for any team that's played more than 10 games.  However, this portion of the Pipeline will likely get more complicated as we put a real ranking system in later.  Good ole' Herald!
 
@@ -98,4 +98,4 @@ Long term, I'd probably focus on factoring out the [Halo Sharp](https://github.c
 
 The Assistants are also setup to be pulled out into seperate services with some kind of event-based pattern, using something like RabbitMQ.  However, many stages of the pipeline assume other stages have run first, so it'll need to be a linear flow to start.  It's a rabbit(haha) hole that I'm not quite ready to go down yet, especially because the ever-present API limit prevents a distributed solution from moving very quickly.
 
-Realistically, my next most likely step willl be killing the Morticiian for efficiency and then adding Custom Team support - [Alliances](https://www.pivotaltracker.com/epic/show/3725677), and [Fireteams](https://www.pivotaltracker.com/epic/show/3790817).  If you poke around the pipeline database schema, you'll see the "Team Sources" table, which allows teams from different sources to exist.  However, I need to provide a way for users to create and manage those teams on the front end before this'll be useful.
+Realistically, my next most likely step will be killing the Mortician for efficiency and then adding Custom Team support - [Alliances](https://www.pivotaltracker.com/epic/show/3725677), and [Fireteams](https://www.pivotaltracker.com/epic/show/3790817).  If you poke around the pipeline database schema, you'll see the "Team Sources" table, which allows teams from different sources to exist.  However, I need to provide a way for users to create and manage those teams on the front end before this'll be useful.
