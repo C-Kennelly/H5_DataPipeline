@@ -34,7 +34,7 @@ He's also probably the simplest of the bunch - all he does is declare what order
 
 To get a great overview of the pipeline, head into Marshall's ETL jobs and see what happens in each one, or keep reading.
 
-## Extract ##
+# Extract #
 If you're familiar with ETL, you'll get the basic pattern here.  In the Extract stage, we're trying to solve one problem.
 There's data in the Halo API, and it's not stored locally.  So we need to get it!
 
@@ -71,7 +71,7 @@ The match details are all in place, but it turns out we're not quite done.  Due 
 
 These values are stored as JSON fields inside the database, and names are paired with the team they were on when they completed the match, allowing for analysis later.
 
-## Transform ##
+# Transform #
 In the Transform stage, we have all the data that we need to perform calculations.  So now we need to massage the data into a usable format.  For the most part, that means doing the analysis we are interested in doing.
 
 ### Meet the Clanalyzer, who tags battles that clans participated in ###
@@ -79,7 +79,7 @@ Our next Assistant is the Clanalyzer, who looks through match participants and t
 
 Free for all is excluded from this system, of course.
 
-## Load ##
+# Load #
 Finally, for the Load stage, we have the data ready to go.  It's time to get it into the applicatin database where it can be consumed.
 Interestingly enough, due to the way I originally wrote this, we actually do a little bit of post-load processing in the Leaderboards area.  It's probably something we'll shift back to the Transform stage as the [Divisions](https://www.pivotaltracker.com/epic/show/3725669) epic materializes.
 
