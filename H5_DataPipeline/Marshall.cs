@@ -54,7 +54,7 @@ namespace H5_DataPipeline
 
 
 
-        public void DoTheThing()
+        public void ExecuteSpartanClashETL()
         {
             Setup();
 

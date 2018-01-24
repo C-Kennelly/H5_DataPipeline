@@ -16,13 +16,33 @@ namespace H5_DataPipeline
 
         static void Main(string[] args)
         {
+            bool runAnother = true;
+            while(runAnother)
+            {
+                runAnother = false;
+                TimedCycle();
+
+                Console.WriteLine("Run another? Y/n");
+
+                string response = Console.ReadLine();
+
+                if (response.Contains("Y") || response.Contains("y"))
+                {
+                    runAnother = true;
+                }
+            }
+
+            //Console.ReadLine();
+        }
+
+        private static void TimedCycle()
+        {
             DateTime startTime = DateTime.Now;
 
             RunCycle();
 
             PrintDurationSince(startTime);
 
-            Console.ReadLine();
         }
 
         public static void RunCycle()
@@ -31,7 +51,7 @@ namespace H5_DataPipeline
             Console.WriteLine();
 
             Marshall marshall = new Marshall();
-            marshall.DoTheThing();
+            marshall.ExecuteSpartanClashETL();
 
 
             Console.WriteLine();
@@ -41,14 +61,13 @@ namespace H5_DataPipeline
         private static void PrintDurationSince(DateTime startTime)
         {
             DateTime endTime = DateTime.Now;
-
-
             TimeSpan span = endTime.Subtract(startTime);
-
             Console.WriteLine("Cycle took {0} days, {1} hours, {2} minutes, and {3} seconds", span.Days, span.Hours, span.Minutes, span.Seconds);
-
-
         }
+
+
+
+        
 
     }
 }
