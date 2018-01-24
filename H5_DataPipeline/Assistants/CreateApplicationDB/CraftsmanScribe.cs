@@ -46,7 +46,7 @@ namespace H5_DataPipeline.Assistants.CreateApplicationDB
             {
                 foreach (t_clashdevset match in clanBattleMatches)
                 {
-                    var query = spartanClashDB.t_clashdevset.Find(match.MatchId);
+                    var query = spartanClashDB.t_clashdevset.Find(match.matchId);
 
                     try
                     {
@@ -57,7 +57,7 @@ namespace H5_DataPipeline.Assistants.CreateApplicationDB
                     }
                     catch
                     {
-                        Console.WriteLine("Had problems adding match {0}", match.MatchId);
+                        Console.WriteLine("Had problems adding match {0}", match.matchId);
                     }
                 }
                 spartanClashDB.SaveChanges();

@@ -13,12 +13,14 @@
 
 
 -- Dumping database structure for clashdb
+DROP DATABASE IF EXISTS `clashdb`;
 CREATE DATABASE IF NOT EXISTS `clashdb` /*!40100 DEFAULT CHARACTER SET latin1 */;
 USE `clashdb`;
 
 -- Dumping structure for table clashdb.t_clashdevset
+DROP TABLE IF EXISTS `t_clashdevset`;
 CREATE TABLE IF NOT EXISTS `t_clashdevset` (
-  `MatchId` varchar(64) NOT NULL,
+  `matchId` varchar(64) NOT NULL,
   `GameMode` int(32) DEFAULT NULL,
   `HopperId` text DEFAULT NULL,
   `MapId` text DEFAULT NULL,
@@ -35,21 +37,22 @@ CREATE TABLE IF NOT EXISTS `t_clashdevset` (
   `MatchDuration` text DEFAULT NULL,
   `IsTeamGame` binary(50) DEFAULT NULL,
   `SeasonID` text DEFAULT NULL,
-  `Team1_Company1` text DEFAULT NULL,
+  `Team1_Company` text DEFAULT NULL,
   `Team1_Rank` int(11) NOT NULL DEFAULT -1,
   `Team1_Score` int(11) unsigned DEFAULT NULL,
   `Team1_DNFCount` int(11) DEFAULT -1,
-  `Team2_Company1` text DEFAULT NULL,
+  `Team2_Company` text DEFAULT NULL,
   `Team2_Rank` int(11) NOT NULL DEFAULT -1,
   `Team2_Score` int(11) unsigned DEFAULT NULL,
   `Team2_DNFCount` int(11) DEFAULT -1,
   `Status` int(11) NOT NULL DEFAULT 0,
-  PRIMARY KEY (`MatchId`),
-  UNIQUE KEY `MatchId` (`MatchId`)
+  PRIMARY KEY (`matchId`),
+  UNIQUE KEY `MatchId` (`matchId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- Data exporting was unselected.
 -- Dumping structure for table clashdb.t_clashmetadata
+DROP TABLE IF EXISTS `t_clashmetadata`;
 CREATE TABLE IF NOT EXISTS `t_clashmetadata` (
   `id` varchar(16) NOT NULL DEFAULT 'active',
   `dataRefreshDate` datetime NOT NULL,
@@ -58,31 +61,35 @@ CREATE TABLE IF NOT EXISTS `t_clashmetadata` (
 
 -- Data exporting was unselected.
 -- Dumping structure for table clashdb.t_companies
+DROP TABLE IF EXISTS `t_companies`;
 CREATE TABLE IF NOT EXISTS `t_companies` (
-  `company` varchar(32) NOT NULL,
+  `companyId` varchar(128) NOT NULL,
+  `companyName` varchar(128) NOT NULL,
   `rank` int(64) NOT NULL DEFAULT -1,
   `wins` int(64) DEFAULT NULL,
   `losses` int(64) DEFAULT NULL,
   `total_matches` int(128) DEFAULT NULL,
   `win_percent` double DEFAULT NULL,
   `times_searched` int(11) NOT NULL DEFAULT 0,
-  PRIMARY KEY (`company`),
-  UNIQUE KEY `company` (`company`)
+  PRIMARY KEY (`companyId`),
+  UNIQUE KEY `company` (`companyId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- Data exporting was unselected.
 -- Dumping structure for table clashdb.t_company2matches
+DROP TABLE IF EXISTS `t_company2matches`;
 CREATE TABLE IF NOT EXISTS `t_company2matches` (
-  `MatchId` varchar(64) NOT NULL,
-  `company` varchar(32) NOT NULL,
-  PRIMARY KEY (`MatchId`,`company`),
-  KEY `fk_company` (`company`),
-  CONSTRAINT `fk_MatchId` FOREIGN KEY (`MatchId`) REFERENCES `t_clashdevset` (`MatchId`),
-  CONSTRAINT `fk_company` FOREIGN KEY (`company`) REFERENCES `t_companies` (`company`)
+  `matchId` varchar(64) NOT NULL,
+  `companyId` varchar(128) NOT NULL,
+  PRIMARY KEY (`matchId`,`companyId`),
+  KEY `fk_company` (`companyId`),
+  CONSTRAINT `fk_MatchId` FOREIGN KEY (`matchId`) REFERENCES `t_clashdevset` (`MatchId`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_company` FOREIGN KEY (`companyId`) REFERENCES `t_companies` (`companyID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- Data exporting was unselected.
 -- Dumping structure for table clashdb.t_mapmetadata
+DROP TABLE IF EXISTS `t_mapmetadata`;
 CREATE TABLE IF NOT EXISTS `t_mapmetadata` (
   `mapId` varchar(64) NOT NULL,
   `printableName` varchar(64) DEFAULT NULL,
@@ -93,14 +100,15 @@ CREATE TABLE IF NOT EXISTS `t_mapmetadata` (
 
 -- Data exporting was unselected.
 -- Dumping structure for table clashdb.t_matchparticipants
+DROP TABLE IF EXISTS `t_matchparticipants`;
 CREATE TABLE IF NOT EXISTS `t_matchparticipants` (
-  `matchID` varchar(64) NOT NULL,
+  `matchId` varchar(64) NOT NULL,
   `team1_Players` varchar(4096) DEFAULT NULL,
   `team2_Players` varchar(4096) DEFAULT NULL,
   `other_Players` varchar(4096) DEFAULT NULL,
   `DNF_Players` varchar(4096) DEFAULT NULL,
-  PRIMARY KEY (`matchID`),
-  CONSTRAINT `fk_to_clashset` FOREIGN KEY (`matchID`) REFERENCES `t_clashdevset` (`MatchId`) ON DELETE CASCADE ON UPDATE CASCADE,
+  PRIMARY KEY (`matchId`),
+  CONSTRAINT `fk_to_clashset` FOREIGN KEY (`matchId`) REFERENCES `t_clashdevset` (`MatchId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `CONSTRAINT_1` CHECK (`team1_Players` is null or json_valid(`team1_Players`)),
   CONSTRAINT `CONSTRAINT_2` CHECK (`team2_Players` is null or json_valid(`team2_Players`))
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;

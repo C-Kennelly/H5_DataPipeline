@@ -25,7 +25,7 @@ namespace H5_DataPipeline.Models.SpartanClash
             MapVariant_ResourceType = matchDetails.MapVariant_ResourceType;
             MatchCompleteDate = matchDetails.MatchCompleteDate;
             MatchDuration = matchDetails.MatchDuration;
-            MatchId = matchDetails.matchId;
+            matchId = matchDetails.matchId;
             SeasonID = matchDetails.SeasonID;
 
             Team1_Company = teamsInvolved.team1_Primary;

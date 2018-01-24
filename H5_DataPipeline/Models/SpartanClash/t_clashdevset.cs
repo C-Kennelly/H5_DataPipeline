@@ -20,7 +20,7 @@ namespace H5_DataPipeline.Models.SpartanClash
             this.t_companies = new HashSet<t_companies>();
         }
     
-        public string MatchId { get; set; }
+        public string matchId { get; set; }
         public Nullable<int> GameMode { get; set; }
         public string HopperId { get; set; }
         public string MapId { get; set; }

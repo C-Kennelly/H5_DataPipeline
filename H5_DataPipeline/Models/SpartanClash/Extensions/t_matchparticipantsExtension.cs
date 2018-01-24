@@ -16,7 +16,7 @@ namespace H5_DataPipeline.Models.SpartanClash
 
         public t_matchparticipants(t_h5matches_playersformatch playersForMatchRecord)
         {
-            matchID = playersForMatchRecord.matchID;
+            matchId = playersForMatchRecord.matchID;
             team1_Players = playersForMatchRecord.team1_Players;
             team2_Players = playersForMatchRecord.team2_Players;
             other_Players = playersForMatchRecord.other_Players;

@@ -20,7 +20,8 @@ namespace H5_DataPipeline.Models.SpartanClash
             this.t_clashdevset = new HashSet<t_clashdevset>();
         }
     
-        public string company { get; set; }
+        public string companyId { get; set; }
+        public string companyName { get; set; }
         public int rank { get; set; }
         public Nullable<int> wins { get; set; }
         public Nullable<int> losses { get; set; }

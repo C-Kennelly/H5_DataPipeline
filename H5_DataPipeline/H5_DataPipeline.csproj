@@ -100,6 +100,9 @@
     <Compile Include="Assistants\CreateApplicationDB\Craftsman.cs" />
     <Compile Include="Assistants\CreateApplicationDB\CraftsmanScribe.cs" />
     <Compile Include="Assistants\CreateApplicationDB\MetadataGetter.cs" />
+    <Compile Include="Assistants\GenerateLeaderboards\CompanyFiller.cs" />
+    <Compile Include="Assistants\GenerateLeaderboards\Herald.cs" />
+    <Compile Include="Assistants\GenerateLeaderboards\RelationshipMapper.cs" />
     <Compile Include="Assistants\MatchParticipants\CustomTeamEntry.cs" />
     <Compile Include="Assistants\MatchParticipants\MatchParticipantEntry.cs" />
     <Compile Include="Assistants\CompanyRosters\QuartermasterDelegates.cs" />
@@ -180,6 +183,7 @@
     <Compile Include="Models\DataPipeline\Extensions\t_playersExtensions.cs" />
     <Compile Include="Models\DataPipeline\Extensions\t_teamsourcesExtensions.cs" />
     <Compile Include="Models\SpartanClash\Extensions\t_clashdevsetExtension.cs" />
+    <Compile Include="Models\SpartanClash\Extensions\t_companiesExtensions.cs" />
     <Compile Include="Models\SpartanClash\Extensions\t_matchparticipantsExtension.cs" />
     <Compile Include="Models\SpartanClash\SpartanClashAppModel.Context.cs">
       <AutoGen>True</AutoGen>

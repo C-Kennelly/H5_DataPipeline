@@ -7,9 +7,9 @@
     <Schema Namespace="clashdbModel.Store" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.5" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="t_clashdevset">
           <Key>
-            <PropertyRef Name="MatchId" />
+            <PropertyRef Name="matchId" />
           </Key>
-          <Property Name="MatchId" Type="varchar" MaxLength="64" Nullable="false" />
+          <Property Name="matchId" Type="varchar" MaxLength="64" Nullable="false" />
           <Property Name="GameMode" Type="int" />
           <Property Name="HopperId" Type="text" />
           <Property Name="MapId" Type="text" />
@@ -45,9 +45,10 @@
         </EntityType>
         <EntityType Name="t_companies">
           <Key>
-            <PropertyRef Name="company" />
+            <PropertyRef Name="companyId" />
           </Key>
-          <Property Name="company" Type="varchar" MaxLength="32" Nullable="false" />
+          <Property Name="companyId" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="companyName" Type="varchar" MaxLength="128" Nullable="false" />
           <Property Name="rank" Type="int" Nullable="false" />
           <Property Name="wins" Type="int" />
           <Property Name="losses" Type="int" />
@@ -57,11 +58,11 @@
         </EntityType>
         <EntityType Name="t_company2matches">
           <Key>
-            <PropertyRef Name="MatchId" />
-            <PropertyRef Name="company" />
+            <PropertyRef Name="matchId" />
+            <PropertyRef Name="companyId" />
           </Key>
-          <Property Name="MatchId" Type="varchar" MaxLength="64" Nullable="false" />
-          <Property Name="company" Type="varchar" MaxLength="32" Nullable="false" />
+          <Property Name="matchId" Type="varchar" MaxLength="64" Nullable="false" />
+          <Property Name="companyId" Type="varchar" MaxLength="128" Nullable="false" />
         </EntityType>
         <EntityType Name="t_mapmetadata">
           <Key>
@@ -73,35 +74,39 @@
         </EntityType>
         <EntityType Name="t_matchparticipants">
           <Key>
-            <PropertyRef Name="matchID" />
+            <PropertyRef Name="matchId" />
           </Key>
-          <Property Name="matchID" Type="varchar" MaxLength="64" Nullable="false" />
+          <Property Name="matchId" Type="varchar" MaxLength="64" Nullable="false" />
           <Property Name="team1_Players" Type="varchar" MaxLength="4096" />
           <Property Name="team2_Players" Type="varchar" MaxLength="4096" />
           <Property Name="other_Players" Type="varchar" MaxLength="4096" />
           <Property Name="DNF_Players" Type="varchar" MaxLength="4096" />
         </EntityType>
         <Association Name="fk_company">
-          <End Role="t_companies" Type="Self.t_companies" Multiplicity="1" />
+          <End Role="t_companies" Type="Self.t_companies" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="t_company2matches" Type="Self.t_company2matches" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="t_companies">
-              <PropertyRef Name="company" />
+              <PropertyRef Name="companyId" />
             </Principal>
             <Dependent Role="t_company2matches">
-              <PropertyRef Name="company" />
+              <PropertyRef Name="companyId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="fk_MatchId">
-          <End Role="t_clashdevset" Type="Self.t_clashdevset" Multiplicity="1" />
+          <End Role="t_clashdevset" Type="Self.t_clashdevset" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="t_company2matches" Type="Self.t_company2matches" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="t_clashdevset">
-              <PropertyRef Name="MatchId" />
+              <PropertyRef Name="matchId" />
             </Principal>
             <Dependent Role="t_company2matches">
-              <PropertyRef Name="MatchId" />
+              <PropertyRef Name="matchId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -112,10 +117,10 @@
           <End Role="t_matchparticipants" Type="Self.t_matchparticipants" Multiplicity="0..1" />
           <ReferentialConstraint>
             <Principal Role="t_clashdevset">
-              <PropertyRef Name="MatchId" />
+              <PropertyRef Name="matchId" />
             </Principal>
             <Dependent Role="t_matchparticipants">
-              <PropertyRef Name="matchID" />
+              <PropertyRef Name="matchId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -160,9 +165,9 @@
         </EntityContainer>
         <EntityType Name="t_clashdevset">
           <Key>
-            <PropertyRef Name="MatchId" />
+            <PropertyRef Name="matchId" />
           </Key>
-          <Property Name="MatchId" Type="String" Nullable="false" MaxLength="64" FixedLength="false" Unicode="false" />
+          <Property Name="matchId" Type="String" Nullable="false" MaxLength="64" FixedLength="false" Unicode="false" />
           <Property Name="GameMode" Type="Int32" />
           <Property Name="HopperId" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
           <Property Name="MapId" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
@@ -200,9 +205,10 @@
         </EntityType>
         <EntityType Name="t_companies">
           <Key>
-            <PropertyRef Name="company" />
+            <PropertyRef Name="companyId" />
           </Key>
-          <Property Name="company" Type="String" Nullable="false" MaxLength="32" FixedLength="false" Unicode="false" />
+          <Property Name="companyId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="companyName" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="false" />
           <Property Name="rank" Type="Int32" Nullable="false" />
           <Property Name="wins" Type="Int32" />
           <Property Name="losses" Type="Int32" />
@@ -221,9 +227,9 @@
         </EntityType>
         <EntityType Name="t_matchparticipants">
           <Key>
-            <PropertyRef Name="matchID" />
+            <PropertyRef Name="matchId" />
           </Key>
-          <Property Name="matchID" Type="String" Nullable="false" MaxLength="64" FixedLength="false" Unicode="false" />
+          <Property Name="matchId" Type="String" Nullable="false" MaxLength="64" FixedLength="false" Unicode="false" />
           <Property Name="team1_Players" Type="String" MaxLength="4096" FixedLength="false" Unicode="false" />
           <Property Name="team2_Players" Type="String" MaxLength="4096" FixedLength="false" Unicode="false" />
           <Property Name="other_Players" Type="String" MaxLength="4096" FixedLength="false" Unicode="false" />
@@ -237,10 +243,10 @@
           <End Type="clashdbModel.t_matchparticipants" Role="t_matchparticipants" Multiplicity="0..1" />
           <ReferentialConstraint>
             <Principal Role="t_clashdevset">
-              <PropertyRef Name="MatchId" />
+              <PropertyRef Name="matchId" />
             </Principal>
             <Dependent Role="t_matchparticipants">
-              <PropertyRef Name="matchID" />
+              <PropertyRef Name="matchId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -282,7 +288,7 @@
                 <ScalarProperty Name="MapId" ColumnName="MapId" />
                 <ScalarProperty Name="HopperId" ColumnName="HopperId" />
                 <ScalarProperty Name="GameMode" ColumnName="GameMode" />
-                <ScalarProperty Name="MatchId" ColumnName="MatchId" />
+                <ScalarProperty Name="matchId" ColumnName="matchId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -303,7 +309,8 @@
                 <ScalarProperty Name="losses" ColumnName="losses" />
                 <ScalarProperty Name="wins" ColumnName="wins" />
                 <ScalarProperty Name="rank" ColumnName="rank" />
-                <ScalarProperty Name="company" ColumnName="company" />
+                <ScalarProperty Name="companyName" ColumnName="companyName" />
+                <ScalarProperty Name="companyId" ColumnName="companyId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -323,16 +330,16 @@
                 <ScalarProperty Name="other_Players" ColumnName="other_Players" />
                 <ScalarProperty Name="team2_Players" ColumnName="team2_Players" />
                 <ScalarProperty Name="team1_Players" ColumnName="team1_Players" />
-                <ScalarProperty Name="matchID" ColumnName="matchID" />
+                <ScalarProperty Name="matchId" ColumnName="matchId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <AssociationSetMapping Name="t_company2matches" TypeName="clashdbModel.t_company2matches" StoreEntitySet="t_company2matches">
             <EndProperty Name="t_clashdevset">
-              <ScalarProperty Name="MatchId" ColumnName="MatchId" />
+              <ScalarProperty Name="matchId" ColumnName="matchId" />
             </EndProperty>
             <EndProperty Name="t_companies">
-              <ScalarProperty Name="company" ColumnName="company" />
+              <ScalarProperty Name="companyId" ColumnName="companyId" />
             </EndProperty>
           </AssociationSetMapping>
         </EntityContainerMapping>

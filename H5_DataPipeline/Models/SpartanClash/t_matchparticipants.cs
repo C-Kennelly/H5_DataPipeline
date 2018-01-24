@@ -14,7 +14,7 @@ namespace H5_DataPipeline.Models.SpartanClash
     
     public partial class t_matchparticipants
     {
-        public string matchID { get; set; }
+        public string matchId { get; set; }
         public string team1_Players { get; set; }
         public string team2_Players { get; set; }
         public string other_Players { get; set; }
