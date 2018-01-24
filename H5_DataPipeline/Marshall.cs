@@ -1,4 +1,4 @@
-﻿using H5_DataPipeline.Models;
+﻿using H5_DataPipeline.Models.DataPipeline;
 using H5_DataPipeline.Assistants.CompanyRosters;
 using H5_DataPipeline.Assistants.MatchDetails;
 using H5_DataPipeline.Assistants.MatchParticipants;

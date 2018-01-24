@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using HaloSharp;
 using HaloSharp.Extension;
 using HaloSharp.Exception;
 using HaloSharp.Model.Halo5.Profile;
 using HaloSharp.Query.Halo5.Profile;
-using H5_DataPipeline.Models;
-using H5_DataPipeline.Shared;
+using H5_DataPipeline.Models.DataPipeline;
 
 namespace H5_DataPipeline.Assistants.MatchParticipants
 {

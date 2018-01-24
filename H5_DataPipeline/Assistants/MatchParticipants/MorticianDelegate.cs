@@ -1,5 +1,5 @@
 ﻿using H5_DataPipeline.Assistants.Shared;
-using H5_DataPipeline.Models;
+using H5_DataPipeline.Models.DataPipeline;
 
 namespace H5_DataPipeline.Assistants.MatchParticipants
 {

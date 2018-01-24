@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using H5_DataPipeline.Models;
+using H5_DataPipeline.Models.DataPipeline;
 using HaloSharp.Model.Halo5.Stats;
 using H5_DataPipeline.Assistants.Shared;
 using System.Threading;

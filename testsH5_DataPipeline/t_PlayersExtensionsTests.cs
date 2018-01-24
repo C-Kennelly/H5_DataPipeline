@@ -1,6 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using H5_DataPipeline.Models;
+using H5_DataPipeline.Models.DataPipeline;
 
 namespace testsH5_DataPipeline
 {

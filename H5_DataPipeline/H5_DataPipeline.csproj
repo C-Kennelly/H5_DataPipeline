@@ -97,6 +97,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assistants\AnalyzeClanBattles\Clanalyzer.cs" />
+    <Compile Include="Assistants\CreateApplicationDB\Craftsman.cs" />
+    <Compile Include="Assistants\CreateApplicationDB\MetadataGetter.cs" />
     <Compile Include="Assistants\MatchParticipants\CustomTeamEntry.cs" />
     <Compile Include="Assistants\MatchParticipants\MatchParticipantEntry.cs" />
     <Compile Include="Assistants\CompanyRosters\QuartermasterDelegates.cs" />
@@ -114,88 +116,126 @@
     <Compile Include="Assistants\Shared\Helper.cs" />
     <Compile Include="Assistants\CompanyRosters\QuartermasterScribe.cs" />
     <Compile Include="Assistants\CompanyRosters\CompanyCaller.cs" />
-    <Compile Include="Models\Extensions\t_h5matchesExtensions.cs" />
-    <Compile Include="Models\Extensions\t_h5matches_playersformatchExtensions.cs" />
-    <Compile Include="Models\Extensions\t_h5matches_ranksandscoresExtension.cs" />
-    <Compile Include="Models\Extensions\t_h5matches_teamsinvolved_halowaypointcompaniesExtension.cs" />
-    <Compile Include="Models\t_configoptions.cs">
+    <Compile Include="Models\DataPipeline\Extensions\t_h5matchesExtensions.cs" />
+    <Compile Include="Models\DataPipeline\Extensions\t_h5matches_playersformatchExtensions.cs" />
+    <Compile Include="Models\DataPipeline\Extensions\t_h5matches_ranksandscoresExtension.cs" />
+    <Compile Include="Models\DataPipeline\Extensions\t_h5matches_teamsinvolved_halowaypointcompaniesExtension.cs" />
+    <Compile Include="Models\DataPipeline\t_configoptions.cs">
       <DependentUpon>H5DataPipelineModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\t_players_to_h5matches.cs">
+    <Compile Include="Models\DataPipeline\t_players_to_h5matches.cs">
       <DependentUpon>H5DataPipelineModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Extensions\t_players_to_h5matchesExtension.cs" />
-    <Compile Include="Models\Extensions\t_players_to_teamsExtensions.cs" />
+    <Compile Include="Models\DataPipeline\Extensions\t_players_to_h5matchesExtension.cs" />
+    <Compile Include="Models\DataPipeline\Extensions\t_players_to_teamsExtensions.cs" />
     <Compile Include="Assistants\MatchParticipants\ParticipantFinder.cs" />
     <Compile Include="Assistants\Shared\HaloClientFactory.cs" />
-    <Compile Include="Models\H5DataPipelineModel.Context.cs">
+    <Compile Include="Models\DataPipeline\H5DataPipelineModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>H5DataPipelineModel.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\H5DataPipelineModel.cs">
+    <Compile Include="Models\DataPipeline\H5DataPipelineModel.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>H5DataPipelineModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\H5DataPipelineModel.Designer.cs">
+    <Compile Include="Models\DataPipeline\H5DataPipelineModel.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>H5DataPipelineModel.edmx</DependentUpon>
     </Compile>
-    <Compile Include="Models\t_h5matches.cs">
+    <Compile Include="Models\DataPipeline\t_h5matches.cs">
       <DependentUpon>H5DataPipelineModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\t_h5matches_matchdetails.cs">
+    <Compile Include="Models\DataPipeline\t_h5matches_matchdetails.cs">
       <DependentUpon>H5DataPipelineModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\t_h5matches_playersformatch.cs">
+    <Compile Include="Models\DataPipeline\t_h5matches_playersformatch.cs">
       <DependentUpon>H5DataPipelineModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\t_h5matches_ranksandscores.cs">
+    <Compile Include="Models\DataPipeline\t_h5matches_ranksandscores.cs">
       <DependentUpon>H5DataPipelineModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\t_h5matches_teamsinvolved_halowaypointcompanies.cs">
+    <Compile Include="Models\DataPipeline\t_h5matches_teamsinvolved_halowaypointcompanies.cs">
       <DependentUpon>H5DataPipelineModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\t_h5matches_teamsinvolved_spartanclashfireteams.cs">
+    <Compile Include="Models\DataPipeline\t_h5matches_teamsinvolved_spartanclashfireteams.cs">
       <DependentUpon>H5DataPipelineModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\t_players.cs">
+    <Compile Include="Models\DataPipeline\t_players.cs">
       <DependentUpon>H5DataPipelineModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\t_players_to_teams.cs">
+    <Compile Include="Models\DataPipeline\t_players_to_teams.cs">
       <DependentUpon>H5DataPipelineModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\t_teams.cs">
+    <Compile Include="Models\DataPipeline\t_teams.cs">
       <DependentUpon>H5DataPipelineModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Extensions\t_teamsExtensions.cs" />
-    <Compile Include="Models\t_teamsources.cs">
+    <Compile Include="Models\DataPipeline\Extensions\t_teamsExtensions.cs" />
+    <Compile Include="Models\DataPipeline\t_teamsources.cs">
       <DependentUpon>H5DataPipelineModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Extensions\t_playersExtensions.cs" />
-    <Compile Include="Models\Extensions\t_teamsourcesExtensions.cs" />
+    <Compile Include="Models\DataPipeline\Extensions\t_playersExtensions.cs" />
+    <Compile Include="Models\DataPipeline\Extensions\t_teamsourcesExtensions.cs" />
+    <Compile Include="Models\SpartanClash\Extensions\t_clashdevsetExtension.cs" />
+    <Compile Include="Models\SpartanClash\SpartanClashAppModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SpartanClashAppModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SpartanClash\SpartanClashAppModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SpartanClashAppModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SpartanClash\SpartanClashAppModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SpartanClashAppModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SpartanClash\t_clashdevset.cs">
+      <DependentUpon>SpartanClashAppModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SpartanClash\t_clashmetadata.cs">
+      <DependentUpon>SpartanClashAppModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SpartanClash\t_companies.cs">
+      <DependentUpon>SpartanClashAppModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SpartanClash\t_mapmetadata.cs">
+      <DependentUpon>SpartanClashAppModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SpartanClash\t_matchparticipants.cs">
+      <DependentUpon>SpartanClashAppModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Assistants\MatchDetails\MatchCaller.cs" />
     <Compile Include="Assistants\CompanyRosters\Quartermaster.cs" />
     <Compile Include="SampleSecrets\SecretAPIKey.cs" />
     <Compile Include="Assistants\Shared\Config\SpartanClashSettings.cs" />
-    <Compile Include="Models\Extensions\t_h5matches_matchdetailsExtensions.cs" />
-    <Compile Include="Models\Extensions\WaypointSetup.cs" />
+    <Compile Include="Models\DataPipeline\Extensions\t_h5matches_matchdetailsExtensions.cs" />
+    <Compile Include="Models\DataPipeline\Extensions\WaypointSetup.cs" />
     <Compile Include="Secrets\SecretAPIKey.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <EntityDeploy Include="Models\H5DataPipelineModel.edmx">
+    <EntityDeploy Include="Models\DataPipeline\H5DataPipelineModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>H5DataPipelineModel.Designer.cs</LastGenOutput>
     </EntityDeploy>
+    <EntityDeploy Include="Models\SpartanClash\SpartanClashAppModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>SpartanClashAppModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="Models\SpartanClash\SpartanClashAppModel.edmx.diagram">
+      <DependentUpon>SpartanClashAppModel.edmx</DependentUpon>
+    </None>
     <None Include="SampleSecrets\connections.config" />
     <None Include="Secrets\connections.config" />
     <None Include="H5_DataPipeline_TemporaryKey.pfx" />
-    <None Include="Models\H5DataPipelineModel.edmx.diagram">
+    <None Include="Models\DataPipeline\H5DataPipelineModel.edmx.diagram">
       <DependentUpon>H5DataPipelineModel.edmx</DependentUpon>
     </None>
     <None Include="packages.config" />
@@ -210,15 +250,25 @@
     <Content Include="database\datapipeline\SeedPilotTeams.sql" />
     <Content Include="database\datapipeline\spartanclash_datapipeline_SchemaDump.sql" />
     <Content Include="database\spartanClashAppDB\clasbDB_Schema.sql" />
-    <Content Include="Models\H5DataPipelineModel.Context.tt">
+    <Content Include="Models\DataPipeline\H5DataPipelineModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>H5DataPipelineModel.edmx</DependentUpon>
       <LastGenOutput>H5DataPipelineModel.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="Models\H5DataPipelineModel.tt">
+    <Content Include="Models\DataPipeline\H5DataPipelineModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>H5DataPipelineModel.edmx</DependentUpon>
       <LastGenOutput>H5DataPipelineModel.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\SpartanClash\SpartanClashAppModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>SpartanClashAppModel.edmx</DependentUpon>
+      <LastGenOutput>SpartanClashAppModel.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\SpartanClash\SpartanClashAppModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>SpartanClashAppModel.edmx</DependentUpon>
+      <LastGenOutput>SpartanClashAppModel.cs</LastGenOutput>
     </Content>
   </ItemGroup>
   <ItemGroup>

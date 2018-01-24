@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using HaloSharp;
-using H5_DataPipeline.Models;
+using H5_DataPipeline.Models.DataPipeline;
 using H5_DataPipeline.Shared.Config;
 using H5_DataPipeline.Assistants.Shared;
 

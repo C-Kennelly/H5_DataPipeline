@@ -1,4 +1,4 @@
-﻿using H5_DataPipeline.Models;
+﻿using H5_DataPipeline.Models.DataPipeline;
 using HaloSharp.Model.Halo5.Stats;
 using System.Collections.Generic;
 

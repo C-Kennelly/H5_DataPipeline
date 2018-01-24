@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using H5_DataPipeline.Models;
+using H5_DataPipeline.Models.DataPipeline;
 using HaloSharp;
 using HaloSharp.Exception;
 using HaloSharp.Extension;
