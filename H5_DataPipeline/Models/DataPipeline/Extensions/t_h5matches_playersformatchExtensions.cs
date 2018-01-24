@@ -5,6 +5,7 @@ using H5_DataPipeline.Assistants.Shared;
 using HaloSharp;
 using HaloSharp.Model.Halo5.Stats.CarnageReport;
 using Newtonsoft.Json;
+using HaloSharp.Model.Halo5.Stats;
 
 
 namespace H5_DataPipeline.Models.DataPipeline
@@ -24,6 +25,56 @@ namespace H5_DataPipeline.Models.DataPipeline
             other_Players = null; //TODO update model with check for JSON
             DNF_Players = null;  //TODO update model with check for JSON
         }
+
+        //This holds the key to being able to kill Mortician... but we can't seem to get DNF information from a PlayerMatch.
+        //Is there another way?  Could we edit PlayerMatch to give out DNF information?
+        /*
+        public t_h5matches_playersformatch(string id, PlayerMatch playerMatch, inMemoryTeamRoster roster)
+        {
+            matchID = id;
+
+            List<MatchParticipantEntry> team1Players = new List<MatchParticipantEntry>();
+            List<MatchParticipantEntry> team2Players = new List<MatchParticipantEntry>();
+            List<MatchParticipantEntry> otherTeamPlayers = new List<MatchParticipantEntry>();
+            List<MatchParticipantEntry> DNFPlayers = new List<MatchParticipantEntry>();
+
+            Player[] playersInMatch = playerMatch.Players.ToArray();
+
+            for(int i = 0; i < playersInMatch.Length; i++ )
+            {
+                Player player = playersInMatch[i];
+
+                Helper.CreatePlayerIfNotExists(player.Identity.Gamertag);
+                string companyIDForTag = roster.GetTeamIDFromGamertag(player.Identity.Gamertag);
+
+                if (playerMatch.DNF)
+                {
+                    DNFPlayers.Add(new MatchParticipantEntry(player.Identity.Gamertag, companyIDForTag));
+                }
+                else
+                {
+                    if (player.TeamId == 0) //Red Team
+                    {
+                        team1Players.Add(new MatchParticipantEntry(player.Identity.Gamertag, companyIDForTag));
+                    }
+                    else if (player.TeamId == 1) //Blue Team
+                    {
+                        team2Players.Add(new MatchParticipantEntry(player.Identity.Gamertag, companyIDForTag));
+                    }
+                    else  //other team or FFA
+                    {
+                        otherTeamPlayers.Add(new MatchParticipantEntry(player.Identity.Gamertag, companyIDForTag));
+                    }
+                }
+            }
+
+            team1_Players = JsonConvert.SerializeObject(team1Players);
+            team2_Players = JsonConvert.SerializeObject(team2Players);
+            other_Players = JsonConvert.SerializeObject(otherTeamPlayers);
+            DNF_Players = JsonConvert.SerializeObject(DNFPlayers);
+
+        }
+        */
 
         public t_h5matches_playersformatch(string id, ArenaMatch carnageReport, inMemoryTeamRoster roster, IHaloSession session)
         {

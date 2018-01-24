@@ -41,6 +41,7 @@ namespace H5_DataPipeline.Assistants.MatchDetails
                     RecordMatchesAndAssociations(match, db);
                     StoreMatchDetails(playerMatch, match, db);
                     StoreRanksAndScores(playerMatch, match, db);
+                    //StorePlayers(playerMatch, match, db);  ->Can we get DNF players this way?
                 }
 
                 db.SaveChanges();
@@ -114,6 +115,8 @@ namespace H5_DataPipeline.Assistants.MatchDetails
                 }
             UpdateMatchResultsDatesScanned(parentRecord, db);
         }
+
+
 
         private void UpdateMatchResultsDatesScanned(t_h5matches match, dev_spartanclashbackendEntities db)
         {
