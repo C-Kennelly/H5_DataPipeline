@@ -72,8 +72,8 @@ CREATE TABLE IF NOT EXISTS `t_h5matches_matchdetails` (
 DROP TABLE IF EXISTS `t_h5matches_playersformatch`;
 CREATE TABLE IF NOT EXISTS `t_h5matches_playersformatch` (
   `matchID` varchar(64) NOT NULL,
-  `team2_Players` varchar(4096) DEFAULT NULL,
   `team1_Players` varchar(4096) DEFAULT NULL,
+  `team2_Players` varchar(4096) DEFAULT NULL,
   `other_Players` varchar(4096) DEFAULT NULL,
   `DNF_Players` varchar(4096) DEFAULT NULL,
   PRIMARY KEY (`matchID`),

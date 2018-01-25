@@ -253,9 +253,7 @@
     <Folder Include="SQL Files\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="database\datapipeline\ConfigureTestTeams.sql" />
-    <Content Include="database\datapipeline\SeedConfigOptions.sql" />
-    <Content Include="database\datapipeline\SeedPilotTeams.sql" />
+    <Content Include="database\datapipeline\PopulateTestData.sql" />
     <Content Include="database\datapipeline\spartanclash_datapipeline_SchemaDump.sql" />
     <Content Include="database\spartanClashAppDB\clashbDB_Schema.sql" />
     <Content Include="Models\DataPipeline\H5DataPipelineModel.Context.tt">

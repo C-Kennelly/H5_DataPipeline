@@ -67,13 +67,13 @@ namespace H5_DataPipeline
         private void Extract()
         {
             quartermaster.UpdateSpartanCompanyRosters();
-            //historian.RecordRecentGames();
-            //mortician.ScanMatchesForParticipants();
+            historian.RecordRecentGames();
+            mortician.ScanMatchesForParticipants();
         }
 
         private void Transform()
         {
-            //clanalyzer.AnalyzeClanBattles();
+            clanalyzer.AnalyzeClanBattles();
         }
 
         private void Load()
