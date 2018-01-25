@@ -1,38 +1,44 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading;
-using HaloSharp;
-using HaloSharp.Model.Halo5.Stats;
-using HaloSharp.Query.Halo5.Stats;
-using HaloSharp.Extension;
-
-using H5_DataPipeline.Assistants;
-
 
 namespace H5_DataPipeline
 {
     class Program
     {
+        private const double hoursBetweenQueries = 12.00;
 
         static void Main(string[] args)
         {
-            bool runAnother = true;
-            while(runAnother)
+
+            while(true)
             {
-                runAnother = false;
+                DateTime cycleStart = DateTime.UtcNow;
+                
                 TimedCycle();
-
-                Console.WriteLine("Run another? Y/n");
-
-                string response = Console.ReadLine();
-
-                if (response.Contains("Y") || response.Contains("y"))
+                
+                DateTime cycleEnd = DateTime.UtcNow;
+                TimeSpan span = cycleEnd.Subtract(cycleStart);
+                
+                if (span.TotalHours < hoursBetweenQueries)
                 {
-                    runAnother = true;
+                    WaitForDuration((hoursBetweenQueries - span.TotalHours));
                 }
+            
             }
 
-            //Console.ReadLine();
+
+        }
+        
+        private static void WaitForDuration(double hoursToWait)
+        {
+            double fractionalMilliseconds = hoursToWait * 360 * 1000;
+
+            int milliseconds = (int)Math.Round(fractionalMilliseconds, 0);
+
+            Console.WriteLine();
+            Console.WriteLine("Waiting for {0} hours before next cycle.", hoursToWait);
+            Console.WriteLine();
+            Thread.Sleep(milliseconds);
         }
 
         private static void TimedCycle()
@@ -45,7 +51,7 @@ namespace H5_DataPipeline
 
         }
 
-        public static void RunCycle()
+        private static void RunCycle()
         {
             Console.WriteLine("Hello, Infinity!");
             Console.WriteLine();
