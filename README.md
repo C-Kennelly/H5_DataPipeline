@@ -62,14 +62,14 @@ After the Quartermaster has finished, the next Assistant steps in.  The Historia
 
 The Halo API presently doles out matches in packs of 25, so she thumbs through the report and looks for any new matches that occured *after* the website launched.  If at the end of the results, she still hasn't hit the "first match" date, she'll ask for more results.
 
-Whenver she finds a new match, she'll then query [this Halo API endpoint ](https://developer.haloapi.com/docs/services/58acdf27e2f7f71ad0dad84b/operations/58acdf28e2f7f70db4854b37) for the the match results and then store them in their respective tables.  (She'll adjust that endpoint for Warzone/Customs as needed).
+Whenver she finds a new match, she'll then query [this Halo API endpoint ](https://developer.haloapi.com/docs/services/58acdf27e2f7f71ad0dad84b/operations/58acdf28e2f7f70db4854b37) for the the match results and then store them in their respective tables.
 
 Overall, the Historian has some painstaking work, and this can be one of the longest stages in the pipeline, due to the amount of data that gets pulled down over the rate-limited connection.  Fortunately, the more often the pipeline is run, the less often the Historian finds a new match, which greatly saves on query time and database writes.
 
 ### Meet the Mortician, who tracks the people that were in every battle ###
-The match details are all in place, but it turns out we're not quite done.  Due to the way HaloSharp returns results, we can't actually see DNF players from their model.  So, the Mortician exists to requery the matchID and populate the books with the names of the players in each match, including the DNF lists.  Overall, he's pretty creepy, and we'd love to get rid of him and move his functionality over to the Historian (which would cut the query time in half).
+The match details are all in place, but it turns out we're not quite done.  The Match History endpoint gives us nearlly all the details, but it doesn't give us the people who quit, or "DNF."  So enter the Mortician, a creepy, sallow sort of fellow who pokes through the post-mortem carnage report from [this Halo API endpoint](https://developer.haloapi.com/docs/services/58acdf27e2f7f71ad0dad84b/operations/58acdf28e2f7f70db4854b37).  If it's a Warzone or Customs match, he'll adjust endpoints accordingly.
 
-These values are stored as JSON fields inside the database, and names are paired with the team they were on when they completed the match, allowing for analysis later.
+Using the results, he stores the players for Red, Blue, Other, and DNF teams inside the database.  The names are paired with the team the users were on when they completed the match, which opens up some nice analysis options later.
 
 # Transform #
 In the Transform stage, we have all the data that we need to perform calculations.  So now we need to massage the data into a usable format.  For the most part, that means doing the aggregation.
