@@ -156,36 +156,23 @@ namespace H5_DataPipeline.Models.DataPipeline
 
         public List<string> ToListOfGamertags()
         {
-
             List<string> result = new List<string>();
 
-            if (team1_Players != null)
+            result.AddRange(GetTeamGamertagsFromField(team1_Players));
+            result.AddRange(GetTeamGamertagsFromField(team2_Players));
+            result.AddRange(GetTeamGamertagsFromField(other_Players));
+            result.AddRange(GetTeamGamertagsFromField(DNF_Players));
+
+            return result;
+        }
+
+        public List<string> GetTeamGamertagsFromField(string JSONParticipantField)
+        {
+            List<string> result = new List<string>();
+
+            if (JSONParticipantField != null)
             {
-                List<MatchParticipantEntry> workingList = JsonConvert.DeserializeObject<List<MatchParticipantEntry>>(team1_Players);
-                foreach (MatchParticipantEntry entry in workingList)
-                {
-                    result.Add(entry.gamertag);
-                }
-            }
-            if (team2_Players != null)
-            {
-                List<MatchParticipantEntry> workingList = JsonConvert.DeserializeObject<List<MatchParticipantEntry>>(team1_Players);
-                foreach (MatchParticipantEntry entry in workingList)
-                {
-                    result.Add(entry.gamertag);
-                }
-            }
-            if (other_Players != null)
-            {
-                List<MatchParticipantEntry> workingList = JsonConvert.DeserializeObject<List<MatchParticipantEntry>>(team1_Players);
-                foreach (MatchParticipantEntry entry in workingList)
-                {
-                    result.Add(entry.gamertag);
-                }
-            }
-            if (DNF_Players != null)
-            {
-                List<MatchParticipantEntry> workingList = JsonConvert.DeserializeObject<List<MatchParticipantEntry>>(team1_Players);
+                List<MatchParticipantEntry> workingList = JsonConvert.DeserializeObject<List<MatchParticipantEntry>>(JSONParticipantField);
                 foreach (MatchParticipantEntry entry in workingList)
                 {
                     result.Add(entry.gamertag);
@@ -194,5 +181,7 @@ namespace H5_DataPipeline.Models.DataPipeline
 
             return result;
         }
+
+       
     }
 }

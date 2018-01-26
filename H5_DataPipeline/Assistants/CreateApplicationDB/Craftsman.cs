@@ -30,10 +30,10 @@ namespace H5_DataPipeline.Assistants.CreateApplicationDB
             List<string> clanBattleMatchIDs = clanBattles.Select(battle => battle.matchID).ToList();
 
             List<t_h5matches_matchdetails> detailsForMatches = PullMatchDetailsForClanBattles( clanBattleMatchIDs);
-            List<t_h5matches_playersformatch> playersForMatches = PullMatchParticipantsForClanBattles(clanBattleMatchIDs);
             List<t_h5matches_ranksandscores> ranksandScoresForMatches = PullMatchRanksAndScoresForClanBattles(clanBattleMatchIDs);
+            List<t_h5matches_playersformatch> playersForMatches = PullMatchParticipantsForClanBattles(clanBattleMatchIDs);
 
-            List<t_clashdevset> clashDevSetMatches = BuildClashDevSetMatches(clanBattles, detailsForMatches, ranksandScoresForMatches);
+            List<t_clashdevset> clashDevSetMatches = BuildClashDevSetMatches(clanBattles, detailsForMatches, ranksandScoresForMatches, playersForMatches);
 
 
 
@@ -115,7 +115,7 @@ namespace H5_DataPipeline.Assistants.CreateApplicationDB
             return clanBattleParticipants;
         }
 
-        private List<t_clashdevset> BuildClashDevSetMatches(List<t_h5matches_teamsinvolved_halowaypointcompanies> clanBattles, List<t_h5matches_matchdetails> clanBattleDetails, List<t_h5matches_ranksandscores> clanBattleRanksAndScores)
+        private List<t_clashdevset> BuildClashDevSetMatches(List<t_h5matches_teamsinvolved_halowaypointcompanies> clanBattles, List<t_h5matches_matchdetails> clanBattleDetails, List<t_h5matches_ranksandscores> clanBattleRanksAndScores, List<t_h5matches_playersformatch> clanBattleParticipants)
         {
             Console.WriteLine("Creating sample records for {0} battles...", clanBattles.Count);
 
@@ -125,8 +125,9 @@ namespace H5_DataPipeline.Assistants.CreateApplicationDB
             {
                 t_h5matches_matchdetails matchDetails = clanBattleDetails.Find(battle => battle.matchId == clanBattle.matchID);
                 t_h5matches_ranksandscores matchRanksAndScores = clanBattleRanksAndScores.Find(battle => battle.matchId == clanBattle.matchID);
+                t_h5matches_playersformatch matchParticipants = clanBattleParticipants.Find(battle => battle.matchID == clanBattle.matchID);
 
-                clashDevSetMatches.Add(new t_clashdevset(clanBattle, matchDetails, matchRanksAndScores));
+                clashDevSetMatches.Add(new t_clashdevset(clanBattle, matchDetails, matchRanksAndScores, matchParticipants));
             }
 
             return clashDevSetMatches;

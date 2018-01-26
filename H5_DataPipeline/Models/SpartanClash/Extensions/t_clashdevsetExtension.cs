@@ -1,4 +1,5 @@
 ﻿using H5_DataPipeline.Models.DataPipeline;
+using System.Linq;
 
 namespace H5_DataPipeline.Models.SpartanClash
 {
@@ -8,7 +9,7 @@ namespace H5_DataPipeline.Models.SpartanClash
         private int leaderboardDefaultStatus = 0;
         private int leaderboardDefaultRank = -1;
 
-        public t_clashdevset(t_h5matches_teamsinvolved_halowaypointcompanies teamsInvolved, t_h5matches_matchdetails matchDetails, t_h5matches_ranksandscores matchRanksAndScores)
+        public t_clashdevset(t_h5matches_teamsinvolved_halowaypointcompanies teamsInvolved, t_h5matches_matchdetails matchDetails, t_h5matches_ranksandscores matchRanksAndScores, t_h5matches_playersformatch matchParticipants)
         {
             GameBaseVariantID = matchDetails.GameBaseVariantID;
             GameMode = matchDetails.GameMode;
@@ -33,11 +34,18 @@ namespace H5_DataPipeline.Models.SpartanClash
             Team2_Company = teamsInvolved.team2_Primary;
             Team2_DNFCount = teamsInvolved.team2_DNFCount;
 
+            Team1_Gamertag = matchParticipants.GetTeamGamertagsFromField(matchParticipants.team1_Players).FirstOrDefault();
+            if (Team1_Gamertag == null) { Team1_Gamertag = ""; }
+
+            Team2_Gamertag = matchParticipants.GetTeamGamertagsFromField(matchParticipants.team2_Players).FirstOrDefault();
+            if(Team2_Gamertag == null) { Team2_Gamertag = ""; }
+
             Team1_Rank = matchRanksAndScores.team1_Rank;
             Team2_Rank = matchRanksAndScores.team2_Rank;
             Team1_Score = matchRanksAndScores.team1_Score;
             Team2_Score = matchRanksAndScores.team2_Score;
             Status = leaderboardDefaultStatus;
+
 
         }
 
