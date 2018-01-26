@@ -228,7 +228,6 @@
     <Compile Include="Secrets\SecretAPIKey.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
     <EntityDeploy Include="Models\DataPipeline\H5DataPipelineModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>H5DataPipelineModel.Designer.cs</LastGenOutput>
@@ -237,6 +236,7 @@
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>SpartanClashAppModel.Designer.cs</LastGenOutput>
     </EntityDeploy>
+    <None Include="App.config" />
     <None Include="Models\SpartanClash\SpartanClashAppModel.edmx.diagram">
       <DependentUpon>SpartanClashAppModel.edmx</DependentUpon>
     </None>

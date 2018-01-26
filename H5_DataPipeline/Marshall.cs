@@ -4,11 +4,10 @@ using H5_DataPipeline.Assistants.MatchDetails;
 using H5_DataPipeline.Assistants.MatchParticipants;
 using H5_DataPipeline.Assistants.AnalyzeClanBattles;
 using H5_DataPipeline.Assistants.CreateApplicationDB;
-using H5_DataPipeline.Assistants.CreateApplicationDB.GenerateLeaderboards;
 using H5_DataPipeline.Shared;
 using H5_DataPipeline.Shared.Config;
+
 using HaloSharp;
-using System.Threading;
 
 namespace H5_DataPipeline
 {
