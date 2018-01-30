@@ -113,7 +113,7 @@ namespace H5_DataPipeline.Assistants.MatchDetails
                 Console.Write("\rProcessing {0} of {1}: {2}                ",counter, total, player.gamertag);
 
                 referee.WaitToRegisterJob(counter);
-                ProcessPlayer(player, counter);
+                ProcessPlayer(player, counter).Wait();
 
                 counter++;
             }

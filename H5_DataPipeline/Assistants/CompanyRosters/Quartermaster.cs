@@ -49,7 +49,7 @@ namespace H5_DataPipeline.Assistants.CompanyRosters
             {
                 return db.t_teams.Where(team =>
                         team.teamSource == waypointSourceName
-                        && team.trackingIndex > 0
+                        && team.trackingIndex >= 0  //-1 means we're getting errors from the API
                         && team.teamId != noCompanyFoundID)
                     .ToList();
             }

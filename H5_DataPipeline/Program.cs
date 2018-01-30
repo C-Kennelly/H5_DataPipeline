@@ -5,7 +5,7 @@ namespace H5_DataPipeline
 {
     class Program
     {
-        private const double hoursBetweenQueries = 12.00;
+        private const double hoursBetweenQueries = 3.00;
 
         static void Main(string[] args)
         {

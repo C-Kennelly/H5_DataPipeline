@@ -24,11 +24,16 @@ namespace H5_DataPipeline.Assistants.CreateApplicationDB.GenerateLeaderboards
             {
                 List<t_companies> allCompanies = GetAllCompaniesFromApplicationDatabase(spartanClashDB);
 
-                Parallel.ForEach(allCompanies, parallelOptions, (company) =>
+                foreach(t_companies company in allCompanies)
                 {
                     List<t_clashdevset> companyMatches = FindAllMatchesForCompany(company, spartanClashDB);
                     SaveAllMatchesForCompany(company, companyMatches, spartanClashDB);
-                });
+                }
+                //Parallel.ForEach(allCompanies, parallelOptions, (company) =>
+                //{
+                //    List<t_clashdevset> companyMatches = FindAllMatchesForCompany(company, spartanClashDB);
+                //    SaveAllMatchesForCompany(company, companyMatches, spartanClashDB);
+                //});
             }
         }
 
