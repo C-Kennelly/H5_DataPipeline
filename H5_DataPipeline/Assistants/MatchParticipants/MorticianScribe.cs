@@ -31,6 +31,23 @@ namespace H5_DataPipeline.Assistants.MatchParticipants
 
         public void SavePlayersForMatch()
         {
+            try
+            {
+                AddRecordIfNew();
+                UpdatePlayersForMatchDatesScanned(parentMatchRecord);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Scribe experienced error: {0}", e.Message);
+            }
+            finally
+            {
+                referee.WaitToMarkJobDone(jobId);
+            }
+        }
+
+        private void AddRecordIfNew()
+        {
             using (var db = new dev_spartanclashbackendEntities())
             {
                 t_h5matches_playersformatch currentRecord = db.t_h5matches_playersformatch.FirstOrDefault(record =>
@@ -54,12 +71,8 @@ namespace H5_DataPipeline.Assistants.MatchParticipants
                 {
                     Console.WriteLine("{0}: {1}", playersForMatchRecord.matchID, e.Message);
                 }
-                
+
             }
-
-            UpdatePlayersForMatchDatesScanned(parentMatchRecord);
-            referee.WaitToMarkJobDone(jobId);
-
         }
 
         private void UpdatePlayersForMatchDatesScanned(t_h5matches match)
