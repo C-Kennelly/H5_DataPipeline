@@ -23,29 +23,53 @@ namespace H5_DataPipeline.Assistants.MatchParticipants
                 case ((int)Enumeration.Halo5.GameMode.Arena):
                 {
                     ArenaMatch carnageReport = await GetArenaMatchCarnageReport(match.matchID, session);
-                    result = new t_h5matches_playersformatch(match.matchID, carnageReport, roster, session);
+                    if(carnageReport == null)
+                    {
+                        return null;
+                    }
+                    else
+                    {
+                        result = new t_h5matches_playersformatch(match.matchID, carnageReport, roster, session);
+                    }
+                    
                     break;
                 }
                 case ((int)Enumeration.Halo5.GameMode.Warzone):
                 {
                     WarzoneMatch carnageReport = await GetWarzoneMatchCarnageReport(match.matchID, session);
-                    result = new t_h5matches_playersformatch(match.matchID, carnageReport, roster, session);
+                    if (carnageReport == null)
+                    {
+                        return null;
+                    }
+                    else
+                    {
+                        result = new t_h5matches_playersformatch(match.matchID, carnageReport, roster, session);
+                    }
                     break;
                 }
 
                 case ((int)Enumeration.Halo5.GameMode.Custom):
                 {
                     CustomMatch carnageReport = await GetCustomMatchCarnageReport(match.matchID, session);
-                    result = new t_h5matches_playersformatch(match.matchID, carnageReport, roster, session);
+                    if (carnageReport == null)
+                    {
+                        result = null;
+                    }
+                    else
+                    {
+                        result = new t_h5matches_playersformatch(match.matchID, carnageReport, roster, session);
+                    }
                     break;
                 }
                 case ((int)Enumeration.Halo5.GameMode.Campaign):
                 {
+                    Console.WriteLine("Found a campagin match for some reason?");
                     result = null;
                     break;
                 }
                 case ((int)Enumeration.Halo5.GameMode.Error): 
                 {
+                    Console.WriteLine("Found an error in the game mode designsation.");
                     result = null;
                     break;
                 }
@@ -57,7 +81,6 @@ namespace H5_DataPipeline.Assistants.MatchParticipants
             }
 
             return result;
-
         }
 
         private int? GetGameModeForMatch(t_h5matches matchToFind)
@@ -103,7 +126,8 @@ namespace H5_DataPipeline.Assistants.MatchParticipants
                     }
                     else
                     {
-                        Console.WriteLine("The Halo API threw an exception for match {0}, status code: {1}.  Stopping calls.", matchID, haloAPIException.HaloApiError.StatusCode);
+                        Console.WriteLine("The Halo API threw an exception for match {0}, status code: {1}.  Stopping calls", matchID, haloAPIException.HaloApiError.StatusCode);
+                        return null;
                     }
                 }
             }
@@ -136,6 +160,7 @@ namespace H5_DataPipeline.Assistants.MatchParticipants
                     else
                     {
                         Console.WriteLine("The Halo API threw an exception for match {0}, status code: {1}.  Stopping calls.", matchID, haloAPIException.HaloApiError.StatusCode);
+                        return null;
                     }
                 }
 
@@ -168,6 +193,7 @@ namespace H5_DataPipeline.Assistants.MatchParticipants
                     else
                     {
                         Console.WriteLine("The Halo API threw an exception for match {0}, status code: {1}.  Stopping calls.", matchID, haloAPIException.HaloApiError.StatusCode);
+                        return null;
                     }
                 }
 

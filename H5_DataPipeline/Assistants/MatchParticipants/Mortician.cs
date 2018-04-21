@@ -84,8 +84,8 @@ namespace H5_DataPipeline.Assistants.MatchParticipants
 
         private async Task ProcessMatch(t_h5matches matchToQuery, int jobNumber)
         {
-            ParticipantFinder playerFinder = new ParticipantFinder();   
-            t_h5matches_playersformatch playersForMatch = await playerFinder.GetPlayersForMatch(matchToQuery, inMemoryRoster, haloSession);
+            ParticipantFinder participantFinder = new ParticipantFinder();   
+            t_h5matches_playersformatch playersForMatch = await participantFinder.GetPlayersForMatch(matchToQuery, inMemoryRoster, haloSession);
 
             if(playersForMatch != null)
             {
@@ -93,6 +93,8 @@ namespace H5_DataPipeline.Assistants.MatchParticipants
             }
             else
             {
+                Janitor janitor = new Janitor();
+                janitor.DeleteMatchTree(matchToQuery.matchID);
                 referee.WaitToMarkJobDone(jobNumber);
             }
         }

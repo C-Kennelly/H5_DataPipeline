@@ -22,7 +22,7 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>1</ApplicationRevision>
+    <ApplicationRevision>2</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -114,6 +114,7 @@
     <Compile Include="Assistants\MatchParticipants\MorticianScribe.cs" />
     <Compile Include="Assistants\MatchParticipants\PlayerFinder.cs" />
     <Compile Include="Assistants\PlayerDiscovery\Discoverer.cs" />
+    <Compile Include="Assistants\Shared\Janitor.cs" />
     <Compile Include="Assistants\Shared\Referee.cs" />
     <Compile Include="Assistants\Shared\SpartanCompanyRoster.cs" />
     <Compile Include="Marshall.cs" />
@@ -236,7 +237,9 @@
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>SpartanClashAppModel.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Models\SpartanClash\SpartanClashAppModel.edmx.diagram">
       <DependentUpon>SpartanClashAppModel.edmx</DependentUpon>
     </None>
