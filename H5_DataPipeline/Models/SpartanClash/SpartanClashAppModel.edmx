@@ -28,12 +28,12 @@
           <Property Name="SeasonID" Type="text" />
           <Property Name="Team1_Company" Type="text" />
           <Property Name="Team1_Rank" Type="int" Nullable="false" />
-          <Property Name="Team1_Score" Type="uint" />
+          <Property Name="Team1_Score" Type="int" />
           <Property Name="Team1_Gamertag" Type="varchar" MaxLength="32" Nullable="false" />
           <Property Name="Team1_DNFCount" Type="int" />
           <Property Name="Team2_Company" Type="text" />
           <Property Name="Team2_Rank" Type="int" Nullable="false" />
-          <Property Name="Team2_Score" Type="uint" />
+          <Property Name="Team2_Score" Type="int" />
           <Property Name="Team2_Gamertag" Type="varchar" MaxLength="32" Nullable="false" />
           <Property Name="Team2_DNFCount" Type="int" />
           <Property Name="Status" Type="int" Nullable="false" />
@@ -188,12 +188,12 @@
           <Property Name="SeasonID" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
           <Property Name="Team1_Company" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
           <Property Name="Team1_Rank" Type="Int32" Nullable="false" />
-          <Property Name="Team1_Score" Type="Int64" />
+          <Property Name="Team1_Score" Type="Int32" />
           <Property Name="Team1_Gamertag" Type="String" Nullable="false" MaxLength="32" FixedLength="false" Unicode="false" />
           <Property Name="Team1_DNFCount" Type="Int32" />
           <Property Name="Team2_Company" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
           <Property Name="Team2_Rank" Type="Int32" Nullable="false" />
-          <Property Name="Team2_Score" Type="Int64" />
+          <Property Name="Team2_Score" Type="Int32" />
           <Property Name="Team2_Gamertag" Type="String" Nullable="false" MaxLength="32" FixedLength="false" Unicode="false" />
           <Property Name="Team2_DNFCount" Type="Int32" />
           <Property Name="Status" Type="Int32" Nullable="false" />

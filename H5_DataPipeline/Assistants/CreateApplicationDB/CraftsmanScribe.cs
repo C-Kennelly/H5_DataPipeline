@@ -53,14 +53,19 @@ namespace H5_DataPipeline.Assistants.CreateApplicationDB
                         if (query == null)
                         {
                             spartanClashDB.t_clashdevset.Add(match);
+                            
                         }
                     }
-                    catch
+                    catch(Exception e)
                     {
                         Console.WriteLine("Had problems adding match {0}", match.matchId);
+                        Console.WriteLine(e.InnerException.Message);
+                        Console.WriteLine();
                     }
                 }
+
                 spartanClashDB.SaveChanges();
+
             }
 
         }
@@ -81,6 +86,7 @@ namespace H5_DataPipeline.Assistants.CreateApplicationDB
                         {
                             t_matchparticipants record = new t_matchparticipants(match);
                             spartanClashDB.t_matchparticipants.Add(record);
+ 
                         }
                     }
                     catch
