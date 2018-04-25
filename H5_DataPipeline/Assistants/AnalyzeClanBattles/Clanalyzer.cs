@@ -47,10 +47,30 @@ namespace H5_DataPipeline.Assistants.AnalyzeClanBattles
 
             using (var db = new dev_spartanclashbackendEntities())
             {
-                return db.t_h5matches.Where(match =>
-                    match.t_h5matches_teamsinvolved_halowaypointcompanies == null
-                    && match.t_h5matches_matchdetails.MatchCompleteDate > earliestTrackedMatchDate
-                ).ToList();
+                List<t_h5matches> matches = db.t_h5matches.ToList();
+                List<t_h5matches> matchesWithoutWaypointTeams = new List<t_h5matches>(matches.Count);
+
+                Console.WriteLine("Scanning {0} matches for missing teams.", matches.Count());
+                foreach (t_h5matches match in matches)
+                {
+                    if (match.t_h5matches_teamsinvolved_halowaypointcompanies == null)
+                    {
+                        matchesWithoutWaypointTeams.Add(match);
+                    }
+                }
+                Console.WriteLine("Down-selected to {0} matches without teams", matchesWithoutWaypointTeams.Count());
+
+                List<t_h5matches> matchesSinceSiteLaunchWithoutWaypointBattlesTagged = new List<t_h5matches>(matchesWithoutWaypointTeams.Count);
+                foreach (t_h5matches match in matchesWithoutWaypointTeams)
+                {
+                    if (match.t_h5matches_matchdetails.MatchCompleteDate > earliestTrackedMatchDate)
+                    {
+                        matchesSinceSiteLaunchWithoutWaypointBattlesTagged.Add(match);
+                    }
+                }
+                Console.WriteLine("Down-selected to {0} matches in time horizon.", matchesSinceSiteLaunchWithoutWaypointBattlesTagged.Count());
+
+                return matchesSinceSiteLaunchWithoutWaypointBattlesTagged;
             }
         }
 

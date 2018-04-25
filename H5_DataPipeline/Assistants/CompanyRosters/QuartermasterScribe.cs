@@ -48,7 +48,7 @@ namespace H5_DataPipeline.Assistants.CompanyRosters
                 {
                     currentListOfPlayers.AddRange( db.t_teams.Find(databaseRecord.teamId).t_players_to_teams.Select(player => player.gamertag).ToList()    );
 
-                  newListOfPlayers.AddRange(companyAPIResult.Members.Select(member => member.Identity.Gamertag).ToList() );
+                    newListOfPlayers.AddRange(companyAPIResult.Members.Select(member => member.Identity.Gamertag).ToList() );
 
                 }
 
