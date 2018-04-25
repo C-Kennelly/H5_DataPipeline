@@ -54,10 +54,30 @@ namespace H5_DataPipeline.Assistants.MatchParticipants
 
             using (var db = new dev_spartanclashbackendEntities())
             {
-                return db.t_h5matches.Where(match =>
-                  match.t_h5matches_playersformatch == null
-                  && match.t_h5matches_matchdetails.MatchCompleteDate > earliestTrackedMatchDate
-                ).ToList();
+                List<t_h5matches> matches = db.t_h5matches.ToList();
+                List<t_h5matches> matchesWithoutParticipants = new List<t_h5matches>(matches.Count);
+
+                Console.WriteLine("Scanning {0} matches for missing participants.", matches.Count());
+                foreach (t_h5matches match in matches)
+                {
+                    if(match.t_h5matches_playersformatch == null)
+                    {
+                        matchesWithoutParticipants.Add(match);
+                    }
+                }
+                Console.WriteLine("Down-selected to {0} matches without participants.", matchesWithoutParticipants.Count());
+
+                List<t_h5matches> matchesSinceSiteLaunchWithoutParticipants = new List<t_h5matches>(matchesWithoutParticipants.Count);
+                foreach(t_h5matches match in matchesWithoutParticipants)
+                {
+                    if(match.t_h5matches_matchdetails.MatchCompleteDate > earliestTrackedMatchDate)
+                    {
+                        matchesSinceSiteLaunchWithoutParticipants.Add(match);
+                    }
+                }
+                Console.WriteLine("Down-selected to {0} matches in time horizon.", matchesSinceSiteLaunchWithoutParticipants.Count());
+
+                return matchesSinceSiteLaunchWithoutParticipants;
             }
         }
 
