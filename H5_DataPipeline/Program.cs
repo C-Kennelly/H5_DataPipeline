@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading;
+using H5_DataPipeline.CompanyDiscovery;
 
 namespace H5_DataPipeline
 {
@@ -9,24 +10,38 @@ namespace H5_DataPipeline
 
         static void Main(string[] args)
         {
+            DiscoverCompanies(50000);
 
-            while(true)
+            //RunSpartanClashETLForever();
+
+            Console.ReadLine();
+           
+        }
+
+        private static void DiscoverCompanies(int companyCountThreshold)
+        {
+            Discoverer discoverer = new Discoverer();
+
+            discoverer.SearchForNewCompanies(companyCountThreshold);
+        }
+
+        private static void RunSpartanClashETLForever()
+        {
+            while (true)
             {
                 DateTime cycleStart = DateTime.UtcNow;
-                
+
                 TimedCycle();
-                
+
                 DateTime cycleEnd = DateTime.UtcNow;
                 TimeSpan span = cycleEnd.Subtract(cycleStart);
-                
+
                 if (span.TotalHours < hoursBetweenQueries)
                 {
                     WaitForDuration((hoursBetweenQueries - span.TotalHours));
                 }
-            
+
             }
-
-
         }
         
         private static void WaitForDuration(double hoursToWait)
