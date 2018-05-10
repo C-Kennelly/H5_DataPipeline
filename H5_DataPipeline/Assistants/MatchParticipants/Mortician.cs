@@ -52,9 +52,27 @@ namespace H5_DataPipeline.Assistants.MatchParticipants
         {
             DateTime earliestTrackedMatchDate = spartanClashSettings.EarliestTrackedMatchDate();
 
+            
             using (var db = new dev_spartanclashbackendEntities())
             {
                 List<t_h5matches> matches = db.t_h5matches.ToList();
+
+                /*
+                int totalRows = db.t_h5matches.Count();
+                int skip = 0;
+                int take = 100000;
+
+                List<t_h5matches> matches = new List<t_h5matches>(totalRows);
+
+
+                while (skip <= totalRows && skip >= 0)
+                {
+                    matches.AddRange(db.t_h5matches.Skip(skip).Take(take).ToList());
+
+                    skip = skip + take;
+                }
+                */
+
                 List<t_h5matches> matchesWithoutParticipants = new List<t_h5matches>(matches.Count);
 
                 Console.WriteLine("Scanning {0} matches for missing participants.", matches.Count());
