@@ -22,8 +22,8 @@ namespace H5_DataPipeline.Models.DataPipeline
             matchID = id;
             team1_Players = null;
             team2_Players = null;
-            other_Players = null; //TODO update model with check for JSON
-            DNF_Players = null;  //TODO update model with check for JSON
+            other_Players = null;
+            DNF_Players = null;
         }
 
         public t_h5matches_playersformatch(string id, ArenaMatch carnageReport, inMemoryTeamRoster roster, IHaloSession session)
@@ -158,34 +158,5 @@ namespace H5_DataPipeline.Models.DataPipeline
             DNF_Players = JsonConvert.SerializeObject(DNFPlayers);
         }
 
-        public List<string> ToListOfGamertags()
-        {
-            List<string> result = new List<string>();
-
-            result.AddRange(GetTeamGamertagsFromField(team1_Players));
-            result.AddRange(GetTeamGamertagsFromField(team2_Players));
-            result.AddRange(GetTeamGamertagsFromField(other_Players));
-            result.AddRange(GetTeamGamertagsFromField(DNF_Players));
-
-            return result;
-        }
-
-        public List<string> GetTeamGamertagsFromField(string JSONParticipantField)
-        {
-            List<string> result = new List<string>();
-
-            if (JSONParticipantField != null)
-            {
-                List<MatchParticipantEntry> workingList = JsonConvert.DeserializeObject<List<MatchParticipantEntry>>(JSONParticipantField);
-                foreach (MatchParticipantEntry entry in workingList)
-                {
-                    result.Add(entry.gamertag);
-                }
-            }
-
-            return result;
-        }
-
-       
     }
 }

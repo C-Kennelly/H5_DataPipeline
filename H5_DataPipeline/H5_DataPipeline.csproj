@@ -138,6 +138,7 @@
     <Compile Include="Assistants\Shared\Janitor.cs" />
     <Compile Include="Assistants\Shared\Referee.cs" />
     <Compile Include="Assistants\Shared\SpartanCompanyRoster.cs" />
+    <Compile Include="Discoverer\Discoverer.cs" />
     <Compile Include="Marshall.cs" />
     <Compile Include="Assistants\MatchDetails\HistorianScribe.cs" />
     <Compile Include="Assistants\MatchParticipants\Mortician.cs" />
@@ -145,7 +146,8 @@
     <Compile Include="Assistants\CompanyRosters\QuartermasterScribe.cs" />
     <Compile Include="Assistants\CompanyRosters\CompanyCaller.cs" />
     <Compile Include="Models\DataPipeline\Extensions\t_h5matchesExtensions.cs" />
-    <Compile Include="Models\DataPipeline\Extensions\t_h5matches_playersformatchExtensions.cs" />
+    <Compile Include="Models\DataPipeline\Extensions\t_h5matches_playersformatchWriteExtensions.cs" />
+    <Compile Include="Models\DataPipeline\Extensions\t_h5matches_playersformatchReadExtensions.cs" />
     <Compile Include="Models\DataPipeline\Extensions\t_h5matches_ranksandscoresExtension.cs" />
     <Compile Include="Models\DataPipeline\Extensions\t_h5matches_teamsinvolved_halowaypointcompaniesExtension.cs" />
     <Compile Include="Models\DataPipeline\t_configoptions.cs">
