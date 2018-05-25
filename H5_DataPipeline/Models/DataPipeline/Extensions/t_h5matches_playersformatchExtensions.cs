@@ -41,23 +41,27 @@ namespace H5_DataPipeline.Models.DataPipeline
                 Helper.CreatePlayerIfNotExists(playerStat.Player.Gamertag);
                 string companyIDForTag = roster.GetTeamIDFromGamertag(playerStat.Player.Gamertag);
 
+                
+                CSREntry previous = new CSREntry(playerStat.PreviousCsr);
+                CSREntry current = new CSREntry(playerStat.CurrentCsr);
+
                 if (playerStat.DNF)
                 {
-                    DNFPlayers.Add(new MatchParticipantEntry(playerStat.Player.Gamertag, companyIDForTag));
+                    DNFPlayers.Add(new MatchParticipantEntry(playerStat.Player.Gamertag, companyIDForTag, previous, current));
                 }
                 else
                 {
                     if (playerStat.TeamId == 0) //Red Team
                     {
-                        team1Players.Add(new MatchParticipantEntry(playerStat.Player.Gamertag, companyIDForTag));
+                        team1Players.Add(new MatchParticipantEntry(playerStat.Player.Gamertag, companyIDForTag, previous, current));
                     }
                     else if (playerStat.TeamId == 1) //Blue Team
                     {
-                        team2Players.Add(new MatchParticipantEntry(playerStat.Player.Gamertag, companyIDForTag));
+                        team2Players.Add(new MatchParticipantEntry(playerStat.Player.Gamertag, companyIDForTag, previous, current));
                     }
                     else  //other team or FFA
                     {
-                        otherTeamPlayers.Add(new MatchParticipantEntry(playerStat.Player.Gamertag, companyIDForTag));
+                        otherTeamPlayers.Add(new MatchParticipantEntry(playerStat.Player.Gamertag, companyIDForTag, previous, current));
                     }
                 }
             }

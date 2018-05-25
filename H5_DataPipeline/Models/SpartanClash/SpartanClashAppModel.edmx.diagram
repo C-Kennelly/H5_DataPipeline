@@ -7,9 +7,9 @@
       <Diagram DiagramId="8704f63cb6e746cab172e021e147f17c" Name="Diagram1" ZoomLevel="64">
         <EntityTypeShape EntityType="clashdbModel.t_clashdevset" Width="1.5" PointX="3" PointY="1.125" />
         <EntityTypeShape EntityType="clashdbModel.t_clashmetadata" Width="1.5" PointX="5.75" PointY="0.75" />
-        <EntityTypeShape EntityType="clashdbModel.t_companies" Width="1.5" PointX="0.75" PointY="3.125" />
+        <EntityTypeShape EntityType="clashdbModel.t_companies" Width="1.5" PointX="0.75" PointY="3.375" />
         <EntityTypeShape EntityType="clashdbModel.t_mapmetadata" Width="1.5" PointX="5.75" PointY="6.75" />
-        <EntityTypeShape EntityType="clashdbModel.t_matchparticipants" Width="1.5" PointX="5.25" PointY="3.5" />
+        <EntityTypeShape EntityType="clashdbModel.t_matchparticipants" Width="1.5" PointX="5.25" PointY="3.625" />
         <AssociationConnector Association="clashdbModel.fk_to_clashset" />
         <AssociationConnector Association="clashdbModel.t_company2matches" />
       </Diagram>

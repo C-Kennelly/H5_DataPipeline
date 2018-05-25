@@ -29,11 +29,13 @@
           <Property Name="Team1_Company" Type="text" />
           <Property Name="Team1_Rank" Type="int" Nullable="false" />
           <Property Name="Team1_Score" Type="int" />
+          <Property Name="Team1_CSR" Type="int" Nullable="false" />
           <Property Name="Team1_Gamertag" Type="varchar" MaxLength="32" Nullable="false" />
           <Property Name="Team1_DNFCount" Type="int" />
           <Property Name="Team2_Company" Type="text" />
           <Property Name="Team2_Rank" Type="int" Nullable="false" />
           <Property Name="Team2_Score" Type="int" />
+          <Property Name="Team2_CSR" Type="int" Nullable="false" />
           <Property Name="Team2_Gamertag" Type="varchar" MaxLength="32" Nullable="false" />
           <Property Name="Team2_DNFCount" Type="int" />
           <Property Name="Status" Type="int" Nullable="false" />
@@ -189,11 +191,13 @@
           <Property Name="Team1_Company" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
           <Property Name="Team1_Rank" Type="Int32" Nullable="false" />
           <Property Name="Team1_Score" Type="Int32" />
+          <Property Name="Team1_CSR" Type="Int32" Nullable="false" />
           <Property Name="Team1_Gamertag" Type="String" Nullable="false" MaxLength="32" FixedLength="false" Unicode="false" />
           <Property Name="Team1_DNFCount" Type="Int32" />
           <Property Name="Team2_Company" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
           <Property Name="Team2_Rank" Type="Int32" Nullable="false" />
           <Property Name="Team2_Score" Type="Int32" />
+          <Property Name="Team2_CSR" Type="Int32" Nullable="false" />
           <Property Name="Team2_Gamertag" Type="String" Nullable="false" MaxLength="32" FixedLength="false" Unicode="false" />
           <Property Name="Team2_DNFCount" Type="Int32" />
           <Property Name="Status" Type="Int32" Nullable="false" />
@@ -270,11 +274,13 @@
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="Team2_DNFCount" ColumnName="Team2_DNFCount" />
                 <ScalarProperty Name="Team2_Gamertag" ColumnName="Team2_Gamertag" />
+                <ScalarProperty Name="Team2_CSR" ColumnName="Team2_CSR" />
                 <ScalarProperty Name="Team2_Score" ColumnName="Team2_Score" />
                 <ScalarProperty Name="Team2_Rank" ColumnName="Team2_Rank" />
                 <ScalarProperty Name="Team2_Company" ColumnName="Team2_Company" />
                 <ScalarProperty Name="Team1_DNFCount" ColumnName="Team1_DNFCount" />
                 <ScalarProperty Name="Team1_Gamertag" ColumnName="Team1_Gamertag" />
+                <ScalarProperty Name="Team1_CSR" ColumnName="Team1_CSR" />
                 <ScalarProperty Name="Team1_Score" ColumnName="Team1_Score" />
                 <ScalarProperty Name="Team1_Rank" ColumnName="Team1_Rank" />
                 <ScalarProperty Name="Team1_Company" ColumnName="Team1_Company" />

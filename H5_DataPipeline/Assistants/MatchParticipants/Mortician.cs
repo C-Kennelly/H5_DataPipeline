@@ -55,7 +55,12 @@ namespace H5_DataPipeline.Assistants.MatchParticipants
             
             using (var db = new dev_spartanclashbackendEntities())
             {
-                List<t_h5matches> matches = db.t_h5matches.ToList();
+//                List<t_h5matches> matches = db.t_h5matches.ToList();
+
+//                List<t_h5matches> matchesWithoutParticipants = db.t_h5matches.Where(match => match.t_h5matches_playersformatch == null).ToList();
+
+
+                return db.t_h5matches.Where(match => match.t_h5matches_playersformatch == null && match.t_h5matches_matchdetails.MatchCompleteDate > earliestTrackedMatchDate).ToList();
 
                 /*
                 int totalRows = db.t_h5matches.Count();
@@ -71,7 +76,7 @@ namespace H5_DataPipeline.Assistants.MatchParticipants
 
                     skip = skip + take;
                 }
-                */
+                
 
                 List<t_h5matches> matchesWithoutParticipants = new List<t_h5matches>(matches.Count);
 
@@ -83,6 +88,8 @@ namespace H5_DataPipeline.Assistants.MatchParticipants
                         matchesWithoutParticipants.Add(match);
                     }
                 }
+
+
                 Console.WriteLine("Down-selected to {0} matches without participants.", matchesWithoutParticipants.Count());
 
                 List<t_h5matches> matchesSinceSiteLaunchWithoutParticipants = new List<t_h5matches>(matchesWithoutParticipants.Count);
@@ -93,9 +100,11 @@ namespace H5_DataPipeline.Assistants.MatchParticipants
                         matchesSinceSiteLaunchWithoutParticipants.Add(match);
                     }
                 }
+
                 Console.WriteLine("Down-selected to {0} matches in time horizon.", matchesSinceSiteLaunchWithoutParticipants.Count());
 
                 return matchesSinceSiteLaunchWithoutParticipants;
+                                */
             }
         }
 

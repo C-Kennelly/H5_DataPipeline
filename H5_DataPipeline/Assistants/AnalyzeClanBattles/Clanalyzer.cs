@@ -47,6 +47,9 @@ namespace H5_DataPipeline.Assistants.AnalyzeClanBattles
 
             using (var db = new dev_spartanclashbackendEntities())
             {
+
+                return db.t_h5matches.Where(match => match.t_h5matches_teamsinvolved_halowaypointcompanies == null && match.t_h5matches_matchdetails.MatchCompleteDate > earliestTrackedMatchDate).ToList();
+                /*
                 List<t_h5matches> matches = db.t_h5matches.ToList();
                 List<t_h5matches> matchesWithoutWaypointTeams = new List<t_h5matches>(matches.Count);
 
@@ -71,6 +74,7 @@ namespace H5_DataPipeline.Assistants.AnalyzeClanBattles
                 Console.WriteLine("Down-selected to {0} matches in time horizon.", matchesSinceSiteLaunchWithoutWaypointBattlesTagged.Count());
 
                 return matchesSinceSiteLaunchWithoutWaypointBattlesTagged;
+                */
             }
         }
 

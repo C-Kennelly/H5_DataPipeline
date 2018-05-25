@@ -40,11 +40,13 @@ namespace H5_DataPipeline.Models.SpartanClash
         public string Team1_Company { get; set; }
         public int Team1_Rank { get; set; }
         public Nullable<int> Team1_Score { get; set; }
+        public int Team1_CSR { get; set; }
         public string Team1_Gamertag { get; set; }
         public Nullable<int> Team1_DNFCount { get; set; }
         public string Team2_Company { get; set; }
         public int Team2_Rank { get; set; }
         public Nullable<int> Team2_Score { get; set; }
+        public int Team2_CSR { get; set; }
         public string Team2_Gamertag { get; set; }
         public Nullable<int> Team2_DNFCount { get; set; }
         public int Status { get; set; }

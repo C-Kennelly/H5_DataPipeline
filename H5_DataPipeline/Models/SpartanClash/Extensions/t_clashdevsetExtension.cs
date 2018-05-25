@@ -29,6 +29,9 @@ namespace H5_DataPipeline.Models.SpartanClash
             matchId = matchDetails.matchId;
             SeasonID = matchDetails.SeasonID;
 
+            Team1_CSR = 0;
+            Team2_CSR = 0;
+
             Team1_Company = teamsInvolved.team1_Primary;
             Team1_DNFCount = teamsInvolved.team1_DNFCount;
             Team2_Company = teamsInvolved.team2_Primary;

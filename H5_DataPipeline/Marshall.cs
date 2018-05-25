@@ -57,7 +57,7 @@ namespace H5_DataPipeline
         {
             Setup();
 
-            Extract();
+            //Extract();
             Transform();
             Load();
 
