@@ -29,9 +29,6 @@ namespace H5_DataPipeline.Models.SpartanClash
             matchId = matchDetails.matchId;
             SeasonID = matchDetails.SeasonID;
 
-            Team1_CSR = 0;
-            Team2_CSR = 0;
-
             Team1_Company = teamsInvolved.team1_Primary;
             Team1_DNFCount = teamsInvolved.team1_DNFCount;
             Team2_Company = teamsInvolved.team2_Primary;
@@ -42,6 +39,9 @@ namespace H5_DataPipeline.Models.SpartanClash
 
             Team2_Gamertag = matchParticipants.GetTeamGamertagsFromField(matchParticipants.team2_Players).FirstOrDefault();
             if(Team2_Gamertag == null) { Team2_Gamertag = ""; }
+
+            Team1_CSR = SetCSRFromField(matchParticipants.team1_Players);
+            Team2_CSR = SetCSRFromField(matchParticipants.team2_Players);
 
             Team1_Rank = matchRanksAndScores.team1_Rank;
             Team2_Rank = matchRanksAndScores.team2_Rank;
@@ -68,6 +68,16 @@ namespace H5_DataPipeline.Models.SpartanClash
                 else { return false; }
             }
         }
+
+        private int SetCSRFromField(string teamPlayersJSON)
+        {
+            return 0;
+            //Probably want to write an extenstion method on t_h5matches_playersformatch that spits out list of CSR's given a field.
+            //Then want this method to calculate a team CSR based on available info.
+            //NOTE THAT THIS IS AN INT
+            //Also, there's probably a matter of Designation and Tiers not accounted for with only one field, so need to figure that out from design perspective.
+        }
+
 
     }
 }

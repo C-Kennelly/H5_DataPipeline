@@ -14,6 +14,15 @@ namespace H5_DataPipeline.CompanyDiscovery
     {
         public void SearchForNewCompanies(int companyCountThreshold)
         {
+
+            //SoftSearch();           //Search players we know about, but haven't checked.  
+            //HardSearch();         //Search all matches for all players.
+
+            
+        }
+
+        private void HardSearch()
+        {
             List<t_h5matches_playersformatch> matchesWithPlayers = new List<t_h5matches_playersformatch>();
 
             using (var db = new dev_spartanclashbackendEntities())
@@ -26,7 +35,7 @@ namespace H5_DataPipeline.CompanyDiscovery
 
             List<string> unaffiliatedPlayers = GetAllUnaffiliatedPlayersinMatchSet(matchesWithPlayers);
 
-            ScanPlayersForNewCompanies(unaffiliatedPlayers);
+            //ScanPlayersForNewCompanies(unaffiliatedPlayers);
 
             unaffiliatedPlayers.ForEach(item => Console.WriteLine(item));
         }
