@@ -6,6 +6,7 @@ using HaloSharp.Exception;
 using HaloSharp.Model.Halo5.Profile;
 using HaloSharp.Query.Halo5.Profile;
 using H5_DataPipeline.Models.DataPipeline;
+using H5_DataPipeline.Assistants.Shared;
 
 namespace H5_DataPipeline.Assistants.MatchParticipants
 {

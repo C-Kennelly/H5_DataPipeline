@@ -9,9 +9,9 @@ using HaloSharp;
 using H5_DataPipeline.Assistants.MatchParticipants;
 using H5_DataPipeline.Assistants.Shared;
 
-namespace H5_DataPipeline.Assistants.PlayerDiscovery
+namespace H5_DataPipeline.CompanyDiscovery
 {
-    class Discoverer
+    public partial class Discoverer
     {
         //returns the ID right now, but is supposed to add the gamertag/company association to the database and roster
         public string QueryForCompanyIDAndUpdateDatabaseAndRoster(string gamertag, inMemoryTeamRoster roster, IHaloSession session)
@@ -24,10 +24,11 @@ namespace H5_DataPipeline.Assistants.PlayerDiscovery
             if (playerAppearance != null && playerAppearance.Company != null)
             {
                 string companyId = playerAppearance.Company.Id.ToString();
+                string companyName = playerAppearance.Company.Name.ToString();
                 if (companyId != null && companyId != "")
                 {
                     result = companyId;
-                    UpdateDatabaseAndRoster(gamertag, playerAppearance.Company.Id.ToString(), playerAppearance.Company.Name.ToString(), roster);
+                    UpdateDatabaseAndRoster(gamertag, companyId, companyName, roster);
                 }
             }
             else
@@ -52,7 +53,8 @@ namespace H5_DataPipeline.Assistants.PlayerDiscovery
         private t_players_to_teams UpdateDatabase(string gamertag, string companyID, string teamName)
         {
             string waypointSourceName = t_teamsources.GetWaypointSourceName();
-            Helper.CreateUntrackedTeamIfNotExist(companyID, teamName, waypointSourceName);
+            Guid companyGUID;
+            Helper.CreateUntrackedTeamIfNotExist(companyID, teamName, waypointSourceName, false);
             t_players_to_teams result = null;
 
             using (var db = new dev_spartanclashbackendEntities())
@@ -61,10 +63,14 @@ namespace H5_DataPipeline.Assistants.PlayerDiscovery
                 t_players_to_teams currentRecord = db.t_players_to_teams.Where(record => record.gamertag == gamertag
                                                                             && record.t_teams.teamSource == waypointSourceName)
                                                                             .FirstOrDefault();
+                
+    
+                if (companyID == "0") { companyGUID = t_teamsources.GetWaypointTeamGUID(); }
+                else { companyGUID = new Guid(companyID); }
 
                 if (currentRecord == null)
                 {
-                    db.t_players_to_teams.Add(new t_players_to_teams(new Guid(companyID), gamertag));
+                    db.t_players_to_teams.Add(new t_players_to_teams(companyGUID, gamertag));
                 }
                 else
                 {
