@@ -6,6 +6,7 @@ using H5_DataPipeline.Assistants.AnalyzeClanBattles;
 using H5_DataPipeline.Assistants.CreateApplicationDB;
 using H5_DataPipeline.Shared;
 using H5_DataPipeline.Shared.Config;
+using System;
 
 using HaloSharp;
 
@@ -57,17 +58,18 @@ namespace H5_DataPipeline
         {
             Setup();
 
-            //Extract();
-            Transform();
-            Load();
+            Extract();
+            //Transform();
+            //Load();
 
         }
 
         private void Extract()
         {
             quartermaster.UpdateSpartanCompanyRosters();
-            historian.RecordRecentGames();
-            mortician.ScanMatchesForParticipants();
+            //historian.RecordRecentGames();
+            //mortician.ScanMatchesForParticipants();
+            Console.ReadLine();
         }
 
         private void Transform()

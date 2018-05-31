@@ -51,12 +51,21 @@ namespace H5_DataPipeline.CompanyDiscovery
 
             int i = 0;
 
+            /*
+            Parallel.ForEach(unaffiliatedPlayers, player =>
+            {
+                string company = QueryForCompanyIDAndUpdateDatabaseAndRoster(player, roster, haloSession);
+                //Console.WriteLine("{0} is on {1}.", player, company);
+            });
+            */
+            
             foreach (string player in unaffiliatedPlayers)
             {
                 string company = QueryForCompanyIDAndUpdateDatabaseAndRoster(player, roster, haloSession);
                 Console.WriteLine("{0} of {1}:     {2} is on {3}", i, unaffiliatedPlayers.Count, player, company);
                 i++;
             }
+            
         }
 
         private List<string> GetUnaffiliatedPlayersFromDatabase()

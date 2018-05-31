@@ -12,7 +12,7 @@ namespace H5_DataPipeline
         {
             DiscoverCompanies(50000);
 
-            //RunSpartanClashETLForever();
+            RunSpartanClashETLForever();
 
             Console.ReadLine();
            
